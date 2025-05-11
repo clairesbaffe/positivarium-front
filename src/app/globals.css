@@ -4,7 +4,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --foreground-dark-bg: #ffffff;
   --colored-background: #DCE7F2;
+  --dark-colored-background: #365F91;
   --default-font-family: "Nunito", sans-serif;
   --title-font-family: "Trochut", sans-serif;
 }
@@ -12,7 +14,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-foreground-inverted: var(--foreground-dark-bg);
+
   --color-colored-background: var(--colored-background);
+  --color-dark-colored-background: var(--dark-colored-background);
+
   --font-default: var(--default-font-family);
   --font-title: var(--title-font-family);
 }
@@ -22,6 +28,8 @@
     --background: #0a0a0a;
     --foreground: #ededed;
     --colored-background: #1C2A3A;
+    --dark-colored-background: #1C2A3A;
+    --foreground-dark-bg: #ededed;
   }
 }
 
