@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito, Trochut } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 
 const nunitoSans = Nunito({
   variable: "--font-nunito-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${nunitoSans.variable} ${trochutSans.variable} antialiased`}
       >
+        <Header />
         {children}
       </body>
     </html>
