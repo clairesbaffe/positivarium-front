@@ -1,10 +1,10 @@
+"use client";
+
 import Button from "@/components/Button";
 import { BookOpen, Layers2, NotebookPen } from "lucide-react";
 import ArticlesPage from "@/components/articles/ArticlesPage";
 
-export default async function Home() {
-
-
+export default function Home() {
   return (
     <main className="flex flex-col my-8 md:m-28 gap-32">
       <section className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-20">
@@ -22,12 +22,14 @@ export default async function Home() {
               background={"bg-dark-colored-background"}
               textColor={"text-foreground-inverted"}
               icon={BookOpen}
+              href={"/"}
             />
             <Button
               title={"Ouvrir le journal"}
               background={"bg-colored-background"}
               textColor={"text-foreground"}
               icon={NotebookPen}
+              href={"/"}
             />
           </div>
         </div>
@@ -52,9 +54,10 @@ export default async function Home() {
             background={"bg-colored-background"}
             textColor={"text-foreground"}
             icon={Layers2}
+            href={"/"}
           />
         </div>
-        <ArticlesPage/>
+        <ArticlesPage />
       </section>
     </main>
   );
