@@ -35,7 +35,7 @@ export default function Button({
     <button
       onClick={handleClick}
       className={clsx(
-        "py-2.5 px-4 h-min rounded-md font-semibold flex items-center gap-2 cursor-pointer",
+        "py-2.5 px-4 h-min rounded-md font-semibold flex items-center justify-center gap-2 cursor-pointer",
         background,
         textColor
       )}
