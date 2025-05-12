@@ -12,7 +12,7 @@ export default function Button({ title, background, textColor, icon: Icon }: But
   return (
     <button
     className={clsx(
-        "py-2.5 px-4 rounded-md font-semibold flex items-center gap-2",
+        "py-2.5 px-4 h-min rounded-md font-semibold flex items-center gap-2",
         background,
         textColor
       )}
