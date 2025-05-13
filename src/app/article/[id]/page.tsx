@@ -37,7 +37,7 @@ export default function Article() {
   }, [id]);
 
   return (
-    <div className="w-2/5 flex mx-auto my-16">
+    <div className="md:w-2/5 mx-4 md:mx-auto my-16">
       {article && (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
@@ -46,7 +46,7 @@ export default function Article() {
                 <Link href={"/"}>{article.category.name}</Link> ·{" "}
                 {article.category.generalCategory}
               </p>
-              <h1 className="font-title text-xl md:text-3xl">
+              <h1 className="font-title text-3xl">
                 {article.title}
               </h1>
               {/* description */}
@@ -64,7 +64,7 @@ export default function Article() {
                   </div>
                 </div>
                 <Heart
-                  className={`size-7 text-foreground cursor-pointer ${
+                  className={`size-8 md:size-7 text-foreground cursor-pointer ${
                     article.userLiked ? "fill-foreground" : "fill-none"
                   }`}
                   onClick={() => {}}
