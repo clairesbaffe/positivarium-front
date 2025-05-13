@@ -28,7 +28,7 @@ export default function Home() {
               background={"bg-dark-colored-background"}
               textColor={"text-foreground-inverted"}
               icon={BookOpen}
-              href={"/"}
+              href={"#articles-list"}
             />
             <Button
               title={"Ouvrir le journal"}
@@ -65,8 +65,8 @@ export default function Home() {
         </div>
         <ArticlesPage />
       </section>
-      <section className="mx-8 grid md:grid-cols-2 gap-6 md:gap-4">
-        <div className="border rounded-lg">
+      <section className="mx-8 grid md:grid-cols-2 gap-8 md:gap-4">
+        <div className="rounded-lg">
           <div className="p-4 bg-dark-colored-background text-foreground-inverted rounded-t-lg flex flex-col gap-1">
             <h3 className="font-title text-xl">Votre journal quotidien</h3>
             <p>
@@ -108,7 +108,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="border rounded-lg">
+        <div className="rounded-lg">
           <div className="p-4 bg-colored-background dark:text-foreground-inverted rounded-t-lg flex flex-col gap-1">
             <h3 className="font-title text-xl">Devenez rédacteur</h3>
             <p>Partagez vos histoires positives avec notre communauté</p>
@@ -133,8 +133,8 @@ export default function Home() {
             <aside className="bg-colored-background dark:text-foreground-inverted rounded p-4 flex flex-col gap-1">
               <p className="italic">
                 "Avoir la possibilité de publier mes propres histoires positives
-                a été très gratifiant. Je me suis connecté avec tant
-                de personnes qui apprécient les bonnes nouvelles."
+                a été très gratifiant. Je me suis connecté avec tant de
+                personnes qui apprécient les bonnes nouvelles."
               </p>
               <p className="font-semibold">
                 — Michael T., rédacteur du Positivarium
