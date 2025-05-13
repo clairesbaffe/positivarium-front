@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Article } from "@/lib/definitions";
+import { SimpleArticle } from "@/lib/definitions";
 import PaginationControls from "@/components/Pagination";
 import ArticlesList from "@/components/articles/ArticlesList";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ export default function ArticlesPage() {
 
   const currentPage = parseInt(searchParams.get("page") ?? "1", 10);
 
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<SimpleArticle[]>([]);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function ArticlesPage() {
   }, [currentPage]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <ArticlesList articles={articles} />
       {totalPages > 1 && (
         <PaginationControls

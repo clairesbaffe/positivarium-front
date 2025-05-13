@@ -1,7 +1,7 @@
 import ArticleCard from "./ArticleCard";
-import { Article } from "@/lib/definitions";
+import { SimpleArticle } from "@/lib/definitions";
 
-export default function ArticlesList({ articles }: { articles: Article[] }) {
+export default function ArticlesList({ articles }: { articles: SimpleArticle[] }) {
   return(
     <ul className="grid md:grid-cols-3 gap-4" id="articles-list">
       {articles.map((article) => (
