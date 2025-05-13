@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="bg-dark-colored-background text-foreground-inverted p-8 flex flex-col md:items-center gap-10 w-full">
@@ -6,29 +8,29 @@ export default function Footer() {
           <p className="font-title text-2xl">Navigation rapide</p>
           <ul className="flex flex-col gap-1">
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="/" className="cursor-pointer">
                 Accueil
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="#" className="cursor-pointer">
                 Société
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="#" className="cursor-pointer">
                 Environnement
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="#" className="cursor-pointer">
                 Culture
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="#" className="cursor-pointer">
                 Technologies & Sciences
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -37,24 +39,24 @@ export default function Footer() {
           <p className="font-title text-2xl">Espace membre</p>
           <ul className="flex flex-col gap-1">
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="#" className="cursor-pointer">
                 Connexion
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="#" className="cursor-pointer">
                 Inscription
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="#" className="cursor-pointer">
                 Devenir rédacteur
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="cursor-pointer">
+              <Link href="#" className="cursor-pointer">
                 Journal
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
