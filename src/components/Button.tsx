@@ -46,7 +46,7 @@ export default function Button({
       : textColor;
 
   const classNames = clsx(
-    "flex items-center gap-2 cursor-pointer",
+    "flex items-center justify-center whitespace-nowrap gap-2 cursor-pointer",
     background,
     textColor,
     priorityClass
