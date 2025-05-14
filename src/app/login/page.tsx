@@ -1,17 +1,30 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/Button";
 
 export default function Login() {
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<{
+    message: string;
+    type: "error" | "success";
+  } | null>(null);
+
+  useEffect(() => {
+    if (searchParams.get("success") === "1") {
+      setMessage({
+        message: "Inscription réussie ! Vous pouvez maintenant vous connecter.",
+        type: "success",
+      });
+    }
+  }, [searchParams]);
 
   const handleLogin = async () => {
     try {
@@ -34,21 +47,27 @@ export default function Login() {
         throw new Error(message);
       }
 
-    //   await res.json();
-      setMessage("");
+      //   await res.json();
+      setMessage({ message: "", type: "success" });
       router.push("/");
     } catch (error) {
       console.error("Erreur de connexion :", error);
       if (error instanceof Error) {
         if (error.message.includes("INPUTS_MISSING")) {
-          setMessage("Veuillez compléter tous les champs.");
+          setMessage({
+            message: "Veuillez compléter tous les champs.",
+            type: "error",
+          });
         } else if (error.message.includes("Invalid username or password")) {
-          setMessage("Nom d'utilisateur ou mot de passe invalide.");
+          setMessage({
+            message: "Nom d'utilisateur ou mot de passe invalide.",
+            type: "error",
+          });
         } else {
-          setMessage("Une erreur est survenue.");
+          setMessage({ message: "Une erreur est survenue.", type: "error" });
         }
       } else {
-        setMessage("Erreur inattendue.");
+        setMessage({ message: "Erreur inattendue.", type: "error" });
       }
     }
   };
@@ -62,6 +81,7 @@ export default function Login() {
         }}
         className="w-full flex flex-col gap-4"
       >
+        {message && message.type === "success" && <p>{message.message}</p>}
         <div className="flex flex-col gap-2">
           <label className="text-lg" htmlFor="username">
             Nom d'utilisateur
@@ -97,7 +117,9 @@ export default function Login() {
           </Link>
         </p>
         {/* <input type="submit" value="Connexion" /> */}
-        {message && <p className="text-red-400">{message}</p>}
+        {message && message.type === "error" && (
+          <p className="text-red-400">{message.message}</p>
+        )}
         <Button
           title={"Connexion"}
           background={"bg-dark-colored-background"}
