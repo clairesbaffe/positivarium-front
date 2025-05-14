@@ -92,7 +92,7 @@ export default function Login() {
         </div>
         <p>
           Pas encore de compte ?{" "}
-          <Link href="/" className="underline underline-offset-3">
+          <Link href="/signup" className="underline underline-offset-3">
             Inscrivez-vous
           </Link>
         </p>

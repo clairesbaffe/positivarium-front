@@ -39,12 +39,12 @@ export default function Footer() {
           <p className="font-title text-2xl">Espace membre</p>
           <ul className="flex flex-col gap-1">
             <li>
-              <Link href="#" className="cursor-pointer">
+              <Link href="/login" className="cursor-pointer">
                 Connexion
               </Link>
             </li>
             <li>
-              <Link href="#" className="cursor-pointer">
+              <Link href="/signup" className="cursor-pointer">
                 Inscription
               </Link>
             </li>

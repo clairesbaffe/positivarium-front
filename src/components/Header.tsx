@@ -55,7 +55,7 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link href={"#"} className="flex gap-1 cursor-pointer">
+            <Link href={"/login"} className="flex gap-1 cursor-pointer">
               <CircleUserRound />
               Connexion
             </Link>
@@ -102,7 +102,7 @@ export default function Header() {
       {/* MOBILE MENU */}
       {isMenuOpen && (
         <div className="absolute top-0 right-0 w-2/3 mt-16 bg-white dark:bg-gray-900 z-20 shadow-md py-4 px-5 flex flex-col gap-3 md:hidden">
-          <Link href="#" className="hover:underline">
+          <Link href="/" className="hover:underline">
             Accueil
           </Link>
           <Link href="#" className="hover:underline">
@@ -121,7 +121,7 @@ export default function Header() {
           <Link href="#" className="hover:underline">
             Journal
           </Link>
-          <Link href="#" className="hover:underline">
+          <Link href="/login" className="hover:underline">
             Connexion
           </Link>
           <Link href="#" className="hover:underline">
