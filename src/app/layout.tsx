@@ -3,6 +3,8 @@ import { Nunito, Trochut } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { getCurrentUser } from "@/lib/data";
+import { UserProvider } from "@/context/UserContext";
 
 const nunitoSans = Nunito({
   variable: "--font-nunito-sans",
@@ -20,19 +22,24 @@ export const metadata: Metadata = {
   description: "Parce que le positif mérite d'être partagé",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const user = await getCurrentUser();
+  // console.log("🚀 ~ user:", user)
+
   return (
     <html lang="en">
       <body
         className={`${nunitoSans.variable} ${trochutSans.variable} antialiased`}
       >
-        <Header />
-        {children}
-        <Footer />
+        {/* <UserProvider user={user}> */}
+          <Header />
+          {children}
+          <Footer />
+        {/* </UserProvider> */}
       </body>
     </html>
   );
