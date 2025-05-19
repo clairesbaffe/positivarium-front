@@ -1,7 +1,7 @@
 export type SimpleArticle = {
   id: number;
   title: string;
-  main_image: string;
+  mainImage: string;
   username: string;
   category: {
     id: number;

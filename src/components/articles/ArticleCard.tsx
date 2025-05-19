@@ -19,7 +19,7 @@ export default function ArticleCard({
       <div className={`${large ? "h-40 md:h-92" : "h-40 md:h-52"} rounded-t-2xl overflow-hidden relative`}>
         <img
           className="w-full h-full object-cover rounded-t-2xl"
-          src={article.main_image}
+          src={article.mainImage}
           alt={article.title}
         />
         <p className="absolute top-3 right-3 bg-background-muted text-foreground text-sm px-3 py-1 rounded-xl">
