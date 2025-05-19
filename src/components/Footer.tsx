@@ -13,23 +13,26 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="#" className="cursor-pointer">
-                Société
+              <Link href="/article?cat=general" className="cursor-pointer">
+                Actualités générales
               </Link>
             </li>
             <li>
-              <Link href="#" className="cursor-pointer">
-                Environnement
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="cursor-pointer">
+              <Link href="/article?cat=culture" className="cursor-pointer">
                 Culture
               </Link>
             </li>
             <li>
-              <Link href="#" className="cursor-pointer">
+              <Link href="/article?cat=tech-science" className="cursor-pointer">
                 Technologies & Sciences
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/article?cat=divertissement-lifestyle"
+                className="cursor-pointer"
+              >
+                Divertissement & Lifestyle
               </Link>
             </li>
           </ul>

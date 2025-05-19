@@ -32,16 +32,20 @@ export default function Header() {
               <Link href="/">Accueil</Link>
             </li>
             <li className="flex gap-1 cursor-pointer">
-              <Link href="#">Société</Link>
+              <Link href="/article?cat=general">Actualités générales</Link>
             </li>
             <li className="flex gap-1 cursor-pointer">
-              <Link href="#">Environnement</Link>
+              <Link href="/article?cat=culture">Culture</Link>
             </li>
             <li className="flex gap-1 cursor-pointer">
-              <Link href="#">Culture</Link>
+              <Link href="/article?cat=tech-science">
+                Technologies & Sciences
+              </Link>
             </li>
             <li className="flex gap-1 cursor-pointer">
-              <Link href="#">Technologies & Sciences</Link>
+              <Link href="/article?cat=divertissement-lifestyle">
+                Divertissement & Lifestyle
+              </Link>
             </li>
           </ul>
         </div>
@@ -105,17 +109,20 @@ export default function Header() {
           <Link href="#" className="hover:underline">
             Accueil
           </Link>
-          <Link href="#" className="hover:underline">
-            Société
+          <Link href="/article?cat=general" className="hover:underline">
+            Actualités générales
           </Link>
-          <Link href="#" className="hover:underline">
-            Environnement
-          </Link>
-          <Link href="#" className="hover:underline">
+          <Link href="/article?cat=culture" className="hover:underline">
             Culture
           </Link>
-          <Link href="#" className="hover:underline">
+          <Link href="/article?cat=tech-science" className="hover:underline">
             Technologies & Sciences
+          </Link>
+          <Link
+            href="/article?cat=divertissement-lifestyle"
+            className="hover:underline"
+          >
+            Divertissement & Lifestyle
           </Link>
           <hr className="my-2 border-gray-300 dark:border-gray-700" />
           <Link href="#" className="hover:underline">

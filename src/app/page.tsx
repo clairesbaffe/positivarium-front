@@ -64,6 +64,7 @@ export default function Home() {
           />
         </div>
         <ArticlesPage />
+        <ArticlesPage endpoint="/articles/" url="/" />
       </section>
       <section className="mx-8 grid md:grid-cols-2 gap-8 md:gap-4">
         <div className="rounded-lg">
