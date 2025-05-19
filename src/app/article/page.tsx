@@ -1,12 +1,12 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import ArticlesPage from "@/components/articles/ArticlesPage";
 
-export default function CategoryArticles() {
-  const searchParams = useSearchParams();
-
-  const cat = searchParams.get("cat");
+export default async function CategoryArticles({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string; cat: string }>;
+}) {
+  const cat = (await searchParams).cat;
+  const currentPage = parseInt((await searchParams).page ?? "1", 10);
 
   let categories: number[] = [];
   let title: string = "";
@@ -41,6 +41,7 @@ export default function CategoryArticles() {
             categories.length > 0 ? `?categoryIds=${categories.join(",")}` : ""
           }`}
           url={`/article?cat=${cat}`}
+          currentPage={currentPage}
         />
       </section>
     </div>

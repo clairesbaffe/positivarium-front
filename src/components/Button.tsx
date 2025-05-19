@@ -1,14 +1,14 @@
 "use client";
-
 import { LucideIcon } from "lucide-react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 type ButtonProps = {
   title: string;
   background: string;
   textColor: string;
-  icon: LucideIcon | null;
+  icon: React.ReactNode | null;
   priority?: "high" | "medium" | "low";
   onClick?: () => void;
   href?: string;
@@ -30,6 +30,7 @@ export default function Button({
   const handleClick = () => {
     if (href) {
       router.push(href);
+      // redirect(href);
     } else if (onClick) {
       onClick();
     }
@@ -58,7 +59,7 @@ export default function Button({
 
   return (
     <button onClick={handleClick} className={classNames}>
-      {Icon && <Icon size={18} />}
+      {Icon}
       {title}
     </button>
   );

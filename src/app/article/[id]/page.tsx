@@ -1,40 +1,26 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import type { Article, Comment } from "@/lib/definitions";
 import Button from "@/components/Button";
 import CommentCard from "@/components/articles/CommentCard";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 
-export default function Article() {
-  const params = useParams();
-  const id = params.id;
+export default async function Article({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const id = (await params).id;
 
-  const [article, setArticle] = useState<Article | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
+  const resArticles = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/${id}`
+  );
+  const article = await resArticles.json();
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/articles/${id}`
-      );
-      const data: Article = await res.json();
-      setArticle(data);
-    };
-
-    const fetchComments = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/comments/article/${id}`
-      );
-      const data = await res.json();
-      setComments(data.content);
-    };
-
-    fetchArticle();
-    fetchComments();
-  }, [id]);
+  const resComments = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/comments/article/${id}`
+  );
+  const data = await resComments.json();
+  const comments: Comment[] = data.content;
 
   return (
     <div className="md:w-2/5 mx-4 md:mx-auto my-16">
@@ -86,7 +72,7 @@ export default function Article() {
                   className={`size-8 md:size-7 text-foreground cursor-pointer ${
                     article.userLiked ? "fill-foreground" : "fill-none"
                   }`}
-                  onClick={() => {}}
+                  // onClick={() => {}}
                 />
               </div>
             </div>
