@@ -47,8 +47,7 @@ export default function Login() {
         throw new Error(message);
       }
 
-    //   const data = await res.json();
-    //   console.log("🚀 ~ handleLogin ~ data:", data);
+      //   await res.json();
       setMessage({ message: "", type: "success" });
       router.push("/");
     } catch (error) {
@@ -131,4 +130,4 @@ export default function Login() {
       </form>
     </main>
   );
-} 
+}

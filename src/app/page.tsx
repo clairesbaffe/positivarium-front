@@ -9,8 +9,26 @@ import {
   UserRoundPen,
 } from "lucide-react";
 import ArticlesPage from "@/components/articles/ArticlesPage";
+// import { useEffect, useState } from "react";
+// import { getCurrentUser } from "@/lib/data";
+// import { useUser } from "@/context/UserContext";
 
 export default function Home() {
+  // const user = useUser();
+  // console.log("🚀 ~ Home ~ user:", user)
+
+  // const [user, setUser] = useState();
+
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const userData = await getCurrentUser();
+  //     console.log("🚀 ~ fetchUser ~ userData:", userData)
+  //     setUser(userData);
+  //   };
+
+  //   fetchUser();
+  // }, []);
+
   return (
     <main className="flex flex-col my-8 md:m-24 gap-32">
       <section className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-20">
