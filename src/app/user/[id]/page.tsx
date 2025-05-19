@@ -10,23 +10,30 @@ export default function UserPage() {
   const params = useParams();
   const id = params.id;
 
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
+      setLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/profile/publisher/${id}`
       );
-      const data = await res.json();
-      setUser(data);
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data);
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
     };
 
     fetchUser();
   }, [id]);
 
   return (
-    <main className="flex flex-col my-8 md:m-24 gap-32">
-      {user && (
+    <div className="flex flex-col my-8 md:m-24 gap-32">
+      {user ? (
         <div className="flex flex-col gap-8 mx-8 md:m-0">
           <section className="flex flex-col gap-6">
             <p className="font-title text-2xl md:text-4xl">{user.username}</p>
@@ -46,7 +53,15 @@ export default function UserPage() {
             />
           </section>
         </div>
+      ) : (
+        <div>
+          {!loading && (
+            <div className="text-center text-gray-500 text-lg py-10 italic">
+              Le publisher n'a pas été trouvé
+            </div>
+          )}
+        </div>
       )}
-    </main>
+    </div>
   );
 }
