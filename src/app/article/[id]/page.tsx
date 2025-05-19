@@ -41,26 +41,45 @@ export default function Article() {
       {article && (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
               <p className="font-thin">
                 <Link href={"/"}>{article.category.name}</Link> ·{" "}
                 {article.category.generalCategory}
               </p>
-              <h1 className="font-title text-3xl">
-                {article.title}
-              </h1>
-              {/* description */}
+              <div className="flex flex-col gap-2">
+                <h1 className="font-title text-3xl">{article.title}</h1>
+                <p className="text-lg">{article.description}</p>
+              </div>
               <div className="flex items-center justify-between font-thin">
                 <div>
-                  <Link href={"/"}>{article.username}</Link>
-                  <div>
-                    {new Date(article.publishedAt).toLocaleString("fr-FR", {
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                  <Link
+                    href={`/user/${article.username}`}
+                    className="text-lg underline underline-offset-2"
+                  >
+                    {article.username}
+                  </Link>
+                  <div className="text-foreground-muted flex items-center gap-1">
+                    <p>
+                      {new Date(article.publishedAt).toLocaleString("fr-FR", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                    {article.updatedAt !== article.publishedAt && (
+                      <p>
+                        | Modifié le :{" "}
+                        {new Date(article.updatedAt).toLocaleString("fr-FR", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <Heart
@@ -80,6 +99,7 @@ export default function Article() {
               icon={null}
               href={"/"}
               priority="low"
+              minWidth
             />
           </section>
           <section>

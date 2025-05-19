@@ -16,7 +16,11 @@ export default function ArticleCard({
       }`}
       href={`/article/${article.id}`}
     >
-      <div className={`${large ? "h-40 md:h-92" : "h-40 md:h-52"} rounded-t-2xl overflow-hidden relative`}>
+      <div
+        className={`${
+          large ? "h-40 md:h-92" : "h-40 md:h-52"
+        } rounded-t-2xl overflow-hidden relative`}
+      >
         <img
           className="w-full h-full object-cover rounded-t-2xl"
           src={article.mainImage}
@@ -26,11 +30,22 @@ export default function ArticleCard({
           {article.category.name}
         </p>
       </div>
-      <div className="px-4 py-2">
-        <h3 className="font-bold line-clamp-2">{article.title}</h3>
-        {/* description */}
+      <div className="px-4 py-2 flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <h3 className="text-lg font-bold line-clamp-2">{article.title}</h3>
+          <p className="line-clamp-3">{article.description}</p>
+        </div>
         <div className="flex justify-between">
-          <p>{article.username}</p> {/* replace with created_at */}
+          <p className="text-foreground-muted text-sm">
+            {new Date(article.publishedAt).toLocaleString("fr-FR", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+
           <p className="flex items-center gap-1">
             <Heart strokeWidth={2} className="size-4" /> {article.likesCount}
           </p>

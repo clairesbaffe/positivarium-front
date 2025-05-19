@@ -1,6 +1,6 @@
 "use client";
 
-import { Article, User } from "@/lib/definitions";
+import { User } from "@/lib/definitions";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
@@ -8,7 +8,7 @@ import ArticlesPage from "@/components/articles/ArticlesPage";
 
 export default function UserPage() {
   const params = useParams();
-  const id = params.id;
+  const username = params.username;
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
@@ -17,7 +17,7 @@ export default function UserPage() {
     const fetchUser = async () => {
       setLoading(true);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/profile/publisher/${id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/profile/publisher/${username}`
       );
       if (res.ok) {
         const data = await res.json();
@@ -29,14 +29,19 @@ export default function UserPage() {
     };
 
     fetchUser();
-  }, [id]);
+  }, [username]);
 
   return (
-    <div className="flex flex-col my-8 md:m-24 gap-32">
+    <div className="flex flex-col my-8 md:m-40">
       {user ? (
         <div className="flex flex-col gap-8 mx-8 md:m-0">
-          <section className="flex flex-col gap-6">
-            <p className="font-title text-2xl md:text-4xl">{user.username}</p>
+          <section className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+            <div className="flex flex-col gap-2">
+              <h1 className="font-title text-3xl md:text-5xl">
+                {user.username}
+              </h1>
+              {user.description && <p className="text-lg">{user.description}</p>}
+            </div>
             <Button
               title={"Suivre"}
               background={"bg-dark-colored-background"}
@@ -48,7 +53,7 @@ export default function UserPage() {
           <section>
             <ArticlesPage
               endpoint={`/articles/published/${user.username}`}
-              url={`/user/${id}`}
+              url={`/user/${username}`}
               size="large"
             />
           </section>
