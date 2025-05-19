@@ -12,6 +12,7 @@ type ButtonProps = {
   priority?: "high" | "medium" | "low";
   onClick?: () => void;
   href?: string;
+  minWidth?: boolean;
 };
 
 export default function Button({
@@ -22,6 +23,7 @@ export default function Button({
   priority = "high",
   onClick,
   href,
+  minWidth = false,
 }: ButtonProps) {
   const router = useRouter();
 
@@ -46,7 +48,9 @@ export default function Button({
       : textColor;
 
   const classNames = clsx(
-    "flex items-center justify-center whitespace-nowrap gap-2 cursor-pointer",
+    `flex items-center justify-center whitespace-nowrap gap-2 cursor-pointer ${
+      minWidth ? "w-min" : ""
+    }`,
     background,
     textColor,
     priorityClass
