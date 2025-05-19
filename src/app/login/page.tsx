@@ -49,7 +49,7 @@ export default function Login() {
       }
 
       setMessage({ message: "", type: "success" });
-      router.push("/");
+      window.location.href = "/"; // full reload to update Header
     } catch (error) {
       console.error("Erreur de connexion :", error);
       if (error instanceof Error) {
