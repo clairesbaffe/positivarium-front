@@ -3,8 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { House, Notebook, CircleUserRound, Menu } from "lucide-react";
+import { useUser } from "@/context/UserContext";
+import { logout } from "@/lib/auth";
 
 export default function Header() {
+  const user = useUser();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -58,12 +62,14 @@ export default function Header() {
               Journal
             </Link>
           </li>
-          <li>
-            <Link href={"/login"} className="flex gap-1 cursor-pointer">
-              <CircleUserRound />
-              Connexion
-            </Link>
-          </li>
+          {!user && (
+            <li>
+              <Link href={"/login"} className="flex gap-1 cursor-pointer">
+                <CircleUserRound />
+                Connexion
+              </Link>
+            </li>
+          )}
         </ul>
         <button
           className="cursor-pointer"
@@ -100,6 +106,17 @@ export default function Header() {
           >
             Mentions légales
           </Link>
+          {user && (
+            <div>
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
+              <p
+                onClick={logout}
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+              >
+                Se déconnecter
+              </p>
+            </div>
+          )}
         </div>
       )}
 
@@ -143,6 +160,17 @@ export default function Header() {
           <Link href="#" className="hover:underline">
             Mentions légales
           </Link>
+          {user && (
+            <div>
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
+              <p
+                onClick={logout}
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+              >
+                Se déconnecter
+              </p>
+            </div>
+          )}
         </div>
       )}
     </header>

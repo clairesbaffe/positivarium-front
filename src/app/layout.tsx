@@ -3,7 +3,7 @@ import { Nunito, Trochut } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getCurrentUser } from "@/lib/data";
+import { getCurrentUser } from "@/lib/auth";
 import { UserProvider } from "@/context/UserContext";
 
 const nunitoSans = Nunito({

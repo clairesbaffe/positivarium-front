@@ -1,3 +1,5 @@
+"use server";
+
 import { cookies } from "next/headers";
 
 export async function getCurrentUser() {
@@ -14,4 +16,10 @@ export async function getCurrentUser() {
   if (!res.ok) return null;
 
   return await res.json();
+}
+
+export async function logout() {
+  const isConnected = (await cookies()).has("access_token");
+  if (isConnected) (await cookies()).delete("access_token");
+  else console.error("User is not connected");
 }
