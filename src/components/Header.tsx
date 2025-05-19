@@ -74,12 +74,14 @@ export default function Header() {
       </nav>
       <div className="md:flex gap-5">
         <ul className="hidden md:flex gap-5">
-          <li>
-            <Link href={"#"} className="flex gap-1 cursor-pointer">
-              <Notebook />
-              Journal
-            </Link>
-          </li>
+          {(!user || user?.roles.includes("ROLE_USER")) && (
+            <li>
+              <Link href={"#"} className="flex gap-1 cursor-pointer">
+                <Notebook />
+                Journal
+              </Link>
+            </li>
+          )}
           {!user && (
             <li>
               <Link href={"/login"} className="flex gap-1 cursor-pointer">
@@ -166,12 +168,18 @@ export default function Header() {
             Divertissement & Lifestyle
           </Link>
           <hr className="my-2 border-gray-300 dark:border-gray-700" />
-          <Link href="#" className="hover:underline">
-            Journal
-          </Link>
-          <Link href="/login" className="hover:underline">
-            Connexion
-          </Link>
+
+          {(!user || user?.roles.includes("ROLE_USER")) && (
+            <Link href="#" className="hover:underline">
+              Journal
+            </Link>
+          )}
+          {!user && (
+            <Link href="/login" className="hover:underline">
+              Connexion
+            </Link>
+          )}
+
           <Link href="#" className="hover:underline">
             À propos
           </Link>
