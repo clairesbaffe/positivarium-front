@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import Button from "@/components/Button";
+import LoginForm from "@/components/auth/LoginForm";
 
 export default function Login() {
   const searchParams = useSearchParams();
@@ -32,22 +31,23 @@ export default function Login() {
         throw new Error("INPUTS_MISSING");
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+      // to set cookie in server
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
-        credentials: "include", // automatically saves cookie sent via SetCookie
       });
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => null);
+
+        console.error(errorData?.error || "Échec de la connexion");
 
         const message = errorData?.error || "Échec de la connexion";
 
         throw new Error(message);
       }
 
-      //   await res.json();
       setMessage({ message: "", type: "success" });
       router.push("/");
     } catch (error) {
@@ -75,59 +75,14 @@ export default function Login() {
   return (
     <div className="min-h-[46vh] md:w-1/4 md:mx-auto mx-4 my-12 flex flex-col items-center gap-8">
       <h1 className="font-title text-2xl md:text-4xl">Connexion</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-        className="w-full flex flex-col gap-4"
-      >
-        {message && message.type === "success" && <p>{message.message}</p>}
-        <div className="flex flex-col gap-2">
-          <label className="text-lg" htmlFor="username">
-            Nom d'utilisateur
-          </label>
-          <input
-            className="border border-foreground-muted h-12 rounded-lg p-4"
-            placeholder="Nom d'utilisateur"
-            type="text"
-            name="username"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label className="text-lg" htmlFor="password">
-            Mot de passe
-          </label>
-          <input
-            className="border border-foreground-muted h-12 rounded-lg p-4"
-            placeholder="Mot de passe"
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <p>
-          Pas encore de compte ?{" "}
-          <Link href="/signup" className="underline underline-offset-3">
-            Inscrivez-vous
-          </Link>
-        </p>
-        {/* <input type="submit" value="Connexion" /> */}
-        {message && message.type === "error" && (
-          <p className="text-red-400">{message.message}</p>
-        )}
-        <Button
-          title={"Connexion"}
-          background={"bg-dark-colored-background"}
-          textColor={"text-foreground-inverted"}
-          icon={null}
-          onClick={handleLogin}
-        />
-      </form>
+      <LoginForm
+        message={message}
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+        handleLogin={handleLogin}
+      />
     </div>
   );
 }

@@ -27,21 +27,20 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const user = await getCurrentUser();
-  // console.log("🚀 ~ user:", user)
+  const user = await getCurrentUser();
 
   return (
     <html lang="en">
       <body
         className={`${nunitoSans.variable} ${trochutSans.variable} antialiased`}
       >
-        {/* <UserProvider user={user}> */}
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        {/* </UserProvider> */}
+        <UserProvider user={user}>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </UserProvider>
       </body>
     </html>
   );
