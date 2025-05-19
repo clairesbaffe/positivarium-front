@@ -68,7 +68,7 @@ export default function SignUp() {
   };
 
   return (
-    <main className="min-h-[46vh] md:w-1/4 md:mx-auto mx-4 my-12 flex flex-col items-center gap-8">
+    <div className="min-h-[46vh] md:w-1/4 md:mx-auto mx-4 my-12 flex flex-col items-center gap-8">
       <h1 className="font-title text-2xl md:text-4xl">Inscription</h1>
       <form
         ref={formRef}
@@ -148,6 +148,6 @@ export default function SignUp() {
           onClick={handleSignup}
         />
       </form>
-    </main>
+    </div>
   );
 }

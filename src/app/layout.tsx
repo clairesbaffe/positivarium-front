@@ -36,9 +36,11 @@ export default async function RootLayout({
         className={`${nunitoSans.variable} ${trochutSans.variable} antialiased`}
       >
         {/* <UserProvider user={user}> */}
+        <div className="flex flex-col min-h-screen">
           <Header />
-          {children}
+          <main className="flex-1">{children}</main>
           <Footer />
+        </div>
         {/* </UserProvider> */}
       </body>
     </html>

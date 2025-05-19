@@ -30,7 +30,7 @@ export default function Home() {
   // }, []);
 
   return (
-    <main className="flex flex-col my-8 md:m-24 gap-32">
+    <div className="flex flex-col my-8 md:m-24 gap-32">
       <section className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-20">
         <div className="flex flex-col gap-6 mx-8 md:m-0">
           <h1 className="font-title text-2xl md:text-4xl">
@@ -168,6 +168,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

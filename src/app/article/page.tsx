@@ -33,7 +33,7 @@ export default function CategoryArticles() {
   }
 
   return (
-    <main className="flex flex-col my-8 md:m-24 gap-32">
+    <div className="flex flex-col my-8 md:m-24 gap-32">
       <section className="flex flex-col gap-8 mx-8 md:m-0">
         <h1 className="font-title text-2xl md:text-4xl">{title}</h1>
         <ArticlesPage
@@ -43,6 +43,6 @@ export default function CategoryArticles() {
           url={`/article?cat=${cat}`}
         />
       </section>
-    </main>
+    </div>
   );
 }

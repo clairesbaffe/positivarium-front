@@ -73,7 +73,7 @@ export default function Login() {
   };
 
   return (
-    <main className="min-h-[46vh] md:w-1/4 md:mx-auto mx-4 my-12 flex flex-col items-center gap-8">
+    <div className="min-h-[46vh] md:w-1/4 md:mx-auto mx-4 my-12 flex flex-col items-center gap-8">
       <h1 className="font-title text-2xl md:text-4xl">Connexion</h1>
       <form
         onSubmit={(e) => {
@@ -128,6 +128,6 @@ export default function Login() {
           onClick={handleLogin}
         />
       </form>
-    </main>
+    </div>
   );
 }
