@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { House, Notebook, CircleUserRound, Menu } from "lucide-react";
 import { useUser } from "@/context/UserContext";
@@ -9,7 +9,25 @@ import { logout } from "@/lib/auth";
 export default function Header() {
   const user = useUser();
 
+  const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isMenuOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   return (
     <header className="h-16 p-3 px-5 bg-colored-background flex items-center justify-between">
@@ -81,7 +99,10 @@ export default function Header() {
 
       {/* DESKTOP MENU */}
       {isMenuOpen && (
-        <div className="hidden md:flex flex-col top-0 absolute right-0 mt-16 w-52 h-full bg-white dark:bg-gray-800 shadow-lg py-2 z-10">
+        <div
+          ref={menuRef}
+          className="hidden md:flex flex-col top-0 absolute right-0 mt-16 w-52 h-full bg-white dark:bg-gray-800 shadow-lg py-2 z-10"
+        >
           <Link
             href="#"
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -122,7 +143,10 @@ export default function Header() {
 
       {/* MOBILE MENU */}
       {isMenuOpen && (
-        <div className="absolute top-0 right-0 w-2/3 mt-16 bg-white dark:bg-gray-900 z-20 shadow-md py-4 px-5 flex flex-col gap-3 md:hidden">
+        <div
+          ref={menuRef}
+          className="absolute top-0 right-0 w-2/3 mt-16 bg-white dark:bg-gray-900 z-20 shadow-md py-4 px-5 flex flex-col gap-3 md:hidden"
+        >
           <Link href="/" className="hover:underline">
             Accueil
           </Link>
