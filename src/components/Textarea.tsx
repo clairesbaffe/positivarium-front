@@ -3,18 +3,18 @@ export default function Textarea({
   data,
   setData,
   placeholder,
-  height = "classic",
+  height = "md",
 }: {
   name: string;
   data: string;
   setData: (value: string) => void;
   placeholder?: string;
-  height?: "classic" | "large";
+  height?: "md" | "lg";
 }) {
   return (
     <textarea
       className={`align-top resize-none border border-foreground-muted w-full rounded-lg p-4 ${
-        height === "large" ? "h-36" : "h-12"
+        height === "lg" ? "h-36" : "h-auto"
       }`}
       placeholder={placeholder}
       name={name}

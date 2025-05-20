@@ -64,7 +64,7 @@ export default function CommentsList({
               name="comment"
               data={comment}
               setData={setComment}
-              height="large"
+              height="lg"
             />
             {message && message.type === "error" && (
               <p className="text-red-400">{message.message}</p>
@@ -98,6 +98,7 @@ export default function CommentsList({
                 <CommentCard
                   comment={comment}
                   isOwn={comment.username === user?.username}
+                  articleId={articleId}
                 />
               </div>
             ))}
