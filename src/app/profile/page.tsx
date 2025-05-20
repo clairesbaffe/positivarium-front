@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/auth";
 
 import ArticlesPage from "@/components/articles/ArticlesPage";
 import UpdateInfoButton from "@/components/profile/UpdateInfoButton";
+import UpdatePasswordButton from "@/components/profile/UpdatePasswordButton";
 
 // if not connected, user is automatically redirected to login by middleware
 export default async function MyProfile({
@@ -20,6 +21,7 @@ export default async function MyProfile({
           <div className="flex items-end gap-6">
             <h1 className="font-title text-3xl md:text-5xl">{user.username}</h1>
             <UpdateInfoButton user={user} />
+            <UpdatePasswordButton user={user} />
           </div>
           <p className="text-lg font-semibold">{user.email}</p>
         </div>

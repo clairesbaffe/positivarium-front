@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { UserDetails } from "@/lib/definitions";
-import { updateProfileInfo } from "@/lib/actions";
+import { updatePassword } from "@/lib/actions";
 
 import { toast } from 'react-toastify';
 import {
@@ -17,24 +17,32 @@ import {
 import { Button } from "@/components/ui/button";
 import Input from "@/components/Input";
 
-export default function UpdateInfoButton({ user }: { user: UserDetails }) {
+export default function UpdatePasswordButton({ user }: { user: UserDetails }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [username, setUsername] = useState(user.username);
-  const [email, setEmail] = useState(user.email);
-  const [description, setDescription] = useState(user.description);
+
+  const [previousPassword, setPreviousPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [repeatNewPassword, setRepeatNewPassword] = useState("");
 
   const [message, setMessage] = useState<{
     message: string;
     type: "error" | "success";
   } | null>(null);
 
+
   const handleUpdate = async () => {
     try {
-      if (username === "" || email === "") {
+      if (
+        previousPassword === "" ||
+        newPassword === "" ||
+        repeatNewPassword === ""
+      ) {
         throw new Error("INPUTS_MISSING");
+      } else if (newPassword !== repeatNewPassword) {
+        throw new Error("PASSWORDS_NOT_MATCHING");
       }
 
-      const res = await updateProfileInfo(username, email, description);
+      const res = await updatePassword(previousPassword, newPassword);
 
       if (!res.success) {
         const errorData = res.error;
@@ -45,13 +53,18 @@ export default function UpdateInfoButton({ user }: { user: UserDetails }) {
 
       setMessage({ message: "", type: "success" });
       setIsDialogOpen(false);
-      toast.success("Informations mises à jour.");
+      toast.success("Mot de passe modifié.");
     } catch (error) {
       console.error("Erreur de mise à jour :", error);
       if (error instanceof Error) {
         if (error.message.includes("INPUTS_MISSING")) {
           setMessage({
-            message: "Veuillez compléter tous les champs requis.",
+            message: "Veuillez compléter tous les champs.",
+            type: "error",
+          });
+        } else if (error.message.includes("PASSWORDS_NOT_MATCHING")) {
+          setMessage({
+            message: "Le nouveau mot de passe ne correspond pas.",
             type: "error",
           });
         } else {
@@ -69,34 +82,40 @@ export default function UpdateInfoButton({ user }: { user: UserDetails }) {
         className={`flex items-center justify-center whitespace-nowrap gap-2 cursor-pointer bg-opacity-100 py-2.5 px-4 h-min rounded-md font-semibold bg-colored-background text-foreground`}
         onClick={() => setIsDialogOpen(true)}
       >
-        Modifier mon profil
+        Modifier mon mot de passe
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Modifier les informations de votre profil</DialogTitle>
+          <DialogTitle>Modifier le mot de passe</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="text-md">
-          <span className="text-red-400">*</span> Obligatoire
-        </DialogDescription>
         <div className="py-4 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="username">
-              Username <span className="text-red-400">*</span>
-            </label>
-            <Input name="username" data={username} setData={setUsername} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="email">
-              Email <span className="text-red-400">*</span>
-            </label>
-            <Input type="email" name="email" data={email} setData={setEmail} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="previousPassword">Ancien mot de passe</label>
             <Input
-              name="description"
-              data={description}
-              setData={setDescription}
+              type="password"
+              name="previousPassword"
+              data={previousPassword}
+              setData={setPreviousPassword}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="newPassword">Nouveau mot de passe</label>
+            <Input
+              type="password"
+              name="newPassword"
+              data={newPassword}
+              setData={setNewPassword}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="repeatNewPassword">
+              Répéter le nouveau mot de passe
+            </label>
+            <Input
+              type="password"
+              name="repeatNewPassword"
+              data={repeatNewPassword}
+              setData={setRepeatNewPassword}
             />
           </div>
         </div>

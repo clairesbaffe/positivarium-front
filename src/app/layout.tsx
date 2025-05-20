@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getCurrentUser } from "@/lib/auth";
 import { UserProvider } from "@/context/UserContext";
+import { ToastContainer } from "react-toastify";
 
 const nunitoSans = Nunito({
   variable: "--font-nunito-sans",
@@ -37,6 +38,7 @@ export default async function RootLayout({
         <UserProvider user={user}>
           <div className="flex flex-col min-h-screen">
             <Header />
+            <ToastContainer />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
