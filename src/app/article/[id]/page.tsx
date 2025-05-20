@@ -46,7 +46,7 @@ export default async function Article({
               <div className="flex items-center justify-between font-thin">
                 <div>
                   <Link
-                    href={`/user/${article.username}`}
+                    href={`/profile/${article.username}`}
                     className="text-lg underline underline-offset-2"
                   >
                     {article.username}
