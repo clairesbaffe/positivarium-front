@@ -82,7 +82,14 @@ export default function Header() {
               </Link>
             </li>
           )}
-          {!user && (
+          {user ? (
+            <li>
+              <p className="flex gap-1">
+                <CircleUserRound />
+                {user.username}
+              </p>
+            </li>
+          ) : (
             <li>
               <Link href={"/login"} className="flex gap-1 cursor-pointer">
                 <CircleUserRound />
