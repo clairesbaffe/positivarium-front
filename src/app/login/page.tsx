@@ -32,9 +32,9 @@ export default function Login() {
       }
 
       // set cookie in server
-      const res = await login(username, password)
+      const res = await login(username, password);
 
-      if(!res.success){
+      if (!res.success) {
         const errorData = res.error;
         console.error(errorData?.error || "Échec de la connexion");
         const message = errorData?.error || "Échec de la connexion";
@@ -42,7 +42,7 @@ export default function Login() {
       }
 
       setMessage({ message: "", type: "success" });
-      window.location.href = "/"; // full reload to update Header
+      window.location.href = searchParams.get("next") || "/"; // full reload to update Header
     } catch (error) {
       console.error("Erreur de connexion :", error);
       if (error instanceof Error) {

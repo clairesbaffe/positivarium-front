@@ -5,6 +5,7 @@ import { Comment } from "@/lib/definitions";
 import { createComment } from "@/lib/actions";
 import { useUser } from "@/context/UserContext";
 
+import { CircleUserRound } from "lucide-react";
 import CommentCard from "@/components/articles/CommentCard";
 import Button from "@/components/Button";
 import Textarea from "@/components/Textarea";
@@ -42,14 +43,28 @@ export default function CommentsList({
     <section>
       <div className="flex justify-between items-center">
         <h3 className="font-title text-3xl">Commentaires</h3>
-        {!isCommenting && (
-          <Button
-            title={"Commenter"}
-            background={"bg-colored-background"}
-            textColor={"text-foreground"}
-            icon={null}
-            onClick={() => setIsCommenting(true)}
-          />
+        {user ? (
+          <div>
+            {!isCommenting && (
+              <Button
+                title={"Commenter"}
+                background={"bg-colored-background"}
+                textColor={"text-foreground"}
+                icon={null}
+                onClick={() => setIsCommenting(true)}
+              />
+            )}
+          </div>
+        ) : (
+          <div>
+            <Button
+              title={"Se connecter pour commenter"}
+              background={"bg-colored-background"}
+              textColor={"text-foreground"}
+              icon={<CircleUserRound size={18} />}
+              href={`/login?next=/article/${articleId}`}
+            />
+          </div>
         )}
       </div>
       <div className="my-6 flex flex-col gap-8">
