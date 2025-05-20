@@ -9,15 +9,20 @@ import { logout } from "@/lib/auth";
 export default function Header() {
   const user = useUser();
 
-  const menuRef = useRef<HTMLDivElement>(null);
+  // Needs 2 different refs or desktop menu does not work properly (clicks go through)
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
       if (
         isMenuOpen &&
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node)
+        !desktopMenuRef.current?.contains(target) &&
+        !mobileMenuRef.current?.contains(target)
       ) {
         setIsMenuOpen(false);
       }
@@ -30,7 +35,7 @@ export default function Header() {
   }, [isMenuOpen]);
 
   return (
-    <header className="h-16 p-3 px-5 bg-colored-background flex items-center justify-between">
+    <header className="relative top-0 h-16 p-3 px-5 bg-colored-background flex items-center justify-between">
       <nav className="flex items-center gap-6">
         <Link href="/">
           <picture className="cursor-pointer">
@@ -109,8 +114,8 @@ export default function Header() {
       {/* DESKTOP MENU */}
       {isMenuOpen && (
         <div
-          ref={menuRef}
-          className="hidden md:flex flex-col top-0 absolute right-0 mt-16 w-52 h-full bg-white dark:bg-gray-800 shadow-lg py-2 z-10"
+          ref={desktopMenuRef}
+          className="hidden md:flex flex-col top-0 absolute right-0 mt-16 w-52 bg-white dark:bg-gray-800 shadow-lg py-2 z-10"
         >
           <Link
             href="#"
@@ -153,7 +158,7 @@ export default function Header() {
       {/* MOBILE MENU */}
       {isMenuOpen && (
         <div
-          ref={menuRef}
+          ref={mobileMenuRef}
           className="absolute top-0 right-0 w-2/3 mt-16 bg-white dark:bg-gray-900 z-20 shadow-md py-4 px-5 flex flex-col gap-3 md:hidden"
         >
           <Link href="/" className="hover:underline">
