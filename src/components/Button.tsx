@@ -13,6 +13,7 @@ type ButtonProps = {
   onClick?: () => void;
   href?: string;
   minWidth?: boolean;
+  disabled?: boolean;
 };
 
 export default function Button({
@@ -24,6 +25,7 @@ export default function Button({
   onClick,
   href,
   minWidth = false,
+  disabled = false,
 }: ButtonProps) {
   const router = useRouter();
 
@@ -58,7 +60,7 @@ export default function Button({
   );
 
   return (
-    <button onClick={handleClick} className={classNames}>
+    <button onClick={handleClick} className={classNames} disabled={disabled}>
       {Icon}
       {title}
     </button>
