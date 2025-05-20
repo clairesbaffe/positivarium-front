@@ -166,3 +166,30 @@ export async function reportComment(reason: string, commentId: number) {
 
   return { success: true };
 }
+
+export async function reportArticle(reason: string, articleId: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/reports/articles/${articleId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ reason, isReviewed: false }),
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  return { success: true };
+}

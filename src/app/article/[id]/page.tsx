@@ -3,7 +3,7 @@ import type { Article, Comment } from "@/lib/definitions";
 import { getArticleById, getCommentsByArticleId } from "@/lib/data";
 
 import CommentsList from "@/components/articles/CommentsList";
-import Button from "@/components/Button";
+import ReportArticleButton from "@/components/articles/ReportArticleButton";
 import LikeButton from "@/components/articles/LikeButton";
 
 export default async function Article({
@@ -83,15 +83,7 @@ export default async function Article({
             </div>
             <img src={article.mainImage} alt={article.title} />
             <div>{article.content}</div>
-            <Button
-              title={"Signaler"}
-              background={""}
-              textColor={"text-red-400"}
-              icon={null}
-              href={"/"}
-              priority="low"
-              minWidth
-            />
+            <ReportArticleButton articleId={article.id} author={article.username} />
           </section>
           <CommentsList comments={comments} articleId={article.id} />
         </div>
