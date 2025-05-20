@@ -43,7 +43,7 @@ export default function CommentCard({
   const [reportReason, setReportReason] = useState("");
 
   const handleDelete = async () => {
-    const res = await deleteComment(comment.id);
+    const res = await deleteComment(articleId, comment.id);
 
     if (!res.success) {
       const errorData = res.error;

@@ -54,7 +54,7 @@ export async function like(articleId: number) {
     return { success: false, error };
   }
 
-  revalidatePath("/article/*"); // to update heart icon in UI
+  revalidatePath(`/article/${articleId}`); // to update heart icon in UI
   return { success: true };
 }
 
@@ -81,7 +81,7 @@ export async function unlike(articleId: number) {
     return { success: false, error };
   }
 
-  revalidatePath("/article/*"); // to update heart icon in UI
+  revalidatePath(`/article/${articleId}`); // to update heart icon in UI
   return { success: true };
 }
 
@@ -109,11 +109,11 @@ export async function createComment(content: string, articleId: number) {
     return { success: false, error };
   }
 
-  revalidatePath("/article/*");
+  revalidatePath(`/article/${articleId}`);
   return { success: true };
 }
 
-export async function deleteComment(commentId: number) {
+export async function deleteComment(articleId: number, commentId: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
 
@@ -136,7 +136,7 @@ export async function deleteComment(commentId: number) {
     return { success: false, error };
   }
 
-  revalidatePath("/article/*");
+  revalidatePath(`/article/${articleId}`);
   return { success: true };
 }
 
