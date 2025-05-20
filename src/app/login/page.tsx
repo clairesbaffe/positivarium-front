@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { login } from "@/lib/actions";
 import LoginForm from "@/components/auth/LoginForm";
 
 export default function Login() {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +43,9 @@ export default function Login() {
       }
 
       setMessage({ message: "", type: "success" });
-      window.location.href = searchParams.get("next") || "/"; // full reload to update Header
+      
+      router.refresh(); // full reload to update Header
+      router.push(searchParams.get("next") || "/");
     } catch (error) {
       console.error("Erreur de connexion :", error);
       if (error instanceof Error) {
