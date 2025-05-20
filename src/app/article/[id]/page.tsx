@@ -1,8 +1,10 @@
-import type { Article, Comment } from "@/lib/definitions";
-import Button from "@/components/Button";
-import CommentCard from "@/components/articles/CommentCard";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import type { Article, Comment } from "@/lib/definitions";
+import { getArticleById, getCommentsByArticleId } from "@/lib/data";
+
+import CommentCard from "@/components/articles/CommentCard";
+import Button from "@/components/Button";
+import LikeButton from "@/components/articles/LikeButton";
 
 export default async function Article({
   params,
@@ -11,16 +13,8 @@ export default async function Article({
 }) {
   const id = (await params).id;
 
-  const resArticles = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/articles/${id}`
-  );
-  const article = await resArticles.json();
-
-  const resComments = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/comments/article/${id}`
-  );
-  const data = await resComments.json();
-  const comments: Comment[] = data.content;
+  const article: Article = await getArticleById(Number(id));
+  const comments: Comment[] = await getCommentsByArticleId(Number(id));
 
   return (
     <div className="md:w-2/5 mx-4 md:mx-auto my-16">
@@ -68,11 +62,9 @@ export default async function Article({
                     )}
                   </div>
                 </div>
-                <Heart
-                  className={`size-8 md:size-7 text-foreground cursor-pointer ${
-                    article.userLiked ? "fill-foreground" : "fill-none"
-                  }`}
-                  // onClick={() => {}}
+                <LikeButton
+                  articleId={article.id}
+                  userLiked={article.userLiked}
                 />
               </div>
             </div>
