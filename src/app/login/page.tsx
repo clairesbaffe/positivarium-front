@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { login } from "@/lib/actions";
 import LoginForm from "@/components/auth/LoginForm";
 
 export default function Login() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -31,20 +31,13 @@ export default function Login() {
         throw new Error("INPUTS_MISSING");
       }
 
-      // to set cookie in server
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      // set cookie in server
+      const res = await login({username, password})
 
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => null);
-
+      if(!res.success){
+        const errorData = res.error;
         console.error(errorData?.error || "Échec de la connexion");
-
         const message = errorData?.error || "Échec de la connexion";
-
         throw new Error(message);
       }
 
