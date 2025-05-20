@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Article, Comment } from "@/lib/definitions";
 import { getArticleById, getCommentsByArticleId } from "@/lib/data";
 
-import CommentCard from "@/components/articles/CommentCard";
+import CommentsList from "@/components/articles/CommentsList";
 import Button from "@/components/Button";
 import LikeButton from "@/components/articles/LikeButton";
 
@@ -80,41 +80,7 @@ export default async function Article({
               minWidth
             />
           </section>
-          <section>
-            <div className="flex justify-between items-center">
-              <h3 className="font-title text-3xl">Commentaires</h3>
-              <Button
-                title={"Commenter"}
-                background={"bg-colored-background"}
-                textColor={"text-foreground"}
-                icon={null}
-                href={"/"}
-              />
-            </div>
-            <div className="my-6">
-              {comments.length === 0 && (
-                <p className="text-foreground-muted">
-                  Aucun commentaire pour le moment. Soyez le premier à réagir !
-                </p>
-              )}
-              {comments && comments.length > 0 && (
-                <div>
-                  {comments.map((comment, index) => (
-                    <div
-                      key={comment.id}
-                      className={
-                        index !== 0
-                          ? "border-t border-foreground-muted/50 pt-6 mt-6"
-                          : ""
-                      }
-                    >
-                      <CommentCard comment={comment} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </section>
+          <CommentsList comments={comments} articleId={article.id} />
         </div>
       )}
     </div>
