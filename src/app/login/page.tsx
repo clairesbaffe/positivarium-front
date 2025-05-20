@@ -32,7 +32,7 @@ export default function Login() {
       }
 
       // set cookie in server
-      const res = await login({username, password})
+      const res = await login(username, password)
 
       if(!res.success){
         const errorData = res.error;
