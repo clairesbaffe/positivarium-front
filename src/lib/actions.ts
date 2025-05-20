@@ -112,3 +112,30 @@ export async function createComment(content: string, articleId: number) {
   revalidatePath("/article/*");
   return { success: true };
 }
+
+export async function deleteComment(commentId: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/comments/${commentId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath("/article/*");
+  return { success: true };
+}

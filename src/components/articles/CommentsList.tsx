@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Comment } from "@/lib/definitions";
 import { createComment } from "@/lib/actions";
+import { useUser } from "@/context/UserContext";
 
 import CommentCard from "@/components/articles/CommentCard";
 import Button from "@/components/Button";
@@ -15,6 +16,8 @@ export default function CommentsList({
   comments: Comment[];
   articleId: number;
 }) {
+  const user = useUser();
+
   const [isCommenting, setIsCommenting] = useState(false);
   const [comment, setComment] = useState("");
   const [message, setMessage] = useState<{
@@ -92,7 +95,10 @@ export default function CommentsList({
                     : ""
                 }
               >
-                <CommentCard comment={comment} />
+                <CommentCard
+                  comment={comment}
+                  isOwn={comment.username === user?.username}
+                />
               </div>
             ))}
           </div>
