@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/auth";
 import Button from "@/components/Button";
 import ArticlesPage from "@/components/articles/ArticlesPage";
 
+// if not connected, user is automatically redirected to login by middleware
 export default async function MyProfile({
   searchParams,
 }: {
@@ -10,8 +11,6 @@ export default async function MyProfile({
   const currentPage = (await searchParams).page || 1;
 
   const user = await getCurrentUser();
-
-  if (!user) return <div>pas de user</div>; // redirect to login by middleware
 
   return (
     <div className="flex flex-col gap-8 m-8 md:m-40">
@@ -38,7 +37,7 @@ export default async function MyProfile({
           />
         )}
       </section>
-      {/* Published comments */}
+      {/* Comments */}
     </div>
   );
 }
