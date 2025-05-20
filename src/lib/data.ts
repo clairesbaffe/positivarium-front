@@ -40,3 +40,24 @@ export async function getPublisher(username: string) {
 
   return await res.json();
 }
+
+export async function getUsers(currentPage: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/users/?page=${
+      currentPage - 1
+    }&size=10`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return { users: data.content, totalPages: data.totalPages };
+}
