@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { reportArticle } from "@/lib/actions";
 import { useUser } from "@/context/UserContext";
+
 import {
   Dialog,
   DialogContent,
@@ -13,8 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Textarea from "@/components/Textarea";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function ReportArticleButton({
   articleId,

@@ -89,10 +89,10 @@ export default function Header() {
           )}
           {user ? (
             <li>
-              <p className="flex gap-1">
+              <Link href={"/profile"} className="flex gap-1 cursor-pointer">
                 <CircleUserRound />
                 {user.username}
-              </p>
+              </Link>
             </li>
           ) : (
             <li>

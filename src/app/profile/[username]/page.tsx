@@ -1,7 +1,7 @@
 import { User } from "@/lib/definitions";
 import { getPublisher } from "@/lib/data";
 import ArticlesPage from "@/components/articles/ArticlesPage";
-import FollowButton from "@/components/users/FollowButton";
+import FollowButton from "@/components/profile/FollowButton";
 
 export default async function UserPage({
   params,

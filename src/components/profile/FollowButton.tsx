@@ -1,11 +1,11 @@
 "use client";
 
 import { useUser } from "@/context/UserContext";
-
-import Button from "@/components/Button";
-import { follow, unfollow } from "@/lib/actions";
-import { CircleUserRound } from "lucide-react";
 import { User } from "@/lib/definitions";
+import { follow, unfollow } from "@/lib/actions";
+
+import { CircleUserRound } from "lucide-react";
+import Button from "@/components/Button";
 
 export default function FollowButton({ publisher }: { publisher: User }) {
   const user = useUser();

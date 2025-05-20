@@ -48,3 +48,11 @@ export type User = {
   description: string;
   isFollowed: boolean;
 };
+
+export type UserDetails = {
+  id: number;
+  username: string;
+  email: string;
+  description: string;
+  roles: string[];
+};
