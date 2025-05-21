@@ -79,6 +79,14 @@ export default function Header() {
       </nav>
       <div className="md:flex gap-5">
         <ul className="hidden md:flex gap-5">
+          {(user?.roles.includes("ROLE_ADMIN")) && (
+            <li>
+              <Link href={"/admin/users"} className="flex gap-1 cursor-pointer">
+                <Notebook />
+                Liste des utilisateurs
+              </Link>
+            </li>
+          )}
           {(!user || user?.roles.includes("ROLE_USER")) && (
             <li>
               <Link href={"#"} className="flex gap-1 cursor-pointer">

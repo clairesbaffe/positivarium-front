@@ -28,7 +28,7 @@ export default function UserCard({ user }: { user: UserDetails }) {
   return (
     <Link
       className="border border-foreground-muted rounded-md p-6 grid gap-2"
-      href={`/profile/${user.username}`}
+      href={`/admin/users/${user.username}`}
     >
       <div className="flex gap-4">
         <p className="font-bold text-lg">{user.username}</p>

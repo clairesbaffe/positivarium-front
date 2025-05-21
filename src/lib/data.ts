@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { getCurrentUser } from "./auth";
 
 export async function getArticleById(id: number) {
   const token = (await cookies()).get("access_token")?.value;
@@ -45,6 +46,10 @@ export async function getUsers(currentPage: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
 
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/users/?page=${
       currentPage - 1
@@ -60,4 +65,26 @@ export async function getUsers(currentPage: number) {
 
   const data = await res.json();
   return { users: data.content, totalPages: data.totalPages };
+}
+
+export async function getUser(username: string) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/users/${username}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return await res.json();
 }
