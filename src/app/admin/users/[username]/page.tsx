@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
 import { UserDetails } from "@/lib/definitions";
+import { getCurrentUser } from "@/lib/auth";
 import { getUser } from "@/lib/data";
 import { roleData } from "@/lib/utils";
 
 import ArticlesPage from "@/components/articles/ArticlesPage";
+import BanButton from "@/components/admin/BanButton";
 
 export default async function Page({
   params,
@@ -12,12 +14,14 @@ export default async function Page({
   params: Promise<{ username: string }>;
   searchParams: Promise<{ page: string }>;
 }) {
+  const connectedUser = await getCurrentUser();
+  
   const username = (await params).username;
   const currentPage = parseInt((await searchParams).page ?? "1", 10);
 
   const user: UserDetails = await getUser(username);
 
-  if (user.username === username) redirect("/profile");
+  if (connectedUser.username === username) redirect("/profile");
 
   return (
     <div className="flex flex-col my-8 md:m-40">
@@ -42,6 +46,7 @@ export default async function Page({
                 })}
               </div>
               {/* <FollowButton publisher={user} /> */}
+              <BanButton user={user} />
               {/* Ban / unban button if not admin */}
               {/* Grant admin if not ban */}
             </div>
