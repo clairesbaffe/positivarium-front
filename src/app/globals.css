@@ -12,7 +12,7 @@
   --background-muted: #E4E4E4;
   --foreground-muted: #949494;
 
-  --background-danger: #D96666;
+  --background-danger: #E97070;
 }
 
 @media (prefers-color-scheme: dark) {
