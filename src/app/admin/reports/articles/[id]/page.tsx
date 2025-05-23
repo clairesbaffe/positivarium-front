@@ -58,7 +58,7 @@ export default async function ArticleReportPage({
               />
               <DeleteArticleAdminButton
                 articleId={report.article.id}
-                next="/admin/reports?tab=article"
+                next="/admin/reports?tab=articles"
               />
               <Button
                 title="Bannir l'utilisateur"

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useUser } from "@/context/UserContext";
-import { deleteArticleAdmin } from "@/lib/actions";
+import { deleteCommentAdmin } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 
 import { toast } from "react-toastify";
@@ -19,12 +19,16 @@ import {
 import { Button } from "@/components/ui/button";
 import Textarea from "@/components/Textarea";
 
-export default function DeleteArticleAdminButton({
+export default function DeleteCommentAdminButton({
+  commentId,
   articleId,
   next,
+  size = "md",
 }: {
-  articleId: number;
-  next: string;
+  commentId: number;
+  articleId?: number;
+  next?: string;
+  size?: "md" | "sm";
 }) {
   const router = useRouter();
   const user = useUser();
@@ -45,7 +49,7 @@ export default function DeleteArticleAdminButton({
         throw new Error("INPUTS_MISSING");
       }
 
-      const res = await deleteArticleAdmin(articleId);
+      const res = await deleteCommentAdmin(commentId, articleId);
 
       // send notification with reason
 
@@ -54,7 +58,8 @@ export default function DeleteArticleAdminButton({
         console.error(errorData?.error || "Échec de l'action.");
         toast.error(errorData?.error || "Échec de l'action.");
       } else {
-        router.push(next);
+        if (next) router.push(next);
+        toast.success("Le commentaire a été supprimé.");
       }
 
       setMessage({ message: "", type: "success" });
@@ -78,18 +83,28 @@ export default function DeleteArticleAdminButton({
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger
-        className={`flex gap-2 items-center bg-opacity-100 py-2.5 px-4 h-min w-min whitespace-nowrap rounded-md font-semibold bg-background-danger cursor-pointer`}
+        className={`h-min cursor-pointer ${
+          size === "sm"
+            ? "bg-transparent text-red-400"
+            : "bg-opacity-100 bg-background-danger font-semibold rounded-md py-2.5 px-4"
+        }`}
         onClick={() => setIsDialogOpen(true)}
       >
-        <Trash size={18} />
-        Supprimer l'article
+        {size === "sm" ? (
+          <p>Supprimer</p>
+        ) : (
+          <div className="flex gap-2 items-center">
+            <Trash size={18} />
+            <p>Supprimer le commentaire</p>
+          </div>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Indiquez la raison de votre action</DialogTitle>
         </DialogHeader>
         <DialogDescription className="text-md">
-          Pourquoi souhaitez-vous supprimer cet article ?
+          Pourquoi souhaitez-vous supprimer ce commentaire ?
         </DialogDescription>
         <div className="py-4 flex flex-col gap-4">
           <Textarea

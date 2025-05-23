@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import Textarea from "@/components/Textarea";
 import { Button } from "@/components/ui/button";
+import DeleteCommentAdminButton from "../admin/reports/DeleteCommentButton";
 
 export default function CommentCard({
   comment,
@@ -69,7 +70,7 @@ export default function CommentCard({
         <div className="flex justify-between">
           <p className="font-bold">{comment.username}</p>
           <div className="flex gap-4">
-            {isOwn && (
+            {isOwn ? (
               <AlertDialog>
                 <AlertDialogTrigger className="text-red-400 cursor-pointer">
                   Supprimer
@@ -97,6 +98,13 @@ export default function CommentCard({
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
+            ) : (
+              // only displayed for admins
+              <DeleteCommentAdminButton
+                commentId={comment.id}
+                articleId={articleId}
+                size="sm"
+              />
             )}
             {!isOwn && (
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

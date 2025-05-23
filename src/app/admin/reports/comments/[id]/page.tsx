@@ -4,6 +4,7 @@ import Link from "next/link";
 import Button from "@/components/Button";
 import MarkAsReadButton from "@/components/admin/reports/MarkAsReadButton";
 import { Badge } from "@/components/ui/badge";
+import DeleteCommentAdminButton from "@/components/admin/reports/DeleteCommentButton";
 
 export default async function CommentReportPage({
   params,
@@ -57,11 +58,9 @@ export default async function CommentReportPage({
                 textColor="text-foreground-inverted"
                 icon={null}
               />
-              <Button
-                title="Supprimer le commentaire"
-                background="bg-background-danger"
-                textColor="text-foreground"
-                icon={null}
+              <DeleteCommentAdminButton
+                commentId={report.comment.id}
+                next="/admin/reports?tab=comments"
               />
               <Button
                 title="Bannir l'utilisateur"
