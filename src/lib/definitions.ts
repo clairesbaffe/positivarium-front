@@ -80,3 +80,12 @@ export type CommentReport = {
   createdAt: Date;
   comment: CommentWithArticle;
 };
+
+export type PublisherRequest = {
+  id: number;
+  motivation: string;
+  status: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED" | "CANCELLED";
+  username: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

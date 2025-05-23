@@ -31,3 +31,41 @@ export const roleData = (role: string) => {
       return { name: "", bg: "", color: "" };
   }
 };
+
+export const publisherRequestStatus = (
+  status: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED" | "CANCELLED"
+) => {
+  switch (status) {
+    case "PENDING":
+      return {
+        name: "En attente",
+        bg: "bg-amber-500/10 dark:bg-amber-500/20",
+        color: "text-amber-600 dark:text-amber-300",
+      };
+    case "UNDER_REVIEW":
+      return {
+        name: "En révision",
+        bg: "bg-indigo-500/10 dark:bg-indigo-500/20",
+        color: "text-indigo-600 dark:text-indigo-300",
+      };
+    case "APPROVED":
+      return {
+        name: "Approuvée",
+        bg: "bg-emerald-500/10 dark:bg-emerald-500/20",
+        color: "text-emerald-600 dark:text-emerald-300",
+      };
+    case "REJECTED":
+      return {
+        name: "Refusée",
+        bg: "bg-rose-500/10 dark:bg-rose-500/20",
+        color: "text-rose-600 dark:text-rose-300",
+      };
+    case "CANCELLED":
+      return {
+        name: "Annulée",
+        bg: "bg-neutral-500/10 dark:bg-neutral-500/20",
+        color: "text-neutral-600 dark:text-neutral-300",
+      };
+  }
+};
+

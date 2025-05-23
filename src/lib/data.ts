@@ -182,3 +182,24 @@ export async function getCommentReportById(id: number) {
 
   return await res.json();
 }
+
+export async function getUserPublisherResquests(currentPage: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/publisher_request?page=${
+      currentPage - 1
+    }&size=10`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return { requests: data.content, totalPages: data.totalPages };
+}

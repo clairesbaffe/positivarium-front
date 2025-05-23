@@ -494,6 +494,38 @@ export async function deleteCommentAdmin(id: number, articleId?: number) {
     return { success: false, error };
   }
 
-  if(articleId) revalidatePath(`/article/${articleId}`)
+  if (articleId) revalidatePath(`/article/${articleId}`);
+  return { success: true };
+}
+
+export async function sendPublisherRequest(motivation: string) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be a user" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/publisher_request`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ motivation }),
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/user/publisher_requests`);
   return { success: true };
 }

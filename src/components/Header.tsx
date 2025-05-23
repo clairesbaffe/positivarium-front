@@ -79,7 +79,7 @@ export default function Header() {
       </nav>
       <div className="md:flex gap-5">
         <ul className="hidden md:flex gap-6">
-          {(user?.roles.includes("ROLE_ADMIN")) && (
+          {user?.roles.includes("ROLE_ADMIN") && (
             <li>
               <Link href={"/admin/users"} className="flex gap-1 cursor-pointer">
                 <Notebook />
@@ -87,9 +87,12 @@ export default function Header() {
               </Link>
             </li>
           )}
-          {(user?.roles.includes("ROLE_ADMIN")) && (
+          {user?.roles.includes("ROLE_ADMIN") && (
             <li>
-              <Link href={"/admin/reports"} className="flex gap-1 cursor-pointer">
+              <Link
+                href={"/admin/reports"}
+                className="flex gap-1 cursor-pointer"
+              >
                 <Flag />
                 Signalements
               </Link>
@@ -133,6 +136,17 @@ export default function Header() {
           ref={desktopMenuRef}
           className="hidden md:flex flex-col top-0 absolute right-0 mt-16 w-52 bg-white dark:bg-gray-800 shadow-lg py-2 z-10"
         >
+          {user?.roles.includes("ROLE_USER") && (
+            <div>
+              <Link
+                href={"/user/publisher_requests"}
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Devenir rédacteur
+              </Link>
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
+            </div>
+          )}
           <Link
             href="#"
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -177,56 +191,31 @@ export default function Header() {
           ref={mobileMenuRef}
           className="absolute top-0 right-0 w-2/3 mt-16 bg-white dark:bg-gray-900 z-20 shadow-md py-4 px-5 flex flex-col gap-3 md:hidden"
         >
-          <Link href="/" className="hover:underline">
-            Accueil
-          </Link>
-          <Link href="/article?cat=general" className="hover:underline">
-            Actualités générales
-          </Link>
-          <Link href="/article?cat=culture" className="hover:underline">
-            Culture
-          </Link>
-          <Link href="/article?cat=tech-science" className="hover:underline">
-            Technologies & Sciences
-          </Link>
-          <Link
-            href="/article?cat=divertissement-lifestyle"
-            className="hover:underline"
-          >
+          <Link href="/">Accueil</Link>
+          <Link href="/article?cat=general">Actualités générales</Link>
+          <Link href="/article?cat=culture">Culture</Link>
+          <Link href="/article?cat=tech-science">Technologies & Sciences</Link>
+          <Link href="/article?cat=divertissement-lifestyle">
             Divertissement & Lifestyle
           </Link>
           <hr className="my-2 border-gray-300 dark:border-gray-700" />
 
           {(!user || user?.roles.includes("ROLE_USER")) && (
-            <Link href="#" className="hover:underline">
-              Journal
-            </Link>
-          )}
-          {!user && (
-            <Link href="/login" className="hover:underline">
-              Connexion
-            </Link>
+            <div className="flex flex-col gap-3">
+              <Link href="#">Journal</Link>
+              <Link href={"/user/publisher_requests"}>Devenir rédacteur</Link>
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
+            </div>
           )}
 
-          <Link href="#" className="hover:underline">
-            À propos
-          </Link>
-          <Link href="#" className="hover:underline">
-            Nous contacter
-          </Link>
-          <Link href="#" className="hover:underline">
-            Abonnement
-          </Link>
-          <Link href="#" className="hover:underline">
-            Mentions légales
-          </Link>
+          <Link href="#">À propos</Link>
+          <Link href="#">Nous contacter</Link>
+          <Link href="#">Abonnement</Link>
+          <Link href="#">Mentions légales</Link>
           {user && (
             <div>
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
-              <p
-                onClick={logout}
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-              >
+              <p onClick={logout} className="block cursor-pointer">
                 Se déconnecter
               </p>
             </div>
