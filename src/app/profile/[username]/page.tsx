@@ -1,5 +1,8 @@
-import { User } from "@/lib/definitions";
+import { User, UserDetails } from "@/lib/definitions";
+import { getCurrentUser } from "@/lib/auth";
 import { getPublisher } from "@/lib/data";
+import { redirect } from "next/navigation";
+
 import ArticlesPage from "@/components/articles/ArticlesPage";
 import FollowButton from "@/components/profile/FollowButton";
 
@@ -13,7 +16,11 @@ export default async function UserPage({
   const username = (await params).username;
   const currentPage = (await searchParams).page || 1;
 
+  const connectedUser: UserDetails = await getCurrentUser();
+  if (connectedUser.roles.includes("ROLE_ADMIN")) redirect(`/admin/users/${username}`);
+
   const user: User = await getPublisher(username);
+
 
   return (
     <div className="flex flex-col my-8 md:m-40">

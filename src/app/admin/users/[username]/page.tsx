@@ -6,6 +6,7 @@ import { roleData } from "@/lib/utils";
 
 import ArticlesPage from "@/components/articles/ArticlesPage";
 import BanButton from "@/components/admin/BanButton";
+import GrantAdminButton from "@/components/admin/GrantAdminButton";
 
 export default async function Page({
   params,
@@ -15,7 +16,7 @@ export default async function Page({
   searchParams: Promise<{ page: string }>;
 }) {
   const connectedUser = await getCurrentUser();
-  
+
   const username = (await params).username;
   const currentPage = parseInt((await searchParams).page ?? "1", 10);
 
@@ -28,27 +29,29 @@ export default async function Page({
       {user ? (
         <div className="flex flex-col gap-8 mx-8 md:m-0">
           <section className="flex flex-col gap-6">
-            <div className="flex items-end gap-6">
-              <h1 className="font-title text-3xl md:text-5xl">
-                {user.username}
-              </h1>
-              <div className="flex gap-2">
-                {user.roles.map((role) => {
-                  const { name, bg, color } = roleData(role);
-                  return (
-                    <p
-                      key={role}
-                      className={`${bg} ${color} py-1 px-3 rounded-full w-min`}
-                    >
-                      {name}
-                    </p>
-                  );
-                })}
+            <div className="flex flex-col-reverse md:flex-row md:justify-between gap-6">
+              <div className="flex gap-6 items-end">
+                <h1 className="font-title text-3xl md:text-5xl">
+                  {user.username}
+                </h1>
+                <div className="flex gap-2">
+                  {user.roles.map((role) => {
+                    const { name, bg, color } = roleData(role);
+                    return (
+                      <p
+                        key={role}
+                        className={`${bg} ${color} py-1 px-3 rounded-full w-min`}
+                      >
+                        {name}
+                      </p>
+                    );
+                  })}
+                </div>
               </div>
-              {/* <FollowButton publisher={user} /> */}
-              <BanButton user={user} />
-              {/* Ban / unban button if not admin */}
-              {/* Grant admin if not ban */}
+              <div className="flex gap-6 items-center">
+                <BanButton user={user} />
+                <GrantAdminButton user={user} />
+              </div>
             </div>
             {user.description && <p className="text-lg">{user.description}</p>}
           </section>

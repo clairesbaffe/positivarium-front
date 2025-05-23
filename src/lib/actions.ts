@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
+import { getCurrentUser } from "@/lib/auth";
+
 export async function saveAccessTokenInCookies(token: string) {
   (await cookies()).set({
     name: "access_token",
@@ -305,5 +307,98 @@ export async function updatePassword(oldPassword: string, newPassword: string) {
     return { success: false, error };
   }
 
+  return { success: true };
+}
+
+export async function ban(username: string) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/users/ban/${username}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/admin/users/${username}`);
+  return { success: true };
+}
+
+export async function unban(username: string) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/users/unban/${username}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/admin/users/${username}`);
+  return { success: true };
+}
+
+export async function grantAdmin(username: string) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/users/admin/${username}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/admin/users/${username}`);
   return { success: true };
 }

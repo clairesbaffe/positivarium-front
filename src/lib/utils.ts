@@ -1,28 +1,32 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export const roleData = (role: string) => {
   switch (role) {
     case "ROLE_ADMIN":
-      return { name: "Admin", bg: "bg-gray-400/30", color: "text-gray-800" };
+      return {
+        name: "Admin",
+        bg: "bg-background-muted/50",
+        color: "text-foreground",
+      };
     case "ROLE_PUBLISHER":
       return {
         name: "Rédacteur",
-        bg: "bg-gray-400/30",
-        color: "text-gray-800",
+        bg: "bg-background-muted/50",
+        color: "text-foreground",
       };
     case "ROLE_USER":
       return {
         name: "Utilisateur",
-        bg: "bg-gray-400/30",
-        color: "text-gray-800",
+        bg: "bg-background-muted/50",
+        color: "text-foreground",
       };
     case "ROLE_BAN":
-      return { name: "Ban", bg: "bg-red-400/30", color: "text-red-800" };
+      return { name: "Ban", bg: "bg-red-400/50", color: "text-foreground" };
     default:
       return { name: "", bg: "", color: "" };
   }

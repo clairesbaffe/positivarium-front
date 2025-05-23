@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { getCurrentUser } from "./auth";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function getArticleById(id: number) {
   const token = (await cookies()).get("access_token")?.value;

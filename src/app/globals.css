@@ -12,8 +12,7 @@
   --background-muted: #E4E4E4;
   --foreground-muted: #949494;
 
-  --default-font-family: "Nunito", sans-serif;
-  --title-font-family: "Trochut", sans-serif;
+  --background-danger: #D96666;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +26,8 @@
 
     --background-muted: #2E2E2E;
     --foreground-muted: #A1A1A1;
+
+    --background-danger: #8B3A3A;
   }
 }
 
@@ -41,9 +42,11 @@
 
   --color-background-muted: var(--background-muted);
   --color-foreground-muted: var(--foreground-muted);
+  
+  --color-background-danger: var(--background-danger);
 
-  --font-default: var(--default-font-family);
-  --font-title: var(--title-font-family);
+  --font-default: "Nunito", sans-serif;
+  --font-title: "Trochut", sans-serif;
 }
 
 
