@@ -1,3 +1,18 @@
+export type User = {
+  id: number;
+  username: string;
+  description: string;
+  isFollowed: boolean;
+};
+
+export type UserDetails = {
+  id: number;
+  username: string;
+  email: string;
+  description: string;
+  roles: string[];
+};
+
 export type SimpleArticle = {
   id: number;
   title: string;
@@ -42,17 +57,26 @@ export type Comment = {
   createdAt: Date;
 };
 
-export type User = {
+export type CommentWithArticle = {
   id: number;
+  content: string;
   username: string;
-  description: string;
-  isFollowed: boolean;
+  createdAt: Date;
+  article: SimpleArticle;
 };
 
-export type UserDetails = {
+export type ArticleReport = {
   id: number;
-  username: string;
-  email: string;
-  description: string;
-  roles: string[];
+  reason: string;
+  isReviewed: boolean;
+  createdAt: Date;
+  article: SimpleArticle;
+};
+
+export type CommentReport = {
+  id: number;
+  reason: string;
+  isReviewed: boolean;
+  createdAt: Date;
+  comment: CommentWithArticle;
 };

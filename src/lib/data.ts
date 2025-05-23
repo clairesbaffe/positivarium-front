@@ -88,3 +88,53 @@ export async function getUser(username: string) {
 
   return await res.json();
 }
+
+export async function getArticleReports(currentPage: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/reports/articles/?page=${
+      currentPage - 1
+    }&size=10`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return { articles: data.content, totalPages: data.totalPages };
+}
+
+export async function getCommentReports(currentPage: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/reports/comments/?page=${
+      currentPage - 1
+    }&size=10`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return { comments: data.content, totalPages: data.totalPages };
+}

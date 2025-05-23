@@ -14,7 +14,8 @@ type PaginationControlsProps = {
   currentPage: number;
   totalPages: number;
   url: string;
-  listId: string;
+  listId?: string;
+  pageParam?: string;
 };
 
 export default function PaginationControls({
@@ -22,6 +23,7 @@ export default function PaginationControls({
   totalPages,
   url,
   listId,
+  pageParam = "page",
 }: PaginationControlsProps) {
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
@@ -60,7 +62,9 @@ export default function PaginationControls({
         {currentPage > 1 && (
           <PaginationItem>
             <PaginationPrevious
-              href={`${url}${url.includes("?") ? "&" : "?"}page=${currentPage - 1}#${listId}`}
+              href={`${url}${url.includes("?") ? "&" : "?"}${pageParam}=${
+                currentPage - 1
+              }${listId ? `#${listId}` : ""}`}
               aria-disabled={currentPage === 1}
               onClick={(e) => currentPage === 1 && e.preventDefault()}
             />
@@ -71,7 +75,9 @@ export default function PaginationControls({
           <PaginationItem key={index}>
             {typeof page === "number" ? (
               <PaginationLink
-                href={`${url}${url.includes("?") ? "&" : "?"}page=${page}#${listId}`}
+                href={`${url}${
+                  url.includes("?") ? "&" : "?"
+                }${pageParam}=${page}${listId ? `#${listId}` : ""}`}
                 isActive={page === currentPage}
               >
                 {page}
@@ -85,7 +91,9 @@ export default function PaginationControls({
         {currentPage < totalPages && (
           <PaginationItem>
             <PaginationNext
-              href={`${url}${url.includes("?") ? "&" : "?"}page=${currentPage + 1}#${listId}`}
+              href={`${url}${url.includes("?") ? "&" : "?"}${pageParam}=${
+                currentPage + 1
+              }${listId ? `#${listId}` : ""}`}
               aria-disabled={currentPage === totalPages}
               onClick={(e) => currentPage === totalPages && e.preventDefault()}
             />

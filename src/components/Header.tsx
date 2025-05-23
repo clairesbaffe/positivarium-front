@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { House, Notebook, CircleUserRound, Menu } from "lucide-react";
+import { House, Notebook, CircleUserRound, Menu, Flag } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { logout } from "@/lib/auth";
 
@@ -53,7 +53,7 @@ export default function Header() {
         </Link>
 
         <div className="hidden md:flex">
-          <ul className="flex gap-5">
+          <ul className="flex gap-6">
             <li className="flex gap-1 cursor-pointer">
               <House />
               <Link href="/">Accueil</Link>
@@ -78,12 +78,20 @@ export default function Header() {
         </div>
       </nav>
       <div className="md:flex gap-5">
-        <ul className="hidden md:flex gap-5">
+        <ul className="hidden md:flex gap-6">
           {(user?.roles.includes("ROLE_ADMIN")) && (
             <li>
               <Link href={"/admin/users"} className="flex gap-1 cursor-pointer">
                 <Notebook />
                 Liste des utilisateurs
+              </Link>
+            </li>
+          )}
+          {(user?.roles.includes("ROLE_ADMIN")) && (
+            <li>
+              <Link href={"/admin/reports"} className="flex gap-1 cursor-pointer">
+                <Flag />
+                Signalements
               </Link>
             </li>
           )}
