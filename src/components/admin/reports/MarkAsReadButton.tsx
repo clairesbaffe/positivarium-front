@@ -29,6 +29,7 @@ export default function MarkAsReadButton({
       const errorData = res.error;
       console.error(errorData?.error || "Échec de l'action.");
       toast.error(errorData?.error || "Échec de l'action.");
+      return;
     }
 
     toast.success("Ce signalement a été marqué comme lu.");
@@ -43,7 +44,8 @@ export default function MarkAsReadButton({
         <AlertDialogHeader>
           <AlertDialogTitle>Êtes-vous vraiment sûr(e) ?</AlertDialogTitle>
           <AlertDialogDescription>
-            Êtes-vous sûr d'avoir fait les actions nécessaires pour traiter ce signalement ?
+            Êtes-vous sûr d'avoir fait les actions nécessaires pour traiter ce
+            signalement ?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

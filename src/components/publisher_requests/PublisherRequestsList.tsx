@@ -11,16 +11,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PaginationControls from "@/components/Pagination";
+import PublisherRequestActions from "@/components/publisher_requests/PublisherRequestActions";
 
 export default function PublisherRequestsList({
   currentPage,
   totalPages,
   url,
+  type = "user",
   requests,
 }: {
   currentPage: number;
   totalPages: number;
   url: string;
+  type?: "admin" | "user";
   requests: PublisherRequest[];
 }) {
   return (
@@ -29,9 +32,13 @@ export default function PublisherRequestsList({
         <TableHeader>
           <TableRow>
             <TableHead className="w-[80px]">Statut</TableHead>
+            {type === "admin" && (
+              <TableHead className="w-[100px]">Utilisateur</TableHead>
+            )}
             <TableHead className="w-[500px]">Motivation</TableHead>
             <TableHead className="w-[100px]">Date de demande</TableHead>
             <TableHead className="w-[100px]">Dernière modification</TableHead>
+            <TableHead className="w-[50px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -48,6 +55,11 @@ export default function PublisherRequestsList({
                     {status.name}
                   </p>
                 </TableCell>
+                {type === "admin" && (
+                  <TableCell className="whitespace-normal">
+                    <p>{request.username}</p>
+                  </TableCell>
+                )}
                 <TableCell className="whitespace-normal">
                   <p>{request.motivation}</p>
                 </TableCell>
@@ -56,6 +68,9 @@ export default function PublisherRequestsList({
                 </TableCell>
                 <TableCell>
                   {new Date(request.updatedAt).toLocaleString("fr-FR")}
+                </TableCell>
+                <TableCell>
+                  <PublisherRequestActions id={request.id} />
                 </TableCell>
               </TableRow>
             );

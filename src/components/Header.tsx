@@ -2,7 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { House, Notebook, CircleUserRound, Menu, Flag } from "lucide-react";
+import {
+  House,
+  Notebook,
+  CircleUserRound,
+  Menu,
+  Flag,
+  PenLine,
+} from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { logout } from "@/lib/auth";
 
@@ -78,34 +85,50 @@ export default function Header() {
         </div>
       </nav>
       <div className="md:flex gap-5">
-        <ul className="hidden md:flex gap-6">
-          {user?.roles.includes("ROLE_ADMIN") && (
-            <li>
-              <Link href={"/admin/users"} className="flex gap-1 cursor-pointer">
-                <Notebook />
-                Liste des utilisateurs
-              </Link>
-            </li>
-          )}
-          {user?.roles.includes("ROLE_ADMIN") && (
-            <li>
-              <Link
-                href={"/admin/reports"}
-                className="flex gap-1 cursor-pointer"
-              >
-                <Flag />
-                Signalements
-              </Link>
-            </li>
-          )}
-          {(!user || user?.roles.includes("ROLE_USER")) && (
-            <li>
-              <Link href={"#"} className="flex gap-1 cursor-pointer">
-                <Notebook />
-                Journal
-              </Link>
-            </li>
-          )}
+        <ul className="hidden md:flex gap-10">
+          <div className="flex gap-6">
+            {user?.roles.includes("ROLE_ADMIN") && (
+              <li>
+                <Link
+                  href={"/admin/users"}
+                  className="flex gap-1 cursor-pointer"
+                >
+                  <Notebook />
+                  Liste des utilisateurs
+                </Link>
+              </li>
+            )}
+            {user?.roles.includes("ROLE_ADMIN") && (
+              <li>
+                <Link
+                  href={"/admin/reports"}
+                  className="flex gap-1 cursor-pointer"
+                >
+                  <Flag />
+                  Signalements
+                </Link>
+              </li>
+            )}
+            {user?.roles.includes("ROLE_ADMIN") && (
+              <li>
+                <Link
+                  href={"/admin/publisher_requests"}
+                  className="flex gap-1 cursor-pointer"
+                >
+                  <PenLine />
+                  Demandes rédacteur
+                </Link>
+              </li>
+            )}
+            {(!user || user?.roles.includes("ROLE_USER")) && (
+              <li>
+                <Link href={"#"} className="flex gap-1 cursor-pointer">
+                  <Notebook />
+                  Journal
+                </Link>
+              </li>
+            )}
+          </div>
           {user ? (
             <li>
               <Link href={"/profile"} className="flex gap-1 cursor-pointer">
@@ -204,6 +227,14 @@ export default function Header() {
             <div className="flex flex-col gap-3">
               <Link href="#">Journal</Link>
               <Link href={"/user/publisher_requests"}>Devenir rédacteur</Link>
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
+            </div>
+          )}
+          {user?.roles.includes("ROLE_ADMIN") && (
+            <div className="flex flex-col gap-3">
+              <Link href={"/admin/users"}>Liste des utilisateurs</Link>
+              <Link href={"/admin/reports"}>Signalements</Link>
+              <Link href={"/admin/publisher_requests"}>Demandes rédacteur</Link>
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
             </div>
           )}
