@@ -402,3 +402,37 @@ export async function grantAdmin(username: string) {
   revalidatePath(`/admin/users/${username}`);
   return { success: true };
 }
+
+export async function markReportAsRead(
+  id: number,
+  type: "article" | "comment"
+) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/reports/${type}s/${id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/admin/reports/${type}s/${id}`);
+  return { success: true };
+}
