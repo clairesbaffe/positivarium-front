@@ -5,6 +5,7 @@ import { getArticleById, getCommentsByArticleId } from "@/lib/data";
 import CommentsList from "@/components/articles/CommentsList";
 import ReportArticleButton from "@/components/articles/ReportArticleButton";
 import LikeButton from "@/components/articles/LikeButton";
+import DeleteArticleAdminButton from "@/components/admin/reports/DeleteArticleButton";
 
 export default async function Article({
   params,
@@ -43,6 +44,7 @@ export default async function Article({
                 <h1 className="font-title text-3xl">{article.title}</h1>
                 <p className="text-lg">{article.description}</p>
               </div>
+              <DeleteArticleAdminButton articleId={article.id} next="/" />
               <div className="flex items-center justify-between font-thin">
                 <div>
                   <Link

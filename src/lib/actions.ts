@@ -436,3 +436,33 @@ export async function markReportAsRead(
   revalidatePath(`/admin/reports/${type}s/${id}`);
   return { success: true };
 }
+
+export async function deleteArticleAdmin(id: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_ADMIN"))
+    return { success: false, error: "User must be an admin" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/admin/articles/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  return { success: true };
+}

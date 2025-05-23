@@ -2,9 +2,10 @@ import { getArticleReportById } from "@/lib/data";
 import { ArticleReport } from "@/lib/definitions";
 
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import Button from "@/components/Button";
 import MarkAsReadButton from "@/components/admin/reports/MarkAsReadButton";
-import { Badge } from "@/components/ui/badge";
+import DeleteArticleAdminButton from "@/components/admin/reports/DeleteArticleButton";
 
 export default async function ArticleReportPage({
   params,
@@ -55,11 +56,9 @@ export default async function ArticleReportPage({
                 textColor="text-foreground-inverted"
                 icon={null}
               />
-              <Button
-                title="Supprimer l'article"
-                background="bg-background-danger"
-                textColor="text-foreground"
-                icon={null}
+              <DeleteArticleAdminButton
+                articleId={report.article.id}
+                next="/admin/reports?tab=article"
               />
               <Button
                 title="Bannir l'utilisateur"
