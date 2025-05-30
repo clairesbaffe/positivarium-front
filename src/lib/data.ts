@@ -272,3 +272,91 @@ export async function getFollowedPublishers(currentPage: number) {
   const data = await res.json();
   return { publishers: data.content, totalPages: data.totalPages };
 }
+
+export async function getMoods() {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be a user" };
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/journal/moods`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return await res.json();
+}
+
+export async function getCategories() {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be a user" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/journal/categories`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return await res.json();
+}
+
+export async function getEntries(currentPage: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be a user" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/journal/?page=${
+      currentPage - 1
+    }&size=10`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return { entries: data.content, totalPages: data.totalPages };
+}
+
+export async function getTodaysEntry() {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be a user" };
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/journal/today`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const raw = await res.text();
+  if (!raw) return null;
+
+  return JSON.parse(raw);
+}

@@ -69,3 +69,35 @@ export const publisherRequestStatus = (
   }
 };
 
+export const moodColor = (
+  type:
+    | "Joie"
+    | "Tristesse"
+    | "Colère"
+    | "Peur"
+    | "Surprise"
+    | "Dégoût"
+    | "Confiance"
+    | "Anticipation"
+): { bg: string; text: string } => {
+  switch (type) {
+    case "Joie":
+      return { bg: "bg-mood-joy", text: "text-foreground-light-bg" };
+    case "Tristesse":
+      return { bg: "bg-mood-sadness", text: "text-foreground-inverted" };
+    case "Colère":
+      return { bg: "bg-mood-anger", text: "text-foreground-inverted" };
+    case "Peur":
+      return { bg: "bg-mood-fear", text: "text-foreground-inverted" };
+    case "Surprise":
+      return { bg: "bg-mood-surprise", text: "text-foreground-inverted" };
+    case "Dégoût":
+      return { bg: "bg-mood-disgust", text: "text-foreground-inverted" };
+    case "Confiance":
+      return { bg: "bg-mood-trust", text: "text-foreground-inverted" };
+    case "Anticipation":
+      return { bg: "bg-mood-anticipation", text: "text-foreground-inverted" };
+    default:
+      return { bg: "bg-background-muted", text: "text-foreground" };
+  }
+};

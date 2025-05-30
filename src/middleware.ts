@@ -64,6 +64,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (pathname.startsWith("/journal")) {
+    const user = await getCurrentUser();
+    const hasAccess = !user || user?.roles?.includes("ROLE_USER");
+    if (!hasAccess) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return NextResponse.next();
 }
 
@@ -77,5 +87,6 @@ export const config = {
     "/article/liked",
     "/article/commented",
     "/article/followed",
+    "/journal",
   ],
 };

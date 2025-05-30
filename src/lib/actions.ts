@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 import { getCurrentUser } from "@/lib/auth";
+import { Category, Mood } from "./definitions";
 
 export async function saveAccessTokenInCookies(token: string) {
   (await cookies()).set({
@@ -646,5 +647,113 @@ export async function cancelPublisherRequestUser(id: number) {
   }
 
   revalidatePath(`/user/publisher_requests`);
+  return { success: true };
+}
+
+// BAN not allowed
+export async function createEntry(
+  description: string,
+  moods: Mood[],
+  categories: Category[]
+) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be an user" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
+
+  const moodIds: number[] = moods.map((mood) => mood.id);
+  const categoryIds: number[] = categories.map((cat) => cat.id);
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/journal/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ description, moodIds, categoryIds }),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/journal`);
+  return { success: true };
+}
+
+export async function updateEntry(
+  id: number,
+  description: string,
+  moods: Mood[],
+  categories: Category[]
+) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be an user" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
+
+  const moodIds: number[] = moods.map((mood) => mood.id);
+  const categoryIds: number[] = categories.map((cat) => cat.id);
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/journal/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ description, moodIds, categoryIds }),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/journal`);
+  return { success: true };
+}
+
+export async function deleteEntry(id: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be an user" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/journal/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/journal`);
   return { success: true };
 }

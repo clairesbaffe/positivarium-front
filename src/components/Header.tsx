@@ -122,7 +122,7 @@ export default function Header() {
             )}
             {(!user || user?.roles.includes("ROLE_USER")) && (
               <li>
-                <Link href={"#"} className="flex gap-1 cursor-pointer">
+                <Link href={"/journal"} className="flex gap-1 cursor-pointer">
                   <Notebook />
                   Journal
                 </Link>
@@ -270,7 +270,7 @@ export default function Header() {
           {(!user || user?.roles.includes("ROLE_USER")) && (
             <div className="flex flex-col gap-3">
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
-              <Link href="#">Journal</Link>
+              <Link href="/journal">Journal</Link>
               <Link href={"/user/publisher_requests"}>Devenir rédacteur</Link>
             </div>
           )}

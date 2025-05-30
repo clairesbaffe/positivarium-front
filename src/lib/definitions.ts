@@ -89,3 +89,35 @@ export type PublisherRequest = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type Mood = {
+  id: number;
+  name: string;
+  type:
+    | "Joie"
+    | "Tristesse"
+    | "Colère"
+    | "Peur"
+    | "Surprise"
+    | "Dégoût"
+    | "Confiance"
+    | "Anticipation";
+};
+
+export type Category = {
+  id: number;
+  name: string;
+  generalCategory:
+    | "Actualités générales"
+    | "Médias & Culture"
+    | "Sport"
+    | "Technologies & Sciences"
+    | "Divertissement & Lifestyle";
+};
+
+export type JournalEntry = {
+  id: number;
+  description: string;
+  moods: Mood[];
+  createdAt: Date;
+};
