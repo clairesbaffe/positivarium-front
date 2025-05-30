@@ -157,15 +157,23 @@ export default function Header() {
       {isMenuOpen && (
         <div
           ref={desktopMenuRef}
-          className="hidden md:flex flex-col top-0 absolute right-0 mt-16 w-52 bg-white dark:bg-gray-800 shadow-lg py-2 z-10"
+          className="hidden md:flex flex-col top-0 absolute right-0 mt-16 w-60 bg-white dark:bg-gray-800 shadow-lg py-2 z-10"
         >
           {user && (
-            <Link
-              href={"/article/liked"}
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              Articles likés
-            </Link>
+            <div>
+              <Link
+                href={"/article/liked"}
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Articles likés
+              </Link>
+              <Link
+                href={"/article/followed"}
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Articles des rédacteurs suivis
+              </Link>
+            </div>
           )}
           {user?.roles.includes("ROLE_USER") && (
             <div>
@@ -232,6 +240,7 @@ export default function Header() {
           <hr className="my-2 border-gray-300 dark:border-gray-700" />
 
           <Link href="/article/liked">Articles likés</Link>
+          <Link href="/article/followed">Articles des rédacteurs suivis</Link>
 
           {(!user || user?.roles.includes("ROLE_USER")) && (
             <div className="flex flex-col gap-3">
