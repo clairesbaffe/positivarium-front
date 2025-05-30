@@ -8,7 +8,10 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get("access_token")?.value;
   const isAuthenticated = token != null;
 
-  if ((pathname.startsWith("/login") || pathname.startsWith("/signup")) && isAuthenticated) {
+  if (
+    (pathname.startsWith("/login") || pathname.startsWith("/signup")) &&
+    isAuthenticated
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
@@ -50,9 +53,29 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (
+    (pathname.startsWith("/article/liked") ||
+      pathname.startsWith("/article/commented") ||
+      pathname.startsWith("/article/followed")) &&
+    !isAuthenticated
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/login", "/signup", "/profile", "/admin/:path*", "/user/:path*"],
+  matcher: [
+    "/login",
+    "/signup",
+    "/profile",
+    "/admin/:path*",
+    "/user/:path*",
+    "/article/liked",
+    "/article/commented",
+    "/article/followed",
+  ],
 };
