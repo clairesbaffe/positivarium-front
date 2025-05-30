@@ -310,6 +310,7 @@ export async function updatePassword(oldPassword: string, newPassword: string) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function ban(username: string) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
@@ -317,6 +318,8 @@ export async function ban(username: string) {
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_ADMIN"))
     return { success: false, error: "User must be an admin" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/users/ban/${username}`,
@@ -341,6 +344,7 @@ export async function ban(username: string) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function unban(username: string) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
@@ -348,6 +352,8 @@ export async function unban(username: string) {
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_ADMIN"))
     return { success: false, error: "User must be an admin" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/users/unban/${username}`,
@@ -372,6 +378,7 @@ export async function unban(username: string) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function grantAdmin(username: string) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
@@ -379,6 +386,8 @@ export async function grantAdmin(username: string) {
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_ADMIN"))
     return { success: false, error: "User must be an admin" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/users/admin/${username}`,
@@ -403,6 +412,7 @@ export async function grantAdmin(username: string) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function markReportAsRead(
   id: number,
   type: "article" | "comment"
@@ -413,6 +423,8 @@ export async function markReportAsRead(
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_ADMIN"))
     return { success: false, error: "User must be an admin" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/reports/${type}s/${id}`,
@@ -437,6 +449,7 @@ export async function markReportAsRead(
   return { success: true };
 }
 
+// BAN not allowed
 export async function deleteArticleAdmin(id: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
@@ -444,6 +457,8 @@ export async function deleteArticleAdmin(id: number) {
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_ADMIN"))
     return { success: false, error: "User must be an admin" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/articles/${id}`,
@@ -467,6 +482,7 @@ export async function deleteArticleAdmin(id: number) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function deleteCommentAdmin(id: number, articleId?: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
@@ -474,6 +490,8 @@ export async function deleteCommentAdmin(id: number, articleId?: number) {
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_ADMIN"))
     return { success: false, error: "User must be an admin" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/comments/${id}`,
@@ -530,6 +548,7 @@ export async function sendPublisherRequest(motivation: string) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function updatePublisherRequestStatusAdmin(
   id: number,
   status: "UNDER_REVIEW" | "APPROVED" | "REJECTED"
@@ -540,6 +559,8 @@ export async function updatePublisherRequestStatusAdmin(
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_ADMIN"))
     return { success: false, error: "User must be an admin" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/admin/publisher_requests/${id}?status=${status}`,
