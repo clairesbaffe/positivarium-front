@@ -247,3 +247,28 @@ export async function getArticles(endpoint: string) {
   const data = await res.json();
   return { articles: data.content, totalPages: data.totalPages };
 }
+
+export async function getFollowedPublishers(currentPage: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be a user" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/follow?page=${
+      currentPage - 1
+    }&size=10`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return { publishers: data.content, totalPages: data.totalPages };
+}

@@ -173,16 +173,27 @@ export default function Header() {
               >
                 Articles commentés
               </Link>
-              <Link
-                href={"/article/followed"}
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                Articles des rédacteurs suivis
-              </Link>
+              {user?.roles.includes("ROLE_USER") && (
+                <div>
+                  <Link
+                    href={"/article/followed"}
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Articles des rédacteurs suivis
+                  </Link>
+                  <Link
+                    href={"/user/followed"}
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Rédacteurs suivis
+                  </Link>
+                </div>
+              )}
             </div>
           )}
           {user?.roles.includes("ROLE_USER") && (
             <div>
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
               <Link
                 href={"/user/publisher_requests"}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -247,7 +258,14 @@ export default function Header() {
 
           <Link href="/article/liked">Articles likés</Link>
           <Link href="/article/liked">Articles commentés</Link>
-          <Link href="/article/followed">Articles des rédacteurs suivis</Link>
+          {user?.roles.includes("ROLE_USER") && (
+            <div className="flex flex-col gap-3">
+              <Link href="/article/followed">
+                Articles des rédacteurs suivis
+              </Link>
+              <Link href="/user/followed">Rédacteurs suivis</Link>
+            </div>
+          )}
 
           {(!user || user?.roles.includes("ROLE_USER")) && (
             <div className="flex flex-col gap-3">
