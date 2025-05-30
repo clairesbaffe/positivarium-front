@@ -159,6 +159,14 @@ export default function Header() {
           ref={desktopMenuRef}
           className="hidden md:flex flex-col top-0 absolute right-0 mt-16 w-52 bg-white dark:bg-gray-800 shadow-lg py-2 z-10"
         >
+          {user && (
+            <Link
+              href={"/article/liked"}
+              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              Articles likés
+            </Link>
+          )}
           {user?.roles.includes("ROLE_USER") && (
             <div>
               <Link
@@ -167,9 +175,9 @@ export default function Header() {
               >
                 Devenir rédacteur
               </Link>
-              <hr className="my-2 border-gray-300 dark:border-gray-700" />
             </div>
           )}
+          {user && <hr className="my-2 border-gray-300 dark:border-gray-700" />}
           <Link
             href="#"
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -223,21 +231,26 @@ export default function Header() {
           </Link>
           <hr className="my-2 border-gray-300 dark:border-gray-700" />
 
+          <Link href="/article/liked">Articles likés</Link>
+
           {(!user || user?.roles.includes("ROLE_USER")) && (
             <div className="flex flex-col gap-3">
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
               <Link href="#">Journal</Link>
               <Link href={"/user/publisher_requests"}>Devenir rédacteur</Link>
-              <hr className="my-2 border-gray-300 dark:border-gray-700" />
             </div>
           )}
+
           {user?.roles.includes("ROLE_ADMIN") && (
             <div className="flex flex-col gap-3">
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
               <Link href={"/admin/users"}>Liste des utilisateurs</Link>
               <Link href={"/admin/reports"}>Signalements</Link>
               <Link href={"/admin/publisher_requests"}>Demandes rédacteur</Link>
-              <hr className="my-2 border-gray-300 dark:border-gray-700" />
             </div>
           )}
+
+          {user && <hr className="my-2 border-gray-300 dark:border-gray-700" />}
 
           <Link href="#">À propos</Link>
           <Link href="#">Nous contacter</Link>

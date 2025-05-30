@@ -1,5 +1,6 @@
 import PaginationControls from "@/components/Pagination";
 import ArticlesList from "@/components/articles/ArticlesList";
+import { getArticles } from "@/lib/data";
 
 // endpoint examples : "/articles/", "/articles/categories?categoryIds=15,17"
 // url exemples : "/", "/article?cat=tech-science"
@@ -14,15 +15,13 @@ export default async function ArticlesPage({
   size?: "classic" | "large";
   currentPage: number;
 }) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}${endpoint}${
-      endpoint.includes("?") ? "&" : "?"
-    }page=${currentPage - 1}&size=${
-      size === "large" ? (currentPage - 1 === 0 ? 10 : 12) : 12
-    }`
+  const data = await getArticles(
+    `${endpoint}${endpoint.includes("?") ? "&" : "?"}page=${
+      currentPage - 1
+    }&size=${size === "large" ? (currentPage - 1 === 0 ? 10 : 12) : 12}`
   );
-  const data = await res.json();
-  const articles = data.content;
+
+  const articles = data.articles;
   const totalPages = data.totalPages;
 
   return (

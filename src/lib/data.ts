@@ -232,3 +232,18 @@ export async function getActivePublisherResquests(currentPage: number) {
   const data = await res.json();
   return { requests: data.content, totalPages: data.totalPages };
 }
+
+export async function getArticles(endpoint: string) {
+  const token = (await cookies()).get("access_token")?.value;
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await res.json();
+  return { articles: data.content, totalPages: data.totalPages };
+}
