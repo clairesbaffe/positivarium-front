@@ -37,9 +37,14 @@ export async function login(username: string, password: string) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function like(articleId: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return null;
+
+  const user = await getCurrentUser();
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/likes/article/${articleId}`,
@@ -91,9 +96,14 @@ export async function unlike(articleId: number) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function createComment(content: string, articleId: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/comments/${articleId}`,
@@ -119,9 +129,14 @@ export async function createComment(content: string, articleId: number) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function deleteComment(articleId: number, commentId: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/comments/${commentId}`,
@@ -146,9 +161,14 @@ export async function deleteComment(articleId: number, commentId: number) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function reportComment(reason: string, commentId: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/reports/comments/${commentId}`,
@@ -173,9 +193,14 @@ export async function reportComment(reason: string, commentId: number) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function reportArticle(reason: string, articleId: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/reports/articles/${articleId}`,
@@ -200,9 +225,14 @@ export async function reportArticle(reason: string, articleId: number) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function follow(publisherId: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/follow/${publisherId}`,
@@ -516,6 +546,7 @@ export async function deleteCommentAdmin(id: number, articleId?: number) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function sendPublisherRequest(motivation: string) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
@@ -523,6 +554,8 @@ export async function sendPublisherRequest(motivation: string) {
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_USER"))
     return { success: false, error: "User must be a user" };
+  if (user.roles.includes("ROLE_BAN"))
+    return { success: false, error: "User must not be banned" };
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/publisher_request`,
@@ -582,5 +615,36 @@ export async function updatePublisherRequestStatusAdmin(
   }
 
   revalidatePath(`/admin/publisher_requests`);
+  return { success: true };
+}
+
+export async function cancelPublisherRequestUser(id: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be an user" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/publisher_request/cancel/${id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  revalidatePath(`/user/publisher_requests`);
   return { success: true };
 }

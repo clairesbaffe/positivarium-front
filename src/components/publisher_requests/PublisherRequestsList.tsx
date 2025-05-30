@@ -70,7 +70,11 @@ export default function PublisherRequestsList({
                   {new Date(request.updatedAt).toLocaleString("fr-FR")}
                 </TableCell>
                 <TableCell>
-                  <PublisherRequestActions id={request.id} />
+                  {request.status !== "APPROVED" &&
+                    request.status !== "REJECTED" &&
+                    request.status !== "CANCELLED" && (
+                      <PublisherRequestActions id={request.id} />
+                    )}
                 </TableCell>
               </TableRow>
             );

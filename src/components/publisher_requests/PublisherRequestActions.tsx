@@ -1,6 +1,10 @@
 "use client";
 
-import { updatePublisherRequestStatusAdmin } from "@/lib/actions";
+import {
+  cancelPublisherRequestUser,
+  updatePublisherRequestStatusAdmin,
+} from "@/lib/actions";
+import { useUser } from "@/context/UserContext";
 
 import { Ellipsis } from "lucide-react";
 import { toast } from "react-toastify";
@@ -23,7 +27,9 @@ import {
 import Button from "@/components/Button";
 
 export default function PublisherRequestActions({ id }: { id: number }) {
-  const handleClick = async (
+  const user = useUser();
+
+  const handleAdminClick = async (
     status: "UNDER_REVIEW" | "APPROVED" | "REJECTED"
   ) => {
     const res = await updatePublisherRequestStatusAdmin(id, status);
@@ -38,6 +44,19 @@ export default function PublisherRequestActions({ id }: { id: number }) {
     toast.success("La demande a été mise à jour.");
   };
 
+  const handleCancelClick = async () => {
+    const res = await cancelPublisherRequestUser(id);
+
+    if (!res.success) {
+      const errorData = res.error;
+      console.error(errorData?.error || "Échec de l'action.");
+      toast.error(errorData?.error || "Échec de l'action.");
+      return;
+    }
+
+    toast.success("La demande a été annulée.");
+  };
+
   return (
     <Popover>
       <PopoverTrigger>
@@ -45,65 +64,107 @@ export default function PublisherRequestActions({ id }: { id: number }) {
       </PopoverTrigger>
       <PopoverContent className="bg-background">
         <div className="flex flex-col gap-4">
-          <Button
-            title="Marquer en révision"
-            background="bg-colored-background"
-            textColor=""
-            icon={null}
-            onClick={() => handleClick("UNDER_REVIEW")}
-          />
+          {user?.roles.includes("ROLE_USER") && (
+            <AlertDialog>
+              <AlertDialogTrigger className="flex items-center justify-center gap-2 py-2.5 px-4 h-min rounded-md font-semibold bg-background-danger text-foreground whitespace-nowrap cursor-pointer">
+                Annuler la demande
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Êtes-vous vraiment sûr(e) ?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Cette demande sera annulée et ne pourra plus être acceptée.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="cursor-pointer">
+                    Annuler
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    className="cursor-pointer"
+                    onClick={() => handleCancelClick()}
+                  >
+                    Continuer
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
 
-          <AlertDialog>
-            <AlertDialogTrigger className="flex items-center justify-center gap-2 py-2.5 px-4 h-min rounded-md font-semibold bg-background-success text-foreground whitespace-nowrap cursor-pointer">
-              Accepter
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Êtes-vous vraiment sûr(e) ?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Cet utilisateur deviendra rédacteur. Cette action ne peut pas
-                  être annulée.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel className="cursor-pointer">
-                  Annuler
-                </AlertDialogCancel>
-                <AlertDialogAction
-                  className="cursor-pointer"
-                  onClick={() => handleClick("APPROVED")}
-                >
-                  Continuer
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          {user?.roles.includes("ROLE_ADMIN") &&
+            !user.roles.includes("ROLE_BAN") && (
+              <Button
+                title="Marquer en révision"
+                background="bg-colored-background"
+                textColor=""
+                icon={null}
+                onClick={() => handleAdminClick("UNDER_REVIEW")}
+              />
+            )}
 
-          <AlertDialog>
-            <AlertDialogTrigger className="flex items-center justify-center gap-2 py-2.5 px-4 h-min rounded-md font-semibold bg-background-danger text-foreground whitespace-nowrap cursor-pointer">
-              Refuser
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Êtes-vous vraiment sûr(e) ?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Cette demande sera refusée. L'utilisateur en sera informé et
-                  pourra en refaire une nouvelle.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel className="cursor-pointer">
-                  Annuler
-                </AlertDialogCancel>
-                <AlertDialogAction
-                  className="cursor-pointer"
-                  onClick={() => handleClick("REJECTED")}
-                >
-                  Continuer
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          {user?.roles.includes("ROLE_ADMIN") &&
+            !user.roles.includes("ROLE_BAN") && (
+              <AlertDialog>
+                <AlertDialogTrigger className="flex items-center justify-center gap-2 py-2.5 px-4 h-min rounded-md font-semibold bg-background-success text-foreground whitespace-nowrap cursor-pointer">
+                  Accepter
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Êtes-vous vraiment sûr(e) ?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Cet utilisateur deviendra rédacteur. Cette action ne peut
+                      pas être annulée.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="cursor-pointer">
+                      Annuler
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="cursor-pointer"
+                      onClick={() => handleAdminClick("APPROVED")}
+                    >
+                      Continuer
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
+
+          {user?.roles.includes("ROLE_ADMIN") &&
+            !user.roles.includes("ROLE_BAN") && (
+              <AlertDialog>
+                <AlertDialogTrigger className="flex items-center justify-center gap-2 py-2.5 px-4 h-min rounded-md font-semibold bg-background-danger text-foreground whitespace-nowrap cursor-pointer">
+                  Refuser
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Êtes-vous vraiment sûr(e) ?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Cette demande sera refusée. L'utilisateur en sera informé
+                      et pourra en refaire une nouvelle.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="cursor-pointer">
+                      Annuler
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      className="cursor-pointer"
+                      onClick={() => handleAdminClick("REJECTED")}
+                    >
+                      Continuer
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
         </div>
       </PopoverContent>
     </Popover>
