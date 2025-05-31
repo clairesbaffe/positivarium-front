@@ -381,3 +381,25 @@ export async function getDrafts(currentPage: number) {
   const data = await res.json();
   return { drafts: data.content, totalPages: data.totalPages };
 }
+
+export async function getDraftById(id: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_PUBLISHER"))
+    return { success: false, error: "User must be a publisher" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/drafts/${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return await res.json();
+}

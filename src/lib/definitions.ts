@@ -37,11 +37,7 @@ export type Article = {
   content: string;
   mainImage: string;
   username: string;
-  category: {
-    id: number;
-    name: string;
-    generalCategory: string;
-  };
+  category: Category;
   isPublished: boolean;
   createdAt: Date;
   updatedAt: Date;

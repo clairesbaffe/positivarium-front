@@ -1,13 +1,17 @@
 import { useState } from "react";
 
 export default function ImageUploadForm({
+  defaultPreview,
   setFile,
   required = false,
 }: {
+  defaultPreview?: string;
   setFile: (file: File | null) => void;
   required?: boolean;
 }) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    defaultPreview || null
+  );
 
   return (
     <div className="flex flex-col md:flex-row items-center gap-4">

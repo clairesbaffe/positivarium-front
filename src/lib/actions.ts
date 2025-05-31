@@ -776,11 +776,13 @@ export async function uploadImage(formData: FormData) {
   );
 
   if (!res.ok) {
+    const errText = await res.text().catch(() => "");
     if (res.status === 401 || res.status === 403) {
-      throw new Error("Vous devez être connecté pour envoyer une image.");
+      throw new Error("NOT_CONNECTED");
+    } else if (res.status === 413) {
+      throw new Error("PAYLOAD_TOO_LARGE");
     } else {
-      const err = await res.text();
-      throw new Error(err || "Erreur lors de l'upload");
+      throw new Error(errText || `Erreur HTTP ${res.status}`);
     }
   }
 
@@ -795,23 +797,11 @@ export async function createDraft(
   categoryId: number
 ) {
   const token = (await cookies()).get("access_token")?.value;
-  if (!token) {
-    throw new Error("Utilisateur non authentifié");
-  }
+  if (!token) throw new Error("NOT_CONNECTED");
 
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_PUBLISHER"))
-    return { success: false, error: "User must be an publisher" };
-
-  console.log(
-    JSON.stringify({
-      title,
-      description,
-      content,
-      mainImage,
-      category: { id: categoryId },
-    })
-  );
+    throw new Error("User must be an publisher");
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/`,
@@ -836,8 +826,53 @@ export async function createDraft(
     console.error(errorData?.error || "Erreur inconnue");
 
     const error = errorData?.error || "Erreur inconnue";
-    return { success: false, error };
+    throw new Error(`Request failed : ${error}`);
   }
 
-  return { success: true };
+  const data = await res.json();
+  return { success: true, id: data.id };
+}
+
+export async function updateDraft(
+  id: number,
+  title: string,
+  description: string,
+  content: string,
+  mainImage: string,
+  categoryId: number
+) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) throw new Error("NOT_CONNECTED");
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_PUBLISHER"))
+    throw new Error("User must be an publisher");
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        content,
+        mainImage,
+        category: { id: categoryId },
+      }),
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    throw new Error(`Request failed : ${error}`);
+  }
+
+  return { success: true, id: null };
 }

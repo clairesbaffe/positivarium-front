@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import sanitizeHtml from "sanitize-html";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -101,3 +102,49 @@ export const moodColor = (
       return { bg: "bg-background-muted", text: "text-foreground" };
   }
 };
+
+export function sanitizeArticleHtml(html: string): string {
+  return sanitizeHtml(html, {
+    allowedTags: [
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "p",
+      "strong",
+      "em",
+      "u",
+      "ul",
+      "ol",
+      "li",
+      "blockquote",
+      "a",
+      "img",
+      "code",
+      "pre",
+      "hr",
+      "br",
+      "table",
+      "thead",
+      "tbody",
+      "tr",
+      "th",
+      "td",
+      "span",
+    ],
+    allowedAttributes: {
+      a: ["href", "name", "target", "rel"],
+      img: ["src", "alt", "title", "width", "height"],
+      "*": ["class"],
+    },
+    allowedSchemes: ["http", "https", "mailto"],
+    allowedSchemesByTag: {
+      img: ["http", "https", "data"],
+    },
+    // Do not allow <script>, <iframe>, etc.
+    disallowedTagsMode: "discard",
+    transformTags: {
+      a: sanitizeHtml.simpleTransform("a", { rel: "noopener noreferrer" }),
+    },
+  });
+}

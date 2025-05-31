@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Category } from "@/lib/definitions";
-import { createDraft, uploadImage } from "@/lib/actions";
+import { Article, Category } from "@/lib/definitions";
+import { createDraft, updateDraft, uploadImage } from "@/lib/actions";
 
 import { toast } from "react-toastify";
 import { Save } from "lucide-react";
@@ -13,18 +13,28 @@ import CategorySelector from "@/components/CategorySelector";
 import ImageUploadForm from "@/components/publisher/drafts/ImageUploadForm";
 import MarkdownEditor from "@/components/publisher/drafts/MarkdownEditor";
 
-export default function CreateForm({ categories }: { categories: Category[] }) {
+export default function CreateForm({
+  categories,
+  draft,
+}: {
+  categories: Category[];
+  draft?: Article;
+}) {
   const router = useRouter();
 
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(
+    draft?.mainImage || null
+  );
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState(draft?.title || "");
+  const [description, setDescription] = useState(draft?.description || "");
+  const [content, setContent] = useState(draft?.content || "");
 
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>(
+    draft ? [draft?.category] : []
+  );
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -43,6 +53,11 @@ export default function CreateForm({ categories }: { categories: Category[] }) {
     } catch (error) {
       console.error("Erreur pendant l'envoi de l'image :", error);
       toast.error("Erreur pendant l'envoi de l'image");
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error(String(error)); // fallback
+      }
     } finally {
       setUploading(false);
     }
@@ -50,31 +65,64 @@ export default function CreateForm({ categories }: { categories: Category[] }) {
 
   const handleSave = async () => {
     try {
-      if (title === "" || content === "" || !file)
+      if (title === "" || content === "") throw new Error("INPUTS_MISSING");
+
+      if (!file && !uploadedImageUrl) {
         throw new Error("INPUTS_MISSING");
-
-      const imageUrl = await handleImageUpload();
-      if (!imageUrl) throw new Error("IMAGE_MISSING");
-
-      const res = await createDraft(
-        title,
-        description,
-        content,
-        imageUrl,
-        selectedCategories[0].id
-      );
-
-      if (!res.success) {
-        const errorData = res.error;
-        const message = errorData?.error || "Échec de l'enregistrement";
-        console.error(message);
-        toast.error(message);
-        throw new Error(message);
       }
 
-      setErrorMessage("");
-      toast.success("Brouillon enregistré.");
-      router.push("/publisher/drafts");
+      let imageUrl: string;
+
+      if (file) {
+        let uploadedUrl;
+        try {
+          uploadedUrl = await handleImageUpload();
+        } catch (error) {
+          if (error instanceof Error) {
+            throw new Error(error.message);
+          } else {
+            throw new Error(String(error)); // fallback
+          }
+        }
+        if (!uploadedUrl) {
+          throw new Error("IMAGE_MISSING");
+        }
+        imageUrl = uploadedUrl;
+      } else if (uploadedImageUrl) {
+        imageUrl = uploadedImageUrl;
+      } else {
+        throw new Error("INPUTS_MISSING");
+      }
+
+      let res;
+      try {
+        if (draft) {
+          res = await updateDraft(
+            draft.id,
+            title,
+            description,
+            content,
+            imageUrl,
+            selectedCategories[0].id
+          );
+        } else {
+          res = await createDraft(
+            title,
+            description,
+            content,
+            imageUrl,
+            selectedCategories[0].id
+          );
+        }
+
+        const draftId = draft ? draft.id : res.id;
+        setErrorMessage("");
+        toast.success("Brouillon enregistré.");
+        router.push(`/publisher/drafts/${draftId}`);
+      } catch (error) {
+        toast.error(String(error));
+        throw new Error(String(error));
+      }
     } catch (error) {
       console.error("Erreur de mise à jour :", error);
       if (error instanceof Error) {
@@ -84,6 +132,12 @@ export default function CreateForm({ categories }: { categories: Category[] }) {
           setErrorMessage(
             "Une erreur est survenue lors de l'enregistrement de l'image. Veuillez réessayer."
           );
+        } else if (error.message.includes("PAYLOAD_TOO_LARGE")) {
+          setErrorMessage(
+            "L'image ne peut pas dépasser 1MB. Veuillez essayer avec une autre image."
+          );
+        } else if (error.message.includes("NOT_CONNECTED")) {
+          setErrorMessage("Vous devez être connecté pour faire cette action.");
         } else {
           setErrorMessage("Une erreur est survenue.");
         }
@@ -97,7 +151,7 @@ export default function CreateForm({ categories }: { categories: Category[] }) {
     <div className="flex flex-col gap-8">
       <div className="flex flex-col md:flex-row gap-4 justify-between">
         <h1 className="font-title text-2xl md:text-4xl">
-          Ajouter un brouillon
+          {draft ? "Modifier un brouillon" : "Ajouter un brouillon"}
         </h1>
         <Button
           title="Enregistrer"
@@ -142,15 +196,20 @@ export default function CreateForm({ categories }: { categories: Category[] }) {
               Ecrivez ici le contenu de l'article{" "}
               <span className="text-red-400">*</span>
             </label>
-            <MarkdownEditor setContent={setContent} />
+            <MarkdownEditor htmlContent={content} setHtmlContent={setContent} />
           </div>
 
-          <ImageUploadForm setFile={setFile} required />
+          <ImageUploadForm
+            setFile={setFile}
+            defaultPreview={draft?.mainImage}
+            required
+          />
 
           <div className="flex flex-col gap-2">
             <label className="text-lg">Catégorie</label>
             <CategorySelector
               categories={categories}
+              defaultSelectedCategories={selectedCategories}
               onChange={setSelectedCategories}
               multiple={false}
             />
