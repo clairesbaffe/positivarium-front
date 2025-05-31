@@ -296,12 +296,8 @@ export async function getCategories() {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) return { success: false, error: "User is not connected" };
 
-  const user = await getCurrentUser();
-  if (!user.roles.includes("ROLE_USER"))
-    return { success: false, error: "User must be a user" };
-
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/journal/categories`,
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/categories`,
     {
       method: "GET",
       headers: {
@@ -359,4 +355,29 @@ export async function getTodaysEntry() {
   if (!raw) return null;
 
   return JSON.parse(raw);
+}
+
+export async function getDrafts(currentPage: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_PUBLISHER"))
+    return { success: false, error: "User must be a publisher" };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/drafts?page=${
+      currentPage - 1
+    }&size=10`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return { drafts: data.content, totalPages: data.totalPages };
 }

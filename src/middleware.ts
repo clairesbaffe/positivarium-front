@@ -74,6 +74,21 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+    if (pathname.startsWith("/publisher")) {
+    if (!isAuthenticated) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+    const user = await getCurrentUser();
+    const hasAccess = user?.roles?.includes("ROLE_PUBLISHER");
+    if (!hasAccess) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return NextResponse.next();
 }
 
@@ -88,5 +103,6 @@ export const config = {
     "/article/commented",
     "/article/followed",
     "/journal",
+    "/publisher/:path*",
   ],
 };

@@ -757,3 +757,32 @@ export async function deleteEntry(id: number) {
   revalidatePath(`/journal`);
   return { success: true };
 }
+
+export async function uploadImage(formData: FormData) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) {
+    throw new Error("Utilisateur non authentifié");
+  }
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/cloudinary/upload`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    }
+  );
+
+  if (!res.ok) {
+    if (res.status === 401 || res.status === 403) {
+      throw new Error("Vous devez être connecté pour envoyer une image.");
+    } else {
+      const err = await res.text();
+      throw new Error(err || "Erreur lors de l'upload");
+    }
+  }
+
+  return await res.text();
+}

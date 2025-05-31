@@ -9,6 +9,7 @@ import {
   Menu,
   Flag,
   PenLine,
+  SquarePen,
 } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { logout } from "@/lib/auth";
@@ -117,6 +118,17 @@ export default function Header() {
                 >
                   <PenLine />
                   Demandes rédacteur
+                </Link>
+              </li>
+            )}
+            {user?.roles.includes("ROLE_PUBLISHER") && (
+              <li>
+                <Link
+                  href={"/publisher/drafts"}
+                  className="flex gap-1 cursor-pointer"
+                >
+                  <SquarePen />
+                  Mes brouillons
                 </Link>
               </li>
             )}
@@ -272,6 +284,13 @@ export default function Header() {
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
               <Link href="/journal">Journal</Link>
               <Link href={"/user/publisher_requests"}>Devenir rédacteur</Link>
+            </div>
+          )}
+
+          {user?.roles.includes("ROLE_PUBLISHER") && (
+            <div className="flex flex-col gap-3">
+              <hr className="my-2 border-gray-300 dark:border-gray-700" />
+              <Link href="/publisher/drafts">Mes brouillons</Link>
             </div>
           )}
 
