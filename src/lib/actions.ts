@@ -786,3 +786,58 @@ export async function uploadImage(formData: FormData) {
 
   return await res.text();
 }
+
+export async function createDraft(
+  title: string,
+  description: string,
+  content: string,
+  mainImage: string,
+  categoryId: number
+) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) {
+    throw new Error("Utilisateur non authentifié");
+  }
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_PUBLISHER"))
+    return { success: false, error: "User must be an publisher" };
+
+  console.log(
+    JSON.stringify({
+      title,
+      description,
+      content,
+      mainImage,
+      category: { id: categoryId },
+    })
+  );
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        content,
+        mainImage,
+        category: { id: categoryId },
+      }),
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    return { success: false, error };
+  }
+
+  return { success: true };
+}

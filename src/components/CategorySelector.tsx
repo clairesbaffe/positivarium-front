@@ -4,9 +4,11 @@ import { useState } from "react";
 export default function CategorySelector({
   categories,
   onChange,
+  multiple = true,
 }: {
   categories: Category[];
   onChange?: (selected: Category[]) => void;
+  multiple?: boolean;
 }) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
@@ -19,9 +21,15 @@ export default function CategorySelector({
   }, {} as Record<Category["generalCategory"], Category[]>);
 
   const toggleCategory = (cat: Category) => {
-    const newSelected = selectedIds.includes(cat.id)
-      ? selectedIds.filter((id) => id !== cat.id)
-      : [...selectedIds, cat.id];
+    let newSelected: number[];
+
+    if (multiple) {
+      newSelected = selectedIds.includes(cat.id)
+        ? selectedIds.filter((id) => id !== cat.id)
+        : [...selectedIds, cat.id];
+    } else {
+      newSelected = selectedIds.includes(cat.id) ? [] : [cat.id];
+    }
 
     setSelectedIds(newSelected);
     onChange?.(categories.filter((cat) => newSelected.includes(cat.id)));
@@ -41,7 +49,8 @@ export default function CategorySelector({
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <input
-                  type="checkbox"
+                  type={multiple ? "checkbox" : "radio"}
+                  name={multiple ? undefined : "single-category-selector"}
                   className="accent-dark-colored-background"
                   checked={selectedIds.includes(cat.id)}
                   onChange={() => toggleCategory(cat)}

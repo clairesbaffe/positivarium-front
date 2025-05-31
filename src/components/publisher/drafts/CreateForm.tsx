@@ -1,16 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import ImageUploadForm from "@/components/publisher/drafts/ImageUploadForm";
-import { uploadImage } from "@/lib/actions";
-import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { Category } from "@/lib/definitions";
+import { createDraft, uploadImage } from "@/lib/actions";
 
-export default function CreateForm() {
+import { toast } from "react-toastify";
+import { Save } from "lucide-react";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import CategorySelector from "@/components/CategorySelector";
+import ImageUploadForm from "@/components/publisher/drafts/ImageUploadForm";
+import MarkdownEditor from "@/components/publisher/drafts/MarkdownEditor";
+
+export default function CreateForm({ categories }: { categories: Category[] }) {
+  const router = useRouter();
+
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
 
-  const handleUpload = async () => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
+
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleImageUpload = async () => {
     if (!file) return;
 
     const formData = new FormData();
@@ -21,6 +39,7 @@ export default function CreateForm() {
     try {
       const data = await uploadImage(formData);
       setUploadedImageUrl(data);
+      return data;
     } catch (error) {
       console.error("Erreur pendant l'envoi de l'image :", error);
       toast.error("Erreur pendant l'envoi de l'image");
@@ -29,9 +48,124 @@ export default function CreateForm() {
     }
   };
 
+  const handleSave = async () => {
+    try {
+      if (title === "" || content === "" || !file)
+        throw new Error("INPUTS_MISSING");
+
+      const imageUrl = await handleImageUpload();
+      if (!imageUrl) throw new Error("IMAGE_MISSING");
+
+      const res = await createDraft(
+        title,
+        description,
+        content,
+        imageUrl,
+        selectedCategories[0].id
+      );
+
+      if (!res.success) {
+        const errorData = res.error;
+        const message = errorData?.error || "Échec de l'enregistrement";
+        console.error(message);
+        toast.error(message);
+        throw new Error(message);
+      }
+
+      setErrorMessage("");
+      toast.success("Brouillon enregistré.");
+      router.push("/publisher/drafts");
+    } catch (error) {
+      console.error("Erreur de mise à jour :", error);
+      if (error instanceof Error) {
+        if (error.message.includes("INPUTS_MISSING")) {
+          setErrorMessage("Veuillez compléter tous les champs requis.");
+        } else if (error.message.includes("IMAGE_MISSING")) {
+          setErrorMessage(
+            "Une erreur est survenue lors de l'enregistrement de l'image. Veuillez réessayer."
+          );
+        } else {
+          setErrorMessage("Une erreur est survenue.");
+        }
+      } else {
+        setErrorMessage("Erreur inattendue.");
+      }
+    }
+  };
+
   return (
-    <div>
-      <ImageUploadForm setFile={setFile} />
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col md:flex-row gap-4 justify-between">
+        <h1 className="font-title text-2xl md:text-4xl">
+          Ajouter un brouillon
+        </h1>
+        <Button
+          title="Enregistrer"
+          background="bg-dark-colored-background"
+          textColor="text-foreground-inverted"
+          icon={<Save size={18} />}
+          onClick={handleSave}
+        />
+      </div>
+      <div className="flex flex-col gap-6">
+        {errorMessage && <p className="text-red-400">{errorMessage}</p>}
+        <div>
+          <span className="text-red-400">*</span> Obligatoire
+        </div>
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-2">
+            <label className="text-lg" htmlFor="title">
+              Titre de l'article <span className="text-red-400">*</span>
+            </label>
+            <Input
+              name="title"
+              data={title}
+              setData={setTitle}
+              maxLength={50}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-lg" htmlFor="description">
+              Description
+            </label>
+            <Input
+              name="description"
+              data={description}
+              setData={setDescription}
+              maxLength={255}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-lg">
+              Ecrivez ici le contenu de l'article{" "}
+              <span className="text-red-400">*</span>
+            </label>
+            <MarkdownEditor setContent={setContent} />
+          </div>
+
+          <ImageUploadForm setFile={setFile} required />
+
+          <div className="flex flex-col gap-2">
+            <label className="text-lg">Catégorie</label>
+            <CategorySelector
+              categories={categories}
+              onChange={setSelectedCategories}
+              multiple={false}
+            />
+          </div>
+        </div>
+      </div>
+
+      {errorMessage && <p className="text-red-400">{errorMessage}</p>}
+      <Button
+        title="Enregistrer"
+        background="bg-dark-colored-background"
+        textColor="text-foreground-inverted"
+        icon={<Save size={18} />}
+        onClick={handleSave}
+      />
     </div>
   );
 }

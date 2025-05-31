@@ -2,16 +2,19 @@ import { useState } from "react";
 
 export default function ImageUploadForm({
   setFile,
+  required = false,
 }: {
   setFile: (file: File | null) => void;
+  required?: boolean;
 }) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   return (
-    <div className="max-w-2/3 flex gap-4">
+    <div className="flex flex-col md:flex-row items-center gap-4">
       <label className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed border-foreground-muted rounded-2xl cursor-pointer hover:border-dark-colored-background transition duration-300">
         <span className="text-gray-500 font-medium mb-2">
-          Choisissez une image
+          Choisissez une image{" "}
+          {required && <span className="text-red-400">*</span>}
         </span>
         <input
           type="file"

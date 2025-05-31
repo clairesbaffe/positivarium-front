@@ -11,7 +11,7 @@ import Button from "@/components/Button";
 import Textarea from "@/components/Textarea";
 import TodaysEntry from "@/components/journal/TodaysEntry";
 import MoodSelector from "@/components/journal/MoodSelector";
-import CategorySelector from "@/components/journal/CategorySelector";
+import CategorySelector from "@/components/CategorySelector";
 
 export default function CreateEntry({
   moods,

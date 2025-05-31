@@ -297,7 +297,7 @@ export async function getCategories() {
   if (!token) return { success: false, error: "User is not connected" };
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/articles/categories`,
+    `${process.env.NEXT_PUBLIC_API_URL}/articles/categories/all`,
     {
       method: "GET",
       headers: {

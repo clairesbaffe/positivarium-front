@@ -4,12 +4,14 @@ export default function Input({
   data,
   setData,
   placeholder,
+  maxLength,
 }: {
   type?: "text" | "password" | "email";
   name: string;
   data: string;
   setData: (value: string) => void;
   placeholder?: string;
+  maxLength?: number;
 }) {
   return (
     <input
@@ -19,6 +21,7 @@ export default function Input({
       name={name}
       id={name}
       value={data}
+      maxLength={maxLength}
       onChange={(e) => setData(e.target.value)}
     />
   );
