@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { publishDraft } from "@/lib/actions";
+import { deleteArticlePublisher, deleteDraft } from "@/lib/actions";
 
 import { toast } from "react-toastify";
-import { Send } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,16 +18,22 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useUser } from "@/context/UserContext";
 
-export default function PublishDraftButton({ draftId }: { draftId: number }) {
+export default function DeleteArticleButton({
+  articleId,
+  author,
+}: {
+  articleId: number;
+  author: string;
+}) {
   const router = useRouter();
   const user = useUser();
 
-  if (!user) return;
+  if (user?.username !== author) return;
 
   const handleClick = async () => {
     try {
-      await publishDraft(draftId);
-      toast.success("Le brouillon a été publié.");
+      await deleteArticlePublisher(articleId);
+      toast.success("L'article a été supprimé.");
       router.push("/publisher/articles");
     } catch (error) {
       toast.error(String(error) || "Échec de l'action.");
@@ -38,27 +44,26 @@ export default function PublishDraftButton({ draftId }: { draftId: number }) {
     <div>
       <AlertDialog>
         <AlertDialogTrigger
-          className={`flex items-center justify-center gap-2 py-2.5 px-4 h-min rounded-md font-semibold text-foreground whitespace-nowrap ${
+          className={`flex items-center justify-center gap-2 py-2.5 px-4 h-min rounded-md font-semibold  text-foreground-inverted whitespace-nowrap ${
             user.roles.includes("ROLE_BAN")
               ? "bg-background-muted cursor-not-allowed"
-              : "bg-colored-background cursor-pointer"
+              : "bg-background-danger cursor-pointer"
           } `}
           disabled={user.roles.includes("ROLE_BAN")}
           title={
             user.roles.includes("ROLE_BAN")
-              ? "Vous ne pouvez pas publier un article en étant banni."
+              ? "Vous ne pouvez pas supprimer un article publié en étant banni."
               : ""
           }
         >
-          <Send />
-          Publier
+          <Trash2 />
+          Supprimer
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Êtes-vous vraiment sûr(e) ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Ce brouillon sera publié. Il sera visible de tous et ne pourra
-              plus retrouver son statut de brouillon.
+              Cet article sera supprimé et ne pourra pas être récupéré.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

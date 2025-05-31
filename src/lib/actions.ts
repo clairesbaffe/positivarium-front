@@ -849,7 +849,7 @@ export async function updateDraft(
     throw new Error("User must be an publisher");
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/drafts/${id}`,
     {
       method: "PUT",
       headers: {
@@ -907,6 +907,7 @@ export async function deleteDraft(id: number) {
   return { success: true };
 }
 
+// BAN not allowed
 export async function publishDraft(id: number) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) throw new Error("NOT_CONNECTED");
@@ -928,7 +929,87 @@ export async function publishDraft(id: number) {
     }
   );
 
-    if (!res.ok) {
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    throw new Error(`Request failed : ${error}`);
+  }
+
+  return { success: true };
+}
+
+// BAN not allowed
+export async function updateArticle(
+  id: number,
+  title: string,
+  description: string,
+  content: string,
+  mainImage: string,
+  categoryId: number
+) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) throw new Error("NOT_CONNECTED");
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_PUBLISHER"))
+    throw new Error("User must be an publisher");
+  if (user.roles.includes("ROLE_BAN"))
+    throw new Error("User must not be banned");
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        content,
+        mainImage,
+        category: { id: categoryId },
+      }),
+    }
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    throw new Error(`Request failed : ${error}`);
+  }
+
+  return { success: true, id: null };
+}
+
+// BAN not allowed
+export async function deleteArticlePublisher(id: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) throw new Error("NOT_CONNECTED");
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_PUBLISHER"))
+    throw new Error("User must be an publisher");
+    if (user.roles.includes("ROLE_BAN"))
+    throw new Error("User must not be banned");
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/publisher/articles/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
     const errorData = await res.json().catch(() => null);
     console.error(errorData?.error || "Erreur inconnue");
 

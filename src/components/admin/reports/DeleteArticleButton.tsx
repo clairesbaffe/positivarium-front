@@ -21,9 +21,11 @@ import Textarea from "@/components/Textarea";
 
 export default function DeleteArticleAdminButton({
   articleId,
+  author,
   next,
 }: {
   articleId: number;
+  author: string;
   next: string;
 }) {
   const router = useRouter();
@@ -31,6 +33,7 @@ export default function DeleteArticleAdminButton({
 
   if (!user?.roles.includes("ROLE_ADMIN") || user?.roles.includes("ROLE_BAN"))
     return;
+  if (user.username === author) return;
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [reason, setReason] = useState("");

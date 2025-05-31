@@ -14,6 +14,7 @@ type ButtonProps = {
   href?: string;
   minWidth?: boolean;
   disabled?: boolean;
+  disabledReason?: string;
 };
 
 export default function Button({
@@ -26,6 +27,7 @@ export default function Button({
   href,
   minWidth = false,
   disabled = false,
+  disabledReason,
 }: ButtonProps) {
   const router = useRouter();
 
@@ -51,16 +53,16 @@ export default function Button({
       : textColor;
 
   const classNames = clsx(
-    `flex items-center justify-center whitespace-nowrap gap-2 cursor-pointer ${
+    `flex items-center justify-center whitespace-nowrap gap-2 ${
       minWidth ? "w-min" : ""
-    }`,
-    background,
+    } ${disabled ? "bg-background-muted cursor-not-allowed" : "cursor-pointer"}`,
+    !disabled && background,
     textColor,
     priorityClass
   );
 
   return (
-    <button onClick={handleClick} className={classNames} disabled={disabled}>
+    <button onClick={handleClick} className={classNames} disabled={disabled} title={disabledReason}>
       {Icon}
       {title}
     </button>

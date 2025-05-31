@@ -31,9 +31,9 @@ export default async function Draft({
                 {draft.category.generalCategory}
               </p>
               <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-center">
-                  <h1 className="font-title text-3xl">{draft.title}</h1>
-                  <div className="flex gap-4">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                  <h1 className="font-title text-4xl">{draft.title}</h1>
+                  <div className="flex flex-wrap md:flex-nowrap gap-4">
                     <PublishDraftButton draftId={draft.id} />
                     <Button
                       title="Modifier"
@@ -58,7 +58,7 @@ export default async function Draft({
                       minute: "2-digit",
                     })}
                   </p>
-                  {draft.updatedAt !== draft.publishedAt && (
+                  {draft.updatedAt !== draft.createdAt && (
                     <p>
                       | Modifié le :{" "}
                       {new Date(draft.updatedAt).toLocaleString("fr-FR", {

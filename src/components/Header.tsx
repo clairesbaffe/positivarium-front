@@ -10,6 +10,7 @@ import {
   Flag,
   PenLine,
   SquarePen,
+  Newspaper,
 } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { logout } from "@/lib/auth";
@@ -118,6 +119,17 @@ export default function Header() {
                 >
                   <PenLine />
                   Demandes rédacteur
+                </Link>
+              </li>
+            )}
+            {user?.roles.includes("ROLE_PUBLISHER") && (
+              <li>
+                <Link
+                  href={"/publisher/articles"}
+                  className="flex gap-1 cursor-pointer"
+                >
+                  <Newspaper />
+                  Mes articles publiés
                 </Link>
               </li>
             )}
@@ -290,6 +302,7 @@ export default function Header() {
           {user?.roles.includes("ROLE_PUBLISHER") && (
             <div className="flex flex-col gap-3">
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
+              <Link href="/publisher/articles">Mes articles publiés</Link>
               <Link href="/publisher/drafts">Mes brouillons</Link>
             </div>
           )}

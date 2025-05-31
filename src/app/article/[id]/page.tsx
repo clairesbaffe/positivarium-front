@@ -6,6 +6,9 @@ import CommentsList from "@/components/articles/CommentsList";
 import ReportArticleButton from "@/components/articles/ReportArticleButton";
 import LikeButton from "@/components/articles/LikeButton";
 import DeleteArticleAdminButton from "@/components/admin/reports/DeleteArticleButton";
+import { sanitizeArticleHtml } from "@/lib/utils";
+import UpdateArticleButton from "@/components/publisher/articles/UpdateArticleButton";
+import DeleteArticleButton from "@/components/publisher/articles/DeleteArticleButton";
 
 export default async function Article({
   params,
@@ -20,13 +23,15 @@ export default async function Article({
   const article: Article = await getArticleById(Number(id));
   const comments: Comment[] = await getCommentsByArticleId(Number(id));
 
+  const cleanHtml = sanitizeArticleHtml(article.content);
+
   const message =
     success && success === "1"
       ? "Votre signalement a bien été enregistré. Il sera traité sous peu par nos administrateurs."
       : "";
 
   return (
-    <div className="md:w-2/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+    <div className="md:w-3/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
       {message && (
         <p className="border w-min whitespace-nowrap p-3 rounded-md border-foreground-muted text-foreground-muted">
           {message}
@@ -41,10 +46,26 @@ export default async function Article({
                 {article.category.generalCategory}
               </p>
               <div className="flex flex-col gap-2">
-                <h1 className="font-title text-3xl">{article.title}</h1>
+                <div className="flex flex-col md:flex-row gap-4 justify-between">
+                  <h1 className="font-title text-4xl">{article.title}</h1>
+                  <div className="flex gap-4">
+                    <UpdateArticleButton
+                      articleId={article.id}
+                      author={article.username}
+                    />
+                    <DeleteArticleAdminButton
+                      articleId={article.id}
+                      author={article.username}
+                      next="/"
+                    />
+                    <DeleteArticleButton
+                      articleId={article.id}
+                      author={article.username}
+                    />
+                  </div>
+                </div>
                 <p className="text-lg">{article.description}</p>
               </div>
-              <DeleteArticleAdminButton articleId={article.id} next="/" />
               <div className="flex items-center justify-between font-thin">
                 <div>
                   <Link
@@ -84,8 +105,13 @@ export default async function Article({
               </div>
             </div>
             <img src={article.mainImage} alt={article.title} />
-            <div>{article.content}</div>
-            <ReportArticleButton articleId={article.id} author={article.username} />
+            <div className="article-content">
+              <div dangerouslySetInnerHTML={{ __html: cleanHtml }}></div>
+            </div>
+            <ReportArticleButton
+              articleId={article.id}
+              author={article.username}
+            />
           </section>
           <CommentsList comments={comments} articleId={article.id} />
         </div>
