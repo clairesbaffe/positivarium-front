@@ -6,6 +6,8 @@ import { sanitizeArticleHtml } from "@/lib/utils";
 import "@/styles/articleStyle.css";
 import Button from "@/components/Button";
 import { SquarePen } from "lucide-react";
+import DeleteDraftButton from "@/components/publisher/drafts/DeleteDraftButton";
+import PublishDraftButton from "@/components/publisher/drafts/PublishDraftButton";
 
 export default async function Draft({
   params,
@@ -31,7 +33,8 @@ export default async function Draft({
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <h1 className="font-title text-3xl">{draft.title}</h1>
-                  <div>
+                  <div className="flex gap-4">
+                    <PublishDraftButton draftId={draft.id} />
                     <Button
                       title="Modifier"
                       background="bg-dark-colored-background"
@@ -39,6 +42,7 @@ export default async function Draft({
                       icon={<SquarePen size={18} />}
                       href={`/publisher/drafts/create/${draft.id}`}
                     />
+                    <DeleteDraftButton draftId={draft.id} />
                   </div>
                 </div>
                 <p className="text-lg">{draft.description}</p>
