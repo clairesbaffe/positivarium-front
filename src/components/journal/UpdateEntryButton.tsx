@@ -15,23 +15,33 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Textarea from "@/components/Textarea";
+import CategorySelector from "@/components/CategorySelector";
 import MoodSelector from "@/components/journal/MoodSelector";
 
 export default function UpdateEntryButton({
   entry,
   moods,
+  categories,
 }: {
   entry: JournalEntry;
   moods: Mood[];
+  categories: Category[];
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [description, setDescription] = useState(entry.description);
   const [selectedMoods, setSelectedMoods] = useState<Mood[]>(entry.moods);
-  // const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>(
+    entry.categories
+  );
 
   const handleUpdate = async () => {
-    const res = await updateEntry(entry.id, description, selectedMoods, []);
+    const res = await updateEntry(
+      entry.id,
+      description,
+      selectedMoods,
+      selectedCategories
+    );
 
     if (!res.success) {
       const errorData = res.error;
@@ -65,7 +75,7 @@ export default function UpdateEntryButton({
         </DialogHeader>
         <div className="flex flex-col gap-8 py-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="content" className="font-semibold">
+            <label htmlFor="content" className="font-semibold text-lg">
               A quoi pensez-vous ?
             </label>
             <Textarea
@@ -76,7 +86,7 @@ export default function UpdateEntryButton({
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="" className="font-semibold">
+            <label htmlFor="" className="font-semibold text-lg">
               Comment vous sentez-vous ?
             </label>
             <MoodSelector
@@ -85,7 +95,16 @@ export default function UpdateEntryButton({
               onChange={setSelectedMoods}
             />
           </div>
-          {/* CategorySelector */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="" className="font-semibold text-lg">
+              Qu'aimeriez-vous voir dans votre feed ?
+            </label>
+            <CategorySelector
+              categories={categories}
+              defaultSelectedCategories={entry.categories}
+              onChange={setSelectedCategories}
+            />
+          </div>
         </div>
         <DialogFooter>
           <Button

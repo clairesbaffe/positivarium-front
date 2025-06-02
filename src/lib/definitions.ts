@@ -115,5 +115,6 @@ export type JournalEntry = {
   id: number;
   description: string;
   moods: Mood[];
+  categories: Category[];
   createdAt: Date;
 };
