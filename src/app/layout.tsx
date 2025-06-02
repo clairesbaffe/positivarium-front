@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Nunito, Trochut } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { getCurrentUser } from "@/lib/auth";
 import { UserProvider } from "@/context/UserContext";
+
+import { Nunito, Trochut } from "next/font/google";
+import "./globals.css";
+
 import { ToastContainer } from "react-toastify";
-import { redirect } from "next/navigation";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const nunitoSans = Nunito({
   variable: "--font-nunito-sans",
