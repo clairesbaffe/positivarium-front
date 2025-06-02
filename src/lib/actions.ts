@@ -1020,7 +1020,11 @@ export async function deleteArticlePublisher(id: number) {
   return { success: true };
 }
 
-export async function addGlobalPreference(mood: Mood, categories: Category[]) {
+export async function addOrUpdateGlobalPreference(
+  mood: Mood,
+  categories: Category[],
+  id?: number
+) {
   const token = (await cookies()).get("access_token")?.value;
   if (!token) throw new Error("NOT_CONNECTED");
 
@@ -1031,7 +1035,7 @@ export async function addGlobalPreference(mood: Mood, categories: Category[]) {
   const categoryIds: number[] = categories.map((cat) => cat.id);
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/global_preferences/`,
+    `${process.env.NEXT_PUBLIC_API_URL}/global_preferences/${id ? id : ""}`,
     {
       method: "POST",
       headers: {
@@ -1042,7 +1046,32 @@ export async function addGlobalPreference(mood: Mood, categories: Category[]) {
     }
   );
 
-    if (!res.ok) {
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    throw new Error(`Request failed : ${error}`);
+  }
+
+  revalidatePath(`/profile/news_preferences`);
+}
+
+export async function deleteGlobalPreference(id: number) {
+  const token = (await cookies()).get("access_token")?.value;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/global_preferences/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
     const errorData = await res.json().catch(() => null);
     console.error(errorData?.error || "Erreur inconnue");
 

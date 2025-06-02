@@ -4,18 +4,16 @@ import { useState } from "react";
 export default function CategorySelector({
   categories,
   onChange,
-  defaultSelectedCategories,
+  defaultSelectedCategoryIds,
   multiple = true,
 }: {
   categories: Category[];
   onChange: (selected: Category[]) => void;
-  defaultSelectedCategories?: Category[];
+  defaultSelectedCategoryIds?: number[];
   multiple?: boolean;
 }) {
   const [selectedIds, setSelectedIds] = useState<number[]>(
-    defaultSelectedCategories
-      ? defaultSelectedCategories.map((cat) => cat.id)
-      : []
+    defaultSelectedCategoryIds || []
   );
 
   const grouped = categories.reduce<

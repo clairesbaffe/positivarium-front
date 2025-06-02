@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Category, Mood } from "@/lib/definitions";
-import { addGlobalPreference } from "@/lib/actions";
+import { Category, GlobalPreference, Mood } from "@/lib/definitions";
+import { addOrUpdateGlobalPreference } from "@/lib/actions";
 
 import {
   Dialog,
@@ -13,22 +13,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { Plus, SquarePen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MoodSelector from "@/components/MoodSelector";
 import CategorySelector from "@/components/CategorySelector";
 
-export default function AddGlobalPreferenceButton({
+export default function AddOrUpdateGlobalPreferenceButton({
   moods,
   categories,
+  preference,
 }: {
   moods: Mood[];
   categories: Category[];
+  preference?: GlobalPreference;
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const [selectedMoods, setSelectedMoods] = useState<Mood[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [selectedMoods, setSelectedMoods] = useState<Mood[]>(
+    preference ? [preference.mood] : []
+  );
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>(
+    preference?.categories || []
+  );
 
   const [message, setMessage] = useState<{
     message: string;
@@ -41,7 +47,11 @@ export default function AddGlobalPreferenceButton({
         throw new Error("INPUTS_MISSING");
       }
 
-      await addGlobalPreference(selectedMoods[0], selectedCategories);
+      await addOrUpdateGlobalPreference(
+        selectedMoods[0],
+        selectedCategories,
+        preference?.id
+      );
 
       setMessage({ message: "", type: "success" });
       setIsDialogOpen(false);
@@ -70,15 +80,19 @@ export default function AddGlobalPreferenceButton({
           className={`bg-opacity-100 py-2.5 px-4 h-min rounded-md font-semibold bg-dark-colored-background text-foreground-inverted cursor-pointer`}
           onClick={() => setIsDialogOpen(true)}
         >
-          <div className="flex items-center justify-center whitespace-nowrap gap-2">
-            <Plus size={18} />
-            Ajouter une préférence
-          </div>
+          {preference ? (
+            <SquarePen />
+          ) : (
+            <div className="flex items-center justify-center whitespace-nowrap gap-2">
+              <Plus size={18} />
+              Ajouter une préférence
+            </div>
+          )}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-3/5 max-h-3/5 overflow-y-auto">
+        <DialogContent className="sm:max-w-3/5 max-h-4/5 overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl">
-              Ajouter une préférence de feed
+              {preference ? "Mettre à jour" : "Ajouter"} une préférence de feed
             </DialogTitle>
           </DialogHeader>
           <DialogDescription>
@@ -96,7 +110,7 @@ export default function AddGlobalPreferenceButton({
               <MoodSelector
                 moods={moods}
                 onChange={setSelectedMoods}
-                selectedMoodIds={[]}
+                selectedMoodIds={selectedMoods.map((mood) => mood.id)}
                 multiple={false}
               />
             </div>
@@ -107,6 +121,9 @@ export default function AddGlobalPreferenceButton({
               <CategorySelector
                 categories={categories}
                 onChange={setSelectedCategories}
+                defaultSelectedCategoryIds={selectedCategories.map(
+                  (cat) => cat.id
+                )}
               />
             </div>
           </div>
@@ -120,7 +137,7 @@ export default function AddGlobalPreferenceButton({
               className="cursor-pointer"
               onClick={() => handleClick()}
             >
-              Ajouter
+              Enregistrer
             </Button>
           </DialogFooter>
         </DialogContent>

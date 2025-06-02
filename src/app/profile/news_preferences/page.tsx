@@ -1,6 +1,6 @@
-import GlobalPreferencesTable from "@/components/profile/global_preferences/GlobalPreferencesList";
+import GlobalPreferencesTable from "@/components/profile/global_preferences/GlobalPreferencesTable";
 import { getCategories, getMoods, getUserGlobalPreferences } from "@/lib/data";
-import AddGlobalPreferenceButton from "@/components/profile/global_preferences/AddGlobalPreferenceButton";
+import AddOrUpdateGlobalPreferenceButton from "@/components/profile/global_preferences/AddOrUpdateGlobalPreferenceButton";
 
 export default async function NewsPreferences({
   searchParams,
@@ -24,7 +24,7 @@ export default async function NewsPreferences({
             <h1 className="font-title text-2xl md:text-4xl">
               Mes préférences de feed
             </h1>
-            <AddGlobalPreferenceButton moods={moods} categories={categories} />
+            <AddOrUpdateGlobalPreferenceButton moods={moods} categories={categories} />
           </div>
           {preferences && preferences.length > 0 ? (
             <div>
@@ -61,6 +61,8 @@ export default async function NewsPreferences({
           currentPage={currentPage}
           totalPages={totalPages}
           url="/profile/news_preferences"
+          moods={moods}
+          categories={categories}
         />
       </section>
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
-import { redirect } from "next/navigation";
-import { ArticleReport, GlobalPreference } from "@/lib/definitions";
+import { Category, GlobalPreference, Mood } from "@/lib/definitions";
 
 import {
   Table,
@@ -13,19 +12,23 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PaginationControls from "@/components/Pagination";
-import Button from "@/components/Button";
-import { SquarePen, Trash2 } from "lucide-react";
+import AddOrUpdateGlobalPreferenceButton from "@/components/profile/global_preferences/AddOrUpdateGlobalPreferenceButton";
+import DeleteGlobalPreferenceButton from "@/components/profile/global_preferences/DeleteGlobalPreferenceButton";
 
 export default function GlobalPreferencesTable({
   currentPage,
   totalPages,
   url,
   preferences,
+  moods,
+  categories,
 }: {
   currentPage: number;
   totalPages: number;
   url: string;
   preferences: GlobalPreference[];
+  moods: Mood[];
+  categories: Category[];
 }) {
   return (
     <div className="flex flex-col gap-4">
@@ -41,36 +44,26 @@ export default function GlobalPreferencesTable({
         <TableBody>
           {preferences.map((pref) => {
             return (
-              <TableRow
-                key={pref.id}
-                onClick={() => redirect(`/admin/reports/articles/${pref.id}`)}
-                className="cursor-pointer h-12"
-              >
+              <TableRow key={pref.id} className="cursor-pointer h-12">
                 <TableCell className="font-medium whitespace-normal h-[2rem]">
                   <div className="line-clamp-1">{pref.mood.name}</div>
                 </TableCell>
                 <TableCell className="whitespace-normal h-[2rem]">
-                  {pref.categories.map((pref) => (
-                    <p key={pref.id}>
-                      {pref.name} ({pref.generalCategory})
+                  {pref.categories.map((cat) => (
+                    <p key={cat.id}>
+                      {cat.name} ({cat.generalCategory})
                     </p>
                   ))}
                 </TableCell>
                 <TableCell>
-                  <Button
-                    title=""
-                    background="bg-colored-background"
-                    textColor="text-foreground-inverted"
-                    icon={<SquarePen />}
+                  <AddOrUpdateGlobalPreferenceButton
+                    moods={moods}
+                    categories={categories}
+                    preference={pref}
                   />
                 </TableCell>
                 <TableCell>
-                  <Button
-                    title=""
-                    background="bg-background-danger"
-                    textColor="text-foreground-inverted"
-                    icon={<Trash2 />}
-                  />
+                  <DeleteGlobalPreferenceButton preferenceId={pref.id} />
                 </TableCell>
               </TableRow>
             );

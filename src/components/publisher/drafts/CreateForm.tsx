@@ -236,7 +236,9 @@ export default function CreateForm({
             <label className="text-lg">Catégorie</label>
             <CategorySelector
               categories={categories}
-              defaultSelectedCategories={selectedCategories}
+              defaultSelectedCategoryIds={selectedCategories.map(
+                (cat) => cat.id
+              )}
               onChange={setSelectedCategories}
               multiple={false}
             />

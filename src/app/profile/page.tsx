@@ -38,13 +38,15 @@ export default async function MyProfile({
             </div>
           </div>
           <div className="flex flex-wrap gap-6 items-center">
-            <Button
-              title="Gérer mes préférences de feed"
-              background="bg-dark-colored-background"
-              textColor="text-foreground-inverted"
-              icon={null}
-              href="/profile/news_preferences"
-            />
+            {user.roles.includes("ROLE_USER") && (
+              <Button
+                title="Gérer mes préférences de feed"
+                background="bg-dark-colored-background"
+                textColor="text-foreground-inverted"
+                icon={null}
+                href="/profile/news_preferences"
+              />
+            )}
             <UpdateInfoButton user={user} />
             <UpdatePasswordButton user={user} />
           </div>

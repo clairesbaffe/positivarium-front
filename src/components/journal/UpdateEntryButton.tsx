@@ -101,7 +101,7 @@ export default function UpdateEntryButton({
             </label>
             <CategorySelector
               categories={categories}
-              defaultSelectedCategories={entry.categories}
+              defaultSelectedCategoryIds={entry.categories.map((cat) => cat.id)}
               onChange={setSelectedCategories}
             />
           </div>

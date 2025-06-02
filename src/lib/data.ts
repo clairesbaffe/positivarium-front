@@ -412,12 +412,6 @@ export async function getUserGlobalPreferences(currentPage: number) {
   if (!user.roles.includes("ROLE_USER"))
     return { success: false, error: "User must be a user" };
 
-  console.log(
-    `${process.env.NEXT_PUBLIC_API_URL}/global_preferences/?page=${
-      currentPage - 1
-    }&size=20`
-  );
-
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/global_preferences/?page=${
       currentPage - 1
