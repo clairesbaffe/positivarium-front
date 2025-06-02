@@ -2,11 +2,11 @@ import Link from "next/link";
 import type { Article, Comment } from "@/lib/definitions";
 import { getArticleById, getCommentsByArticleId } from "@/lib/data";
 
+import SanitizedContent from "@/components/SanitizedContent";
 import CommentsList from "@/components/articles/CommentsList";
 import ReportArticleButton from "@/components/articles/ReportArticleButton";
 import LikeButton from "@/components/articles/LikeButton";
 import DeleteArticleAdminButton from "@/components/admin/reports/DeleteArticleButton";
-import { sanitizeArticleHtml } from "@/lib/utils";
 import UpdateArticleButton from "@/components/publisher/articles/UpdateArticleButton";
 import DeleteArticleButton from "@/components/publisher/articles/DeleteArticleButton";
 
@@ -22,8 +22,6 @@ export default async function Article({
 
   const article: Article = await getArticleById(Number(id));
   const comments: Comment[] = await getCommentsByArticleId(Number(id));
-
-  const cleanHtml = sanitizeArticleHtml(article.content);
 
   const message =
     success && success === "1"
@@ -105,9 +103,7 @@ export default async function Article({
               </div>
             </div>
             <img src={article.mainImage} alt={article.title} />
-            <div className="article-content">
-              <div dangerouslySetInnerHTML={{ __html: cleanHtml }}></div>
-            </div>
+            <SanitizedContent content={article.content} />
             <ReportArticleButton
               articleId={article.id}
               author={article.username}

@@ -1,11 +1,10 @@
 import Link from "next/link";
 import type { Article } from "@/lib/definitions";
 import { getDraftById } from "@/lib/data";
-import { sanitizeArticleHtml } from "@/lib/utils";
 
-import "@/styles/articleStyle.css";
-import Button from "@/components/Button";
 import { SquarePen } from "lucide-react";
+import Button from "@/components/Button";
+import SanitizedContent from "@/components/SanitizedContent";
 import DeleteDraftButton from "@/components/publisher/drafts/DeleteDraftButton";
 import PublishDraftButton from "@/components/publisher/drafts/PublishDraftButton";
 
@@ -17,8 +16,6 @@ export default async function Draft({
   const id = (await params).id;
 
   const draft: Article = await getDraftById(Number(id));
-
-  const cleanHtml = sanitizeArticleHtml(draft.content);
 
   return (
     <div className="md:w-3/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
@@ -74,9 +71,7 @@ export default async function Draft({
               </div>
             </div>
             <img src={draft.mainImage} alt={draft.title} />
-            <div className="article-content">
-              <div dangerouslySetInnerHTML={{ __html: cleanHtml }}></div>
-            </div>
+            <SanitizedContent content={draft.content} />
           </section>
         </div>
       )}

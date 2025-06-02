@@ -2,20 +2,17 @@ import { useEffect, useState } from "react";
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
-import TurndownService from "turndown";
 
 const mdParser = new MarkdownIt();
-const turndownService = new TurndownService();
 
 export default function MarkdownEditor({
-  htmlContent,
-  setHtmlContent,
+  mdContent,
+  setMdContent,
 }: {
-  htmlContent: string;
-  setHtmlContent: (value: string) => void;
+  mdContent: string;
+  setMdContent: (value: string) => void;
 }) {
   const [isMobile, setIsMobile] = useState(false);
-  const [markdownContent, setMarkdownContent] = useState(turndownService.turndown(htmlContent));
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -25,7 +22,8 @@ export default function MarkdownEditor({
   }, []);
 
   function handleEditorChange({ html, text }: { html: string; text: string }) {
-    setHtmlContent(html);
+    console.log(text);
+    setMdContent(text);
   }
 
   return (
@@ -33,7 +31,7 @@ export default function MarkdownEditor({
       style={{ height: "500px" }}
       renderHTML={(text) => mdParser.render(text)}
       view={{ menu: true, md: true, html: !isMobile }}
-      defaultValue={markdownContent}
+      defaultValue={mdContent}
       onChange={handleEditorChange}
     />
   );

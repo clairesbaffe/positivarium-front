@@ -223,7 +223,7 @@ export default function CreateForm({
               Ecrivez ici le contenu de l'article{" "}
               <span className="text-red-400">*</span>
             </label>
-            <MarkdownEditor htmlContent={content} setHtmlContent={setContent} />
+            <MarkdownEditor mdContent={content} setMdContent={setContent} />
           </div>
 
           <ImageUploadForm
