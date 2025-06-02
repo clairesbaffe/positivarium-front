@@ -49,20 +49,13 @@ export default function DeleteCommentAdminButton({
         throw new Error("INPUTS_MISSING");
       }
 
-      const res = await deleteCommentAdmin(commentId, articleId);
+      await deleteCommentAdmin(commentId, articleId);
 
       // send notification with reason
 
-      if (!res.success) {
-        const errorData = res.error;
-        console.error(errorData?.error || "Échec de l'action.");
-        toast.error(errorData?.error || "Échec de l'action.");
-      } else {
-        if (next) router.push(next);
-        toast.success("Le commentaire a été supprimé.");
-      }
-
+      toast.success("Le commentaire a été supprimé.");
       setMessage({ message: "", type: "success" });
+      if (next) router.push(next);
     } catch (error) {
       console.error("Erreur :", error);
       if (error instanceof Error) {

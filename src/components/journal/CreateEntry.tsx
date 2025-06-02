@@ -41,17 +41,13 @@ export default function CreateEntry({
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
   const handleClick = async () => {
-    const res = await createEntry(content, selectedMoods, selectedCategories);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de l'action");
-      toast.error(errorData?.error || "Échec de l'action.");
-      return;
+    try {
+      const res = await createEntry(content, selectedMoods, selectedCategories);
+      toast.success("Entrée ajoutée avec succès");
+      router.push(`/journal`);
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    toast.success("Entrée ajoutée avec succès");
-    router.push(`/journal`);
   };
 
   return (

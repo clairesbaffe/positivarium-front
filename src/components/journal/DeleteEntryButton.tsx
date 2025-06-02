@@ -17,15 +17,12 @@ import { Trash2 } from "lucide-react";
 
 export default function DeleteEntryButton({ entry }: { entry: JournalEntry }) {
   const handleDelete = async () => {
-    const res = await deleteEntry(entry.id);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de la suppression.");
-      toast.error(errorData?.error || "Échec de la suppression.");
+    try {
+      await deleteEntry(entry.id);
+      toast.success("L'entrée a été supprimée.");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    toast.success("L'entrée a été supprimée.");
   };
 
   return (

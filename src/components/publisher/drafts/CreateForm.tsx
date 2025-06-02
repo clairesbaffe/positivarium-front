@@ -81,16 +81,8 @@ export default function CreateForm({
       let imageUrl: string;
 
       if (file) {
-        let uploadedUrl;
-        try {
-          uploadedUrl = await handleImageUpload();
-        } catch (error) {
-          if (error instanceof Error) {
-            throw new Error(error.message);
-          } else {
-            throw new Error(String(error)); // fallback
-          }
-        }
+        const uploadedUrl = await handleImageUpload();
+
         if (!uploadedUrl) {
           throw new Error("IMAGE_MISSING");
         }
@@ -102,9 +94,23 @@ export default function CreateForm({
       }
 
       let res;
-      try {
-        if (isPublished && article) {
-          res = await updateArticle(
+      if (isPublished && article) {
+        res = await updateArticle(
+          article.id,
+          title,
+          description,
+          content,
+          imageUrl,
+          selectedCategories[0].id
+        );
+
+        const articleId = article ? article.id : res.id;
+        setErrorMessage("");
+        toast.success("Article mis à jour.");
+        router.push(`/article/${articleId}`);
+      } else {
+        if (article) {
+          res = await updateDraft(
             article.id,
             title,
             description,
@@ -112,39 +118,20 @@ export default function CreateForm({
             imageUrl,
             selectedCategories[0].id
           );
-
-          const articleId = article ? article.id : res.id;
-          setErrorMessage("");
-          toast.success("Article mis à jour.");
-          router.push(`/article/${articleId}`);
         } else {
-          if (article) {
-            res = await updateDraft(
-              article.id,
-              title,
-              description,
-              content,
-              imageUrl,
-              selectedCategories[0].id
-            );
-          } else {
-            res = await createDraft(
-              title,
-              description,
-              content,
-              imageUrl,
-              selectedCategories[0].id
-            );
-          }
-
-          const draftId = article ? article.id : res.id;
-          setErrorMessage("");
-          toast.success("Brouillon enregistré.");
-          router.push(`/publisher/drafts/${draftId}`);
+          res = await createDraft(
+            title,
+            description,
+            content,
+            imageUrl,
+            selectedCategories[0].id
+          );
         }
-      } catch (error) {
-        toast.error(String(error));
-        throw new Error(String(error));
+
+        const draftId = article ? article.id : res.id;
+        setErrorMessage("");
+        toast.success("Brouillon enregistré.");
+        router.push(`/publisher/drafts/${draftId}`);
       }
     } catch (error) {
       console.error("Erreur de mise à jour :", error);

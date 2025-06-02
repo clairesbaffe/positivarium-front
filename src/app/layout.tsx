@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { getCurrentUser } from "@/lib/auth";
 import { UserProvider } from "@/context/UserContext";
 import { ToastContainer } from "react-toastify";
+import { redirect } from "next/navigation";
 
 const nunitoSans = Nunito({
   variable: "--font-nunito-sans",
@@ -28,7 +29,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getCurrentUser();
+    let user = null;
+
+  try {
+    user = await getCurrentUser();
+  } catch (error) {
+    console.error("Failed to fetch user:", error);
+    // Optionnel : redirect, throw, ou afficher un fallback plus bas
+  }
 
   return (
     <html lang="en">

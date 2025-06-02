@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import type { Comment } from "@/lib/definitions";
 import { deleteComment, reportComment } from "@/lib/actions";
 import { useUser } from "@/context/UserContext";
@@ -27,6 +26,7 @@ import {
 import Textarea from "@/components/Textarea";
 import { Button } from "@/components/ui/button";
 import DeleteCommentAdminButton from "../admin/reports/DeleteCommentButton";
+import { toast } from "react-toastify";
 
 export default function CommentCard({
   comment,
@@ -37,31 +37,30 @@ export default function CommentCard({
   isOwn: boolean;
   articleId: number;
 }) {
-  const router = useRouter();
   const user = useUser();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [reportReason, setReportReason] = useState("");
 
   const handleDelete = async () => {
-    const res = await deleteComment(articleId, comment.id);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de la publication");
+    try {
+      await deleteComment(articleId, comment.id);
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
   };
 
   const handleReport = async () => {
-    const res = await reportComment(reportReason, comment.id);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec du signalement");
+    try {
+      await reportComment(reportReason, comment.id);
+      toast.success(
+        "Votre signalement a été enregistré. Il sera traité sous peu par nos administrateurs."
+      );
+      setIsDialogOpen(false);
+      setReportReason("");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    setIsDialogOpen(false);
-    router.push(`/article/${articleId}?success=1`);
   };
 
   return (

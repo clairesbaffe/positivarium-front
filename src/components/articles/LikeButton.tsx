@@ -1,7 +1,8 @@
 "use client";
 
-import { Heart } from "lucide-react";
 import { like, unlike } from "@/lib/actions";
+import { toast } from "react-toastify";
+import { Heart } from "lucide-react";
 
 export default function LikeButton({
   articleId,
@@ -10,7 +11,13 @@ export default function LikeButton({
   articleId: number;
   userLiked: boolean;
 }) {
-  const handleClick = () => (userLiked ? unlike(articleId) : like(articleId));
+  const handleClick = async () => {
+    try {
+      userLiked ? await unlike(articleId) : await like(articleId);
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
+    }
+  };
 
   return (
     <Heart

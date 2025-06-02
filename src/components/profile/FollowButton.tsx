@@ -6,12 +6,20 @@ import { follow, unfollow } from "@/lib/actions";
 
 import { CircleUserRound } from "lucide-react";
 import Button from "@/components/Button";
+import { toast } from "react-toastify";
 
 export default function FollowButton({ publisher }: { publisher: User }) {
   const user = useUser();
 
-  const handleClick = () =>
-    publisher.isFollowed ? unfollow(publisher.id) : follow(publisher.id);
+  const handleClick = async () => {
+    try {
+      publisher.isFollowed
+        ? await unfollow(publisher.id)
+        : await follow(publisher.id);
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
+    }
+  };
 
   return (
     <div>

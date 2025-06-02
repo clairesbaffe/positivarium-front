@@ -26,7 +26,7 @@ export default function DeleteDraftButton({ draftId }: { draftId: number }) {
       toast.success("Le brouillon a été supprimé.");
       router.push("/publisher/drafts");
     } catch (error) {
-      toast.error(String(error) || "Échec de l'action.");
+      toast.error("Une erreur est survenue.");
     }
   };
 

@@ -9,6 +9,7 @@ import { CircleUserRound } from "lucide-react";
 import CommentCard from "@/components/articles/CommentCard";
 import Button from "@/components/Button";
 import Textarea from "@/components/Textarea";
+import { toast } from "react-toastify";
 
 export default function CommentsList({
   comments,
@@ -27,16 +28,13 @@ export default function CommentsList({
   } | null>(null);
 
   const handleComment = async (comment: string) => {
-    const res = await createComment(comment, articleId);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de la publication");
-      const message = errorData?.error || "Échec de la publication";
-      setMessage({ message: message, type: "error" });
+    try {
+      await createComment(comment, articleId);
+      setIsCommenting(false);
+      setComment("");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    setIsCommenting(false);
   };
 
   return (

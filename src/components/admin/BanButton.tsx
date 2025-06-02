@@ -37,17 +37,11 @@ export default function BanButton({ user }: { user: UserDetails }) {
         throw new Error("INPUTS_MISSING");
       }
 
-      const res = user.roles.includes("ROLE_BAN")
+      user.roles.includes("ROLE_BAN")
         ? await unban(user.username)
         : await ban(user.username);
 
       // send notification with reason
-
-      if (!res.success) {
-        const errorData = res.error;
-        console.error(errorData?.error || "Échec de l'action.");
-        toast.error(errorData?.error || "Échec de l'action.");
-      }
 
       toast.success(
         user.roles.includes("ROLE_BAN")
@@ -58,7 +52,6 @@ export default function BanButton({ user }: { user: UserDetails }) {
       setReason("");
       setIsDialogOpen(false);
     } catch (error) {
-      console.error("Erreur :", error);
       if (error instanceof Error) {
         if (error.message.includes("INPUTS_MISSING")) {
           setMessage({

@@ -48,18 +48,11 @@ export default function DeleteArticleAdminButton({
         throw new Error("INPUTS_MISSING");
       }
 
-      const res = await deleteArticleAdmin(articleId);
+      await deleteArticleAdmin(articleId);
 
       // send notification with reason
 
-      if (!res.success) {
-        const errorData = res.error;
-        console.error(errorData?.error || "Échec de l'action.");
-        toast.error(errorData?.error || "Échec de l'action.");
-      } else {
-        router.push(next);
-      }
-
+      router.push(next);
       setMessage({ message: "", type: "success" });
     } catch (error) {
       console.error("Erreur :", error);

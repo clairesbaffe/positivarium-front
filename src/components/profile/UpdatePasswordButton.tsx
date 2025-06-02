@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { UserDetails } from "@/lib/definitions";
-import { updatePassword } from "@/lib/actions";
+import { updatePassword } from "@/lib/auth";
 
 import { toast } from 'react-toastify';
 import {
@@ -42,14 +42,7 @@ export default function UpdatePasswordButton({ user }: { user: UserDetails }) {
         throw new Error("PASSWORDS_NOT_MATCHING");
       }
 
-      const res = await updatePassword(previousPassword, newPassword);
-
-      if (!res.success) {
-        const errorData = res.error;
-        console.error(errorData?.error || "Échec de la mise à jour");
-        const message = errorData?.error || "Échec de la mise à jour";
-        throw new Error(message);
-      }
+      await updatePassword(previousPassword, newPassword);
 
       setMessage({ message: "", type: "success" });
       setIsDialogOpen(false);

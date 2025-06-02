@@ -13,8 +13,6 @@ export async function fetchData(
   try {
     const token = (await cookies()).get("access_token")?.value;
 
-    console.log(`Fetching ${endpoint}`);
-
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
       method: method,
       headers: {
@@ -24,37 +22,23 @@ export async function fetchData(
       body: body,
     });
 
-    return await res.json();
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`HTTP ${res.status}: ${errorText}`);
+    }
+
+    if (res.status === 204 || res.headers.get("Content-Length") === "0") {
+      return null;
+    }
+
+    const contentType = res.headers.get("Content-Type");
+    if (contentType && contentType.includes("application/json")) {
+      return await res.json();
+    }
+
+    return await res.text();
   } catch (error) {
-    throw new Error(String(error));
-  }
-}
-
-export async function saveAccessTokenInCookies(token: string) {
-  (await cookies()).set({
-    name: "access_token",
-    value: token,
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60, // 1h
-  });
-}
-
-export async function login(username: string, password: string) {
-  try {
-    const data = await fetchData(
-      `/login`,
-      "POST",
-      JSON.stringify({ username, password })
-    );
-
-    await saveAccessTokenInCookies(data.token);
-
-    return { success: true };
-  } catch (error) {
-    return { success: false, error };
+    throw new Error(`Fetch error: ${String(error)}`);
   }
 }
 
@@ -63,9 +47,8 @@ export async function like(articleId: number) {
     await fetchData(`/likes/article/${articleId}`, "POST");
 
     revalidatePath(`/article/${articleId}`); // to update heart icon in UI
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -74,9 +57,8 @@ export async function unlike(articleId: number) {
     await fetchData(`/likes/article/${articleId}`, "DELETE");
 
     revalidatePath(`/article/${articleId}`); // to update heart icon in UI
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -89,9 +71,8 @@ export async function createComment(content: string, articleId: number) {
     );
 
     revalidatePath(`/article/${articleId}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -100,9 +81,8 @@ export async function deleteComment(articleId: number, commentId: number) {
     await fetchData(`/comments/${commentId}`, "DELETE");
 
     revalidatePath(`/article/${articleId}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -113,9 +93,8 @@ export async function reportComment(reason: string, commentId: number) {
       "POST",
       JSON.stringify({ reason, isReviewed: false })
     );
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -126,9 +105,8 @@ export async function reportArticle(reason: string, articleId: number) {
       "POST",
       JSON.stringify({ reason, isReviewed: false })
     );
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -137,9 +115,8 @@ export async function follow(publisherId: number) {
     await fetchData(`/user/follow/${publisherId}`, "POST");
 
     revalidatePath(`/profile/${publisherId}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -148,43 +125,8 @@ export async function unfollow(publisherId: number) {
     await fetchData(`/user/follow/${publisherId}`, "DELETE");
 
     revalidatePath(`/profile/${publisherId}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
-  }
-}
-
-export async function updateProfileInfo(
-  username: string,
-  email: string,
-  description: string
-) {
-  try {
-    const data = await fetchData(
-      `/profile/`,
-      "PATCH",
-      JSON.stringify({ username, email, description })
-    );
-
-    await saveAccessTokenInCookies(data.token);
-
-    revalidatePath(`/profile`);
-    return { success: true };
-  } catch (error) {
-    return { success: false, error };
-  }
-}
-
-export async function updatePassword(oldPassword: string, newPassword: string) {
-  try {
-    await fetchData(
-      `/profile/password`,
-      "PATCH",
-      JSON.stringify({ oldPassword, newPassword })
-    );
-    return { success: true };
-  } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -193,9 +135,8 @@ export async function ban(username: string) {
     await fetchData(`/admin/users/ban/${username}`, "PATCH");
 
     revalidatePath(`/admin/users/${username}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -204,9 +145,8 @@ export async function unban(username: string) {
     await fetchData(`/admin/users/unban/${username}`, "PATCH");
 
     revalidatePath(`/admin/users/${username}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -215,9 +155,8 @@ export async function grantAdmin(username: string) {
     await fetchData(`/admin/users/admin/${username}`, "PUT");
 
     revalidatePath(`/admin/users/${username}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -229,18 +168,16 @@ export async function markReportAsRead(
     await fetchData(`/admin/reports/${type}s/${id}`, "POST");
 
     revalidatePath(`/admin/reports/${type}s/${id}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
 export async function deleteArticleAdmin(id: number) {
   try {
     await fetchData(`/admin/articles/${id}`, "DELETE");
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -249,9 +186,8 @@ export async function deleteCommentAdmin(id: number, articleId?: number) {
     await fetchData(`/admin/comments/${id}`, "DELETE");
 
     if (articleId) revalidatePath(`/article/${articleId}`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -264,9 +200,8 @@ export async function sendPublisherRequest(motivation: string) {
     );
 
     revalidatePath(`/user/publisher_requests`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -278,9 +213,8 @@ export async function updatePublisherRequestStatusAdmin(
     await fetchData(`/admin/publisher_requests/${id}?status=${status}`, "POST");
 
     revalidatePath(`/admin/publisher_requests`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -289,9 +223,8 @@ export async function cancelPublisherRequestUser(id: number) {
     await fetchData(`/user/publisher_request/cancel/${id}`, "POST");
 
     revalidatePath(`/user/publisher_requests`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -311,9 +244,8 @@ export async function createEntry(
     );
 
     revalidatePath(`/journal`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -334,9 +266,8 @@ export async function updateEntry(
     );
 
     revalidatePath(`/journal`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -345,9 +276,8 @@ export async function deleteEntry(id: number) {
     await fetchData(`/journal/${id}`, "DELETE");
 
     revalidatePath(`/journal`);
-    return { success: true };
   } catch (error) {
-    return { success: false, error };
+    throw new Error(String(error));
   }
 }
 
@@ -398,9 +328,9 @@ export async function createDraft(
         category: { id: categoryId },
       })
     );
-    return { success: true, id: data.id };
+    return { id: data.id };
   } catch (error) {
-    throw new Error(`Request failed : ${error}`);
+    throw new Error(String(error));
   }
 }
 
@@ -424,27 +354,25 @@ export async function updateDraft(
         category: { id: categoryId },
       })
     );
-    return { success: true, id: null };
+    return { id: null };
   } catch (error) {
-    throw new Error(`Request failed : ${error}`);
+    throw new Error(String(error));
   }
 }
 
 export async function deleteDraft(id: number) {
   try {
     await fetchData(`/publisher/articles/drafts/${id}`, "DELETE");
-    return { success: true };
   } catch (error) {
-    throw new Error(`Request failed : ${error}`);
+    throw new Error(String(error));
   }
 }
 
 export async function publishDraft(id: number) {
   try {
     await fetchData(`/publisher/articles/publish/${id}`, "POST");
-    return { success: true };
   } catch (error) {
-    throw new Error(`Request failed : ${error}`);
+    throw new Error(String(error));
   }
 }
 
@@ -470,16 +398,15 @@ export async function updateArticle(
     );
     return { success: true, id: null };
   } catch (error) {
-    throw new Error(`Request failed : ${error}`);
+    throw new Error(String(error));
   }
 }
 
 export async function deleteArticlePublisher(id: number) {
   try {
     await fetchData(`/publisher/articles/${id}`, "DELETE");
-    return { success: true };
   } catch (error) {
-    throw new Error(`Request failed : ${error}`);
+    throw new Error(String(error));
   }
 }
 
@@ -500,7 +427,7 @@ export async function addOrUpdateGlobalPreference(
 
     revalidatePath(`/profile/news_preferences`);
   } catch (error) {
-    throw new Error(`Request failed : ${error}`);
+    throw new Error(String(error));
   }
 }
 
@@ -510,6 +437,6 @@ export async function deleteGlobalPreference(id: number) {
 
     revalidatePath(`/profile/news_preferences`);
   } catch (error) {
-    throw new Error(`Request failed : ${error}`);
+    throw new Error(String(error));
   }
 }

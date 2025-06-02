@@ -30,7 +30,7 @@ export default function PublishDraftButton({ draftId }: { draftId: number }) {
       toast.success("Le brouillon a été publié.");
       router.push("/publisher/articles");
     } catch (error) {
-      toast.error(String(error) || "Échec de l'action.");
+      toast.error("Une erreur est survenue.");
     }
   };
 

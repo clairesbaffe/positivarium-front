@@ -21,15 +21,12 @@ export default function GrantAdminButton({ user }: { user: UserDetails }) {
   const connectedUser = useUser();
 
   const handleClick = async () => {
-    const res = await grantAdmin(user.username);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de l'action.");
-      toast.error(errorData?.error || "Échec de l'action.");
+    try {
+      await grantAdmin(user.username);
+      toast.success("L'utilisateur est maintenant administrateur.");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    toast.success("L'utilisateur est maintenant administrateur.");
   };
 
   return (

@@ -23,16 +23,12 @@ export default function MarkAsReadButton({
   reportType: "article" | "comment";
 }) {
   const handleClick = async () => {
-    const res = await markReportAsRead(reportId, reportType);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de l'action.");
-      toast.error(errorData?.error || "Échec de l'action.");
-      return;
+    try {
+      await markReportAsRead(reportId, reportType);
+      toast.success("Ce signalement a été marqué comme lu.");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    toast.success("Ce signalement a été marqué comme lu.");
   };
 
   return (

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { UserDetails } from "@/lib/definitions";
-import { updateProfileInfo } from "@/lib/actions";
+import { updateProfileInfo } from "@/lib/auth";
 
 import { toast } from "react-toastify";
 import {
@@ -34,14 +34,7 @@ export default function UpdateInfoButton({ user }: { user: UserDetails }) {
         throw new Error("INPUTS_MISSING");
       }
 
-      const res = await updateProfileInfo(username, email, description);
-
-      if (!res.success) {
-        const errorData = res.error;
-        console.error(errorData?.error || "Échec de la mise à jour");
-        const message = errorData?.error || "Échec de la mise à jour";
-        throw new Error(message);
-      }
+      await updateProfileInfo(username, email, description);
 
       setMessage({ message: "", type: "success" });
       setIsDialogOpen(false);

@@ -32,29 +32,21 @@ export default function PublisherRequestActions({ id }: { id: number }) {
   const handleAdminClick = async (
     status: "UNDER_REVIEW" | "APPROVED" | "REJECTED"
   ) => {
-    const res = await updatePublisherRequestStatusAdmin(id, status);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de l'action.");
-      toast.error(errorData?.error || "Échec de l'action.");
-      return;
+    try {
+      await updatePublisherRequestStatusAdmin(id, status);
+      toast.success("La demande a été mise à jour.");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    toast.success("La demande a été mise à jour.");
   };
 
   const handleCancelClick = async () => {
-    const res = await cancelPublisherRequestUser(id);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de l'action.");
-      toast.error(errorData?.error || "Échec de l'action.");
-      return;
+    try {
+      await cancelPublisherRequestUser(id);
+      toast.success("La demande a été annulée.");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    toast.success("La demande a été annulée.");
   };
 
   return (

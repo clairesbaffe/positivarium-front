@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Textarea from "@/components/Textarea";
+import { toast } from "react-toastify";
 
 export default function ReportArticleButton({
   articleId,
@@ -33,15 +34,16 @@ export default function ReportArticleButton({
   const [reportReason, setReportReason] = useState("");
 
   const handleReport = async () => {
-    const res = await reportArticle(reportReason, articleId);
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec du signalement");
+    try {
+      await reportArticle(reportReason, articleId);
+      toast.success(
+        "Votre signalement a été enregistré. Il sera traité sous peu par nos administrateurs."
+      );
+      setIsDialogOpen(false);
+      setReportReason("");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    setIsDialogOpen(false);
-    router.push(`/article/${articleId}?success=1`);
   };
 
   return (

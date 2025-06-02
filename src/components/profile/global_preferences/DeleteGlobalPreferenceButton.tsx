@@ -24,7 +24,7 @@ export default function DeleteGlobalPreferenceButton({
       await deleteGlobalPreference(preferenceId);
       toast.success("La préférence a été supprimée.");
     } catch (error) {
-      toast.error(String(error));
+      toast.error("Une erreur est survenue.");
     }
   };
 

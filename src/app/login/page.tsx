@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { login } from "@/lib/actions";
+import { login } from "@/lib/auth";
 import LoginForm from "@/components/auth/LoginForm";
 
 export default function Login() {
@@ -28,22 +28,13 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      if (username === "" || password === "") {
-        throw new Error("INPUTS_MISSING");
-      }
+      if (username === "" || password === "") throw new Error("INPUTS_MISSING");
 
       // set cookie in server
-      const res = await login(username, password);
-
-      if (!res.success) {
-        const errorData = res.error;
-        console.error(errorData?.error || "Échec de la connexion");
-        const message = errorData?.error || "Échec de la connexion";
-        throw new Error(message);
-      }
+      await login(username, password);
 
       setMessage({ message: "", type: "success" });
-      
+
       router.refresh(); // full reload to update Header
       router.push(searchParams.get("next") || "/");
     } catch (error) {

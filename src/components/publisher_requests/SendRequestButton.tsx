@@ -33,15 +33,9 @@ export default function SendRequestButton() {
         throw new Error("INPUTS_MISSING");
       }
 
-      const res = await sendPublisherRequest(motivation);
+      await sendPublisherRequest(motivation);
 
       // send notification with motivation
-
-      if (!res.success) {
-        const errorData = res.error;
-        console.error(errorData?.error || "Échec de l'action.");
-        toast.error(errorData?.error || "Échec de l'action.");
-      }
 
       toast.success("Demande envoyée avec succès");
       setMessage({ message: "", type: "success" });

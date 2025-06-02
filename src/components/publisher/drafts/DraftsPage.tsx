@@ -30,7 +30,7 @@ export default async function DraftsPage({
         </>
       ) : (
         <div className="text-center text-gray-500 text-lg py-10 italic">
-          Aucun article n'est disponible
+          Vous n'avez encore aucun brouillon
         </div>
       )}
     </div>

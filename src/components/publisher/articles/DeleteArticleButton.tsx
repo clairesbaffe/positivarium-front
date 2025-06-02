@@ -36,7 +36,7 @@ export default function DeleteArticleButton({
       toast.success("L'article a été supprimé.");
       router.push("/publisher/articles");
     } catch (error) {
-      toast.error(String(error) || "Échec de l'action.");
+      toast.error("Une erreur est survenue.");
     }
   };
 

@@ -23,19 +23,9 @@ export default async function Article({
   const article: Article = await getArticleById(Number(id));
   const comments: Comment[] = await getCommentsByArticleId(Number(id));
 
-  const message =
-    success && success === "1"
-      ? "Votre signalement a bien été enregistré. Il sera traité sous peu par nos administrateurs."
-      : "";
-
   return (
     <div className="md:w-3/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
-      {message && (
-        <p className="border w-min whitespace-nowrap p-3 rounded-md border-foreground-muted text-foreground-muted">
-          {message}
-        </p>
-      )}
-      {article && (
+      {article ? (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
@@ -110,6 +100,10 @@ export default async function Article({
             />
           </section>
           <CommentsList comments={comments} articleId={article.id} />
+        </div>
+      ) : (
+        <div className="text-center text-gray-500 text-lg py-10 italic">
+          Cet article n'a pas été trouvé
         </div>
       )}
     </div>

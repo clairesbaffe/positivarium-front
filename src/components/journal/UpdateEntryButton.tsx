@@ -36,22 +36,18 @@ export default function UpdateEntryButton({
   );
 
   const handleUpdate = async () => {
-    const res = await updateEntry(
-      entry.id,
-      description,
-      selectedMoods,
-      selectedCategories
-    );
-
-    if (!res.success) {
-      const errorData = res.error;
-      console.error(errorData?.error || "Échec de la mise à jour.");
-      toast.error(errorData?.error || "Échec de l'action.");
-    } else {
+    try {
+      await updateEntry(
+        entry.id,
+        description,
+        selectedMoods,
+        selectedCategories
+      );
       toast.success("Entrée mise à jour avec succès");
+      setIsDialogOpen(false);
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
     }
-
-    setIsDialogOpen(false);
   };
 
   return (
