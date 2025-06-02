@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { login } from "@/lib/auth";
 import LoginForm from "@/components/auth/LoginForm";
 
 export default function Login() {
@@ -27,29 +28,15 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      if (username === "" || password === "") {
-        throw new Error("INPUTS_MISSING");
-      }
+      if (username === "" || password === "") throw new Error("INPUTS_MISSING");
 
-      // to set cookie in server
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => null);
-
-        console.error(errorData?.error || "Échec de la connexion");
-
-        const message = errorData?.error || "Échec de la connexion";
-
-        throw new Error(message);
-      }
+      // set cookie in server
+      await login(username, password);
 
       setMessage({ message: "", type: "success" });
-      window.location.href = "/"; // full reload to update Header
+
+      router.refresh(); // full reload to update Header
+      router.push(searchParams.get("next") || "/");
     } catch (error) {
       console.error("Erreur de connexion :", error);
       if (error instanceof Error) {

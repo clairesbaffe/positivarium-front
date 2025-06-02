@@ -1,5 +1,3 @@
-"use client";
-
 import Button from "@/components/Button";
 import {
   BookOpen,
@@ -9,11 +7,13 @@ import {
   UserRoundPen,
 } from "lucide-react";
 import ArticlesPage from "@/components/articles/ArticlesPage";
-import { useUser } from "@/context/UserContext";
 
-export default function Home() {
-  const user = useUser();
-  // console.log("🚀 ~ Home ~ user:", user)
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) {
+  const currentPage = parseInt((await searchParams).page ?? "1", 10);
 
   return (
     <div className="flex flex-col my-8 md:m-24 gap-32">
@@ -31,14 +31,14 @@ export default function Home() {
               title={"Commencer à lire"}
               background={"bg-dark-colored-background"}
               textColor={"text-foreground-inverted"}
-              icon={BookOpen}
+              icon={<BookOpen size={18} />}
               href={"#articles-list"}
             />
             <Button
               title={"Ouvrir le journal"}
               background={"bg-colored-background"}
               textColor={"text-foreground"}
-              icon={NotebookPen}
+              icon={<NotebookPen size={18} />}
               href={"/"}
             />
           </div>
@@ -63,11 +63,11 @@ export default function Home() {
             title={"Voir toutes les catégories"}
             background={"bg-colored-background"}
             textColor={"text-foreground"}
-            icon={Layers2}
+            icon={<Layers2 size={18} />}
             href={"/"}
           />
         </div>
-        <ArticlesPage endpoint="/articles/" url="/" />
+        <ArticlesPage endpoint="/articles/" url="/" currentPage={currentPage} />
       </section>
       <section className="mx-8 grid md:grid-cols-2 gap-8 md:gap-4">
         <div className="rounded-lg">
@@ -107,7 +107,7 @@ export default function Home() {
               title={"Écrivez dans votre journal"}
               background={"bg-dark-colored-background"}
               textColor={"text-foreground-inverted"}
-              icon={SquarePen}
+              icon={<SquarePen size={18} />}
               href={"/"}
             />
           </div>
@@ -148,7 +148,7 @@ export default function Home() {
               title={"Demandez à devenir rédacteur"}
               background={"bg-colored-background"}
               textColor={"text-foreground dark:text-foreground-inverted"}
-              icon={UserRoundPen}
+              icon={<UserRoundPen size={18} />}
               href={"/"}
             />
           </div>

@@ -1,0 +1,123 @@
+"use client";
+
+import { useState } from "react";
+import { Comment } from "@/lib/definitions";
+import { createComment } from "@/lib/actions";
+import { useUser } from "@/context/UserContext";
+
+import { CircleUserRound } from "lucide-react";
+import CommentCard from "@/components/articles/CommentCard";
+import Button from "@/components/Button";
+import Textarea from "@/components/Textarea";
+import { toast } from "react-toastify";
+
+export default function CommentsList({
+  comments,
+  articleId,
+}: {
+  comments: Comment[];
+  articleId: number;
+}) {
+  const user = useUser();
+
+  const [isCommenting, setIsCommenting] = useState(false);
+  const [comment, setComment] = useState("");
+  const [message, setMessage] = useState<{
+    message: string;
+    type: "error" | "success";
+  } | null>(null);
+
+  const handleComment = async (comment: string) => {
+    try {
+      await createComment(comment, articleId);
+      setIsCommenting(false);
+      setComment("");
+    } catch (error) {
+      toast.error("Une erreur est survenue.");
+    }
+  };
+
+  return (
+    <section>
+      <div className="flex justify-between items-center">
+        <h3 className="font-title text-3xl">Commentaires</h3>
+        {user ? (
+          <div>
+            {!isCommenting && (
+              <Button
+                title={"Commenter"}
+                background={"bg-colored-background"}
+                textColor={"text-foreground"}
+                icon={null}
+                onClick={() => setIsCommenting(true)}
+              />
+            )}
+          </div>
+        ) : (
+          <div>
+            <Button
+              title={"Se connecter pour commenter"}
+              background={"bg-colored-background"}
+              textColor={"text-foreground"}
+              icon={<CircleUserRound size={18} />}
+              href={`/login?next=/article/${articleId}`}
+            />
+          </div>
+        )}
+      </div>
+      <div className="my-6 flex flex-col gap-8">
+        {isCommenting && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+            className="flex flex-col gap-4"
+          >
+            <Textarea
+              name="comment"
+              data={comment}
+              setData={setComment}
+              height="lg"
+            />
+            {message && message.type === "error" && (
+              <p className="text-red-400">{message.message}</p>
+            )}
+            <Button
+              title={"Publier"}
+              background={"bg-dark-colored-background"}
+              textColor={"text-foreground-inverted"}
+              icon={null}
+              onClick={() => handleComment(comment)}
+              minWidth
+            />
+          </form>
+        )}
+        {comments.length === 0 && !isCommenting && (
+          <p className="text-foreground-muted">
+            Aucun commentaire pour le moment. Soyez le premier à réagir !
+          </p>
+        )}
+        {comments && comments.length > 0 && (
+          <div>
+            {comments.map((comment, index) => (
+              <div
+                key={comment.id}
+                className={
+                  index !== 0
+                    ? "border-t border-foreground-muted/50 pt-6 mt-6"
+                    : ""
+                }
+              >
+                <CommentCard
+                  comment={comment}
+                  isOwn={comment.username === user?.username}
+                  articleId={articleId}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

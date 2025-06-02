@@ -1,122 +1,109 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import type { Article, Comment } from "@/lib/definitions";
-import Button from "@/components/Button";
-import CommentCard from "@/components/articles/CommentCard";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import type { Article, Comment } from "@/lib/definitions";
+import { getArticleById, getCommentsByArticleId } from "@/lib/data";
 
-export default function Article() {
-  const params = useParams();
-  const id = params.id;
+import SanitizedContent from "@/components/SanitizedContent";
+import CommentsList from "@/components/articles/CommentsList";
+import ReportArticleButton from "@/components/articles/ReportArticleButton";
+import LikeButton from "@/components/articles/LikeButton";
+import DeleteArticleAdminButton from "@/components/admin/reports/DeleteArticleButton";
+import UpdateArticleButton from "@/components/publisher/articles/UpdateArticleButton";
+import DeleteArticleButton from "@/components/publisher/articles/DeleteArticleButton";
 
-  const [article, setArticle] = useState<Article | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
+export default async function Article({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ success: string }>;
+}) {
+  const id = (await params).id;
+  const success = (await searchParams).success;
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/articles/${id}`
-      );
-      const data: Article = await res.json();
-      setArticle(data);
-    };
-
-    const fetchComments = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/comments/article/${id}`
-      );
-      const data = await res.json();
-      setComments(data.content);
-    };
-
-    fetchArticle();
-    fetchComments();
-  }, [id]);
+  const article: Article = await getArticleById(Number(id));
+  const comments: Comment[] = await getCommentsByArticleId(Number(id));
 
   return (
-    <div className="md:w-2/5 mx-4 md:mx-auto my-16">
-      {article && (
+    <div className="md:w-3/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+      {article ? (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
               <p className="font-thin">
                 <Link href={"/"}>{article.category.name}</Link> ·{" "}
                 {article.category.generalCategory}
               </p>
-              <h1 className="font-title text-3xl">
-                {article.title}
-              </h1>
-              {/* description */}
-              <div className="flex items-center justify-between font-thin">
-                <div>
-                  <Link href={"/"}>{article.username}</Link>
-                  <div>
-                    {new Date(article.publishedAt).toLocaleString("fr-FR", {
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col md:flex-row gap-4 justify-between">
+                  <h1 className="font-title text-4xl">{article.title}</h1>
+                  <div className="flex gap-4">
+                    <UpdateArticleButton
+                      articleId={article.id}
+                      author={article.username}
+                    />
+                    <DeleteArticleAdminButton
+                      articleId={article.id}
+                      author={article.username}
+                      next="/"
+                    />
+                    <DeleteArticleButton
+                      articleId={article.id}
+                      author={article.username}
+                    />
                   </div>
                 </div>
-                <Heart
-                  className={`size-8 md:size-7 text-foreground cursor-pointer ${
-                    article.userLiked ? "fill-foreground" : "fill-none"
-                  }`}
-                  onClick={() => {}}
+                <p className="text-lg">{article.description}</p>
+              </div>
+              <div className="flex items-center justify-between font-thin">
+                <div>
+                  <Link
+                    href={`/profile/${article.username}`}
+                    className="text-lg underline underline-offset-2"
+                  >
+                    {article.username}
+                  </Link>
+                  <div className="text-foreground-muted flex items-center gap-1">
+                    <p>
+                      {new Date(article.publishedAt).toLocaleString("fr-FR", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                    {article.updatedAt !== article.publishedAt && (
+                      <p>
+                        | Modifié le :{" "}
+                        {new Date(article.updatedAt).toLocaleString("fr-FR", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <LikeButton
+                  articleId={article.id}
+                  userLiked={article.userLiked}
                 />
               </div>
             </div>
             <img src={article.mainImage} alt={article.title} />
-            <div>{article.content}</div>
-            <Button
-              title={"Signaler"}
-              background={""}
-              textColor={"text-red-400"}
-              icon={null}
-              href={"/"}
-              priority="low"
+            <SanitizedContent content={article.content} />
+            <ReportArticleButton
+              articleId={article.id}
+              author={article.username}
             />
           </section>
-          <section>
-            <div className="flex justify-between items-center">
-              <h3 className="font-title text-3xl">Commentaires</h3>
-              <Button
-                title={"Commenter"}
-                background={"bg-colored-background"}
-                textColor={"text-foreground"}
-                icon={null}
-                href={"/"}
-              />
-            </div>
-            <div className="my-6">
-              {comments.length === 0 && (
-                <p className="text-foreground-muted">
-                  Aucun commentaire pour le moment. Soyez le premier à réagir !
-                </p>
-              )}
-              {comments && comments.length > 0 && (
-                <div>
-                  {comments.map((comment, index) => (
-                    <div
-                      key={comment.id}
-                      className={
-                        index !== 0
-                          ? "border-t border-foreground-muted/50 pt-6 mt-6"
-                          : ""
-                      }
-                    >
-                      <CommentCard comment={comment} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </section>
+          <CommentsList comments={comments} articleId={article.id} />
+        </div>
+      ) : (
+        <div className="text-center text-gray-500 text-lg py-10 italic">
+          Cet article n'a pas été trouvé
         </div>
       )}
     </div>
