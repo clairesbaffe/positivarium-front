@@ -1,5 +1,5 @@
 import { JournalEntry } from "@/lib/definitions";
-import { getEntries, getMoods } from "@/lib/data";
+import { getCategories, getEntries, getMoods } from "@/lib/data";
 
 import PaginationControls from "@/components/Pagination";
 import EntriesList from "@/components/journal/EntriesList";
@@ -14,12 +14,17 @@ export default async function EntriesPage({
   const totalPages = data.totalPages;
 
   const moods = await getMoods();
+  const categories = await getCategories();
 
   return (
     <div className="flex flex-col gap-4">
       {entries.length > 0 ? (
         <>
-          <EntriesList entries={entries} moods={moods} />
+          <EntriesList
+            entries={entries}
+            moods={moods}
+            categories={categories}
+          />
           {totalPages > 1 && (
             <PaginationControls
               currentPage={currentPage}
