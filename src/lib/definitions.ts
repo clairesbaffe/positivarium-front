@@ -118,3 +118,9 @@ export type JournalEntry = {
   categories: Category[];
   createdAt: Date;
 };
+
+export type GlobalPreference = {
+  id: number;
+  mood: Mood;
+  categories: Category[];
+};

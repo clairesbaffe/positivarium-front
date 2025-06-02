@@ -10,7 +10,7 @@ import { Save } from "lucide-react";
 import Button from "@/components/Button";
 import Textarea from "@/components/Textarea";
 import TodaysEntry from "@/components/journal/TodaysEntry";
-import MoodSelector from "@/components/journal/MoodSelector";
+import MoodSelector from "@/components/MoodSelector";
 import CategorySelector from "@/components/CategorySelector";
 
 export default function CreateEntry({
@@ -81,6 +81,19 @@ export default function CreateEntry({
             placeholder="Écrivez vos pensées ici..."
             height="lg"
           />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p>
+            Indiquez votre humeur du jour et choisissez les catégories
+            d'articles que vous voulez voir dans votre fil. Si vous avez
+            enregistré des préférences liées à certaines humeurs, les catégories
+            peuvent être sélectionnées automatiquement.
+          </p>
+          <p>
+            Vous pouvez aussi faire vos choix librement, selon ce que vous avez
+            envie de lire aujourd'hui.
+          </p>
         </div>
 
         <div className="flex flex-col gap-2">

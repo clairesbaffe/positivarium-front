@@ -403,3 +403,34 @@ export async function getDraftById(id: number) {
 
   return await res.json();
 }
+
+export async function getUserGlobalPreferences(currentPage: number) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) return { success: false, error: "User is not connected" };
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER"))
+    return { success: false, error: "User must be a user" };
+
+  console.log(
+    `${process.env.NEXT_PUBLIC_API_URL}/global_preferences/?page=${
+      currentPage - 1
+    }&size=20`
+  );
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/global_preferences/?page=${
+      currentPage - 1
+    }&size=20`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+  return { preferences: data.content, totalPages: data.totalPages };
+}

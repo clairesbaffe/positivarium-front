@@ -5,6 +5,7 @@ import { roleData } from "@/lib/utils";
 import ArticlesPage from "@/components/articles/ArticlesPage";
 import UpdateInfoButton from "@/components/profile/UpdateInfoButton";
 import UpdatePasswordButton from "@/components/profile/UpdatePasswordButton";
+import Button from "@/components/Button";
 
 // if not connected, user is automatically redirected to login by middleware
 export default async function MyProfile({
@@ -37,6 +38,13 @@ export default async function MyProfile({
             </div>
           </div>
           <div className="flex flex-wrap gap-6 items-center">
+            <Button
+              title="Gérer mes préférences de feed"
+              background="bg-dark-colored-background"
+              textColor="text-foreground-inverted"
+              icon={null}
+              href="/profile/news_preferences"
+            />
             <UpdateInfoButton user={user} />
             <UpdatePasswordButton user={user} />
           </div>

@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Textarea from "@/components/Textarea";
 import CategorySelector from "@/components/CategorySelector";
-import MoodSelector from "@/components/journal/MoodSelector";
+import MoodSelector from "@/components/MoodSelector";
 
 export default function UpdateEntryButton({
   entry,

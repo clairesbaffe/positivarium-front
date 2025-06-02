@@ -3,13 +3,13 @@ import { useState } from "react";
 
 export default function CategorySelector({
   categories,
-  defaultSelectedCategories,
   onChange,
+  defaultSelectedCategories,
   multiple = true,
 }: {
   categories: Category[];
+  onChange: (selected: Category[]) => void;
   defaultSelectedCategories?: Category[];
-  onChange?: (selected: Category[]) => void;
   multiple?: boolean;
 }) {
   const [selectedIds, setSelectedIds] = useState<number[]>(

@@ -995,7 +995,7 @@ export async function deleteArticlePublisher(id: number) {
   const user = await getCurrentUser();
   if (!user.roles.includes("ROLE_PUBLISHER"))
     throw new Error("User must be an publisher");
-    if (user.roles.includes("ROLE_BAN"))
+  if (user.roles.includes("ROLE_BAN"))
     throw new Error("User must not be banned");
 
   const res = await fetch(
@@ -1018,4 +1018,37 @@ export async function deleteArticlePublisher(id: number) {
   }
 
   return { success: true };
+}
+
+export async function addGlobalPreference(mood: Mood, categories: Category[]) {
+  const token = (await cookies()).get("access_token")?.value;
+  if (!token) throw new Error("NOT_CONNECTED");
+
+  const user = await getCurrentUser();
+  if (!user.roles.includes("ROLE_USER")) throw new Error("User must be a user");
+
+  const moodId: number = mood.id;
+  const categoryIds: number[] = categories.map((cat) => cat.id);
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/global_preferences/`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ moodId, categoryIds }),
+    }
+  );
+
+    if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    console.error(errorData?.error || "Erreur inconnue");
+
+    const error = errorData?.error || "Erreur inconnue";
+    throw new Error(`Request failed : ${error}`);
+  }
+
+  revalidatePath(`/profile/news_preferences`);
 }

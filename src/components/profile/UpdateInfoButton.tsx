@@ -4,7 +4,7 @@ import { useState } from "react";
 import { UserDetails } from "@/lib/definitions";
 import { updateProfileInfo } from "@/lib/actions";
 
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import {
   Dialog,
   DialogContent,
@@ -21,7 +21,7 @@ export default function UpdateInfoButton({ user }: { user: UserDetails }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
-  const [description, setDescription] = useState(user.description);
+  const [description, setDescription] = useState(user.description || ""); // fallback to "" because description can be null
 
   const [message, setMessage] = useState<{
     message: string;

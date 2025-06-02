@@ -5,10 +5,12 @@ export default function MoodSelector({
   moods,
   selectedMoodIds,
   onChange,
+  multiple = true,
 }: {
   moods: Mood[];
   selectedMoodIds: number[];
   onChange: (selected: Mood[]) => void;
+  multiple?: boolean;
 }) {
   const [selectedIds, setSelectedIds] = useState<number[]>(selectedMoodIds);
 
@@ -19,9 +21,15 @@ export default function MoodSelector({
   }, {} as Record<Mood["type"], Mood[]>);
 
   const toggleMood = (mood: Mood) => {
-    const newSelected = selectedIds.includes(mood.id)
-      ? selectedIds.filter((id) => id !== mood.id)
-      : [...selectedIds, mood.id];
+    let newSelected: number[];
+
+    if (multiple) {
+      newSelected = selectedIds.includes(mood.id)
+        ? selectedIds.filter((id) => id !== mood.id)
+        : [...selectedIds, mood.id];
+    } else {
+      newSelected = selectedIds.includes(mood.id) ? [] : [mood.id];
+    }
 
     setSelectedIds(newSelected);
     onChange?.(moods.filter((m) => newSelected.includes(m.id)));
@@ -41,7 +49,8 @@ export default function MoodSelector({
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <input
-                  type="checkbox"
+                  type={multiple ? "checkbox" : "radio"}
+                  name={multiple ? undefined : "single-category-selector"}
                   className="accent-dark-colored-background"
                   checked={selectedIds.includes(mood.id)}
                   onChange={() => toggleMood(mood)}

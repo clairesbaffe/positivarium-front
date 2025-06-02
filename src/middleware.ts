@@ -17,7 +17,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (pathname.startsWith("/profile") && !isAuthenticated) {
+  if (
+    (pathname.startsWith("/profile") ||
+      pathname.startsWith("/profile/news_preferences")) &&
+    !isAuthenticated
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
@@ -74,7 +78,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-    if (pathname.startsWith("/publisher")) {
+  if (pathname.startsWith("/publisher")) {
     if (!isAuthenticated) {
       const url = request.nextUrl.clone();
       url.pathname = "/login";
@@ -97,6 +101,7 @@ export const config = {
     "/login",
     "/signup",
     "/profile",
+    "/profile/news_preferences",
     "/admin/:path*",
     "/user/:path*",
     "/article/liked",
