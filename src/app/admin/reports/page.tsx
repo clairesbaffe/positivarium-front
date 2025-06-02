@@ -4,6 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ArticleReportsList from "@/components/admin/reports/ArticleReportsList";
 import CommentReportsList from "@/components/admin/reports/CommentReportsList";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({
   searchParams,
 }: {

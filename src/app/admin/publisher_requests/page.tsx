@@ -2,6 +2,8 @@ import { PublisherRequest } from "@/lib/definitions";
 import { getActivePublisherResquests } from "@/lib/data";
 import PublisherRequestsList from "@/components/publisher_requests/PublisherRequestsList";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({
   searchParams,
 }: {

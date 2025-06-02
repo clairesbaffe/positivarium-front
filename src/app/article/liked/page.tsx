@@ -1,5 +1,7 @@
 import ArticlesPage from "@/components/articles/ArticlesPage";
 
+export const dynamic = 'force-dynamic';
+
 export default async function LikedArticlesPage({
   searchParams,
 }: {

@@ -5,6 +5,8 @@ import { CircleUserRound } from "lucide-react";
 import Button from "@/components/Button";
 import JournalConnected from "@/components/journal/JournalConnected";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Journal({
   searchParams,
 }: {
