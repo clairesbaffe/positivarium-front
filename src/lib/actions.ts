@@ -13,7 +13,7 @@ export async function fetchData(
   try {
     const token = (await cookies()).get("access_token")?.value;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
+    const res = await fetch(`${process.env.API_URL}${endpoint}`, {
       method: method,
       headers: {
         "Content-Type": "application/json",
@@ -285,7 +285,7 @@ export async function uploadImage(formData: FormData) {
   const token = (await cookies()).get("access_token")?.value;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/cloudinary/upload`,
+    `${process.env.API_URL}/cloudinary/upload`,
     {
       method: "POST",
       headers: {

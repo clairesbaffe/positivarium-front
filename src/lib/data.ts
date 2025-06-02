@@ -171,7 +171,7 @@ export async function getTodaysEntry() {
   if (!user.roles.includes("ROLE_USER"))
     return { success: false, error: "User must be a user" };
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/journal/today`, {
+  const res = await fetch(`${process.env.API_URL}/journal/today`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

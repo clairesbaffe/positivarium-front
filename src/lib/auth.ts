@@ -11,7 +11,7 @@ export async function getCurrentUser() {
     const token = (await cookies()).get("access_token")?.value;
     if (!token) return null;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile/`, {
+    const res = await fetch(`${process.env.API_URL}/profile/`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
