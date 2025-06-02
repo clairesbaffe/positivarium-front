@@ -28,7 +28,7 @@ export default function TodaysEntry({
             })}
           </h2>
           <div className="flex gap-4">
-            <UpdateEntryButton entry={todaysEntry} moods={moods} />
+            <UpdateEntryButton entry={todaysEntry} moods={moods} categories={categories} />
             <DeleteEntryButton entry={todaysEntry} />
           </div>
         </div>
