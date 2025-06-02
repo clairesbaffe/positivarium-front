@@ -1,19 +1,30 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Trochut:ital,wght@0,400;0,700;1,400&display=swap');
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --foreground-inverted: #ffffff;
+  --foreground-light-bg: #000;
 
-  --colored-background: #DCE7F2;
-  --dark-colored-background: #365F91;
+  --colored-background: #dce7f2;
+  --dark-colored-background: #365f91;
 
-  --background-muted: #E4E4E4;
+  --background-muted: #e4e4e4;
   --foreground-muted: #949494;
 
-  --default-font-family: "Nunito", sans-serif;
-  --title-font-family: "Trochut", sans-serif;
+  --background-danger: #e97070;
+  --background-success: #70e9a0;
+
+  /* Mood colors */
+  --mood-joy: #fcd34d;
+  --mood-sadness: #3b82f6;
+  --mood-anger: #dc2626;
+  --mood-fear: #4b5563;
+  --mood-surprise: #a855f7;
+  --mood-disgust: #065f46;
+  --mood-trust: #10b981;
+  --mood-anticipation: #f97316;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,20 +32,34 @@
     --background: #0a0a0a;
     --foreground: #ededed;
     --foreground-inverted: #ededed;
+    --foreground-light-bg: #000;
 
-    --colored-background: #2E4A68;
-    --dark-colored-background: #1C2A3A;
+    --colored-background: #2e4a68;
+    --dark-colored-background: #1c2a3a;
 
-    --background-muted: #2E2E2E;
-    --foreground-muted: #A1A1A1;
+    --background-muted: #2e2e2e;
+    --foreground-muted: #a1a1a1;
+
+    --background-danger: #8b3a3a;
+    --background-success: #3a8b63;
+
+    /* Mood colors */
+    --mood-joy: #facc15;
+    --mood-sadness: #60a5fa;
+    --mood-anger: #f87171;
+    --mood-fear: #9ca3af;
+    --mood-surprise: #c084fc;
+    --mood-disgust: #34d399;
+    --mood-trust: #6ee7b7;
+    --mood-anticipation: #fdba74;
   }
 }
-
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-foreground-inverted: var(--foreground-inverted);
+  --color-foreground-light-bg: var(--foreground-light-bg);
 
   --color-colored-background: var(--colored-background);
   --color-dark-colored-background: var(--dark-colored-background);
@@ -42,10 +67,21 @@
   --color-background-muted: var(--background-muted);
   --color-foreground-muted: var(--foreground-muted);
 
-  --font-default: var(--default-font-family);
-  --font-title: var(--title-font-family);
-}
+  --color-background-danger: var(--background-danger);
+  --color-background-success: var(--background-success);
 
+  --color-mood-joy: var(--mood-joy);
+  --color-mood-sadness: var(--mood-sadness);
+  --color-mood-anger: var(--mood-anger);
+  --color-mood-fear: var(--mood-fear);
+  --color-mood-surprise: var(--mood-surprise);
+  --color-mood-disgust: var(--mood-disgust);
+  --color-mood-trust: var(--mood-trust);
+  --color-mood-anticipation: var(--mood-anticipation);
+
+  --font-default: "Nunito", sans-serif;
+  --font-title: "Trochut", sans-serif;
+}
 
 body {
   background: var(--background);

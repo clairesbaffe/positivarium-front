@@ -1,18 +1,20 @@
 "use client";
-
 import { LucideIcon } from "lucide-react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 type ButtonProps = {
   title: string;
   background: string;
   textColor: string;
-  icon: LucideIcon | null;
+  icon: React.ReactNode | null;
   priority?: "high" | "medium" | "low";
   onClick?: () => void;
   href?: string;
   minWidth?: boolean;
+  disabled?: boolean;
+  disabledReason?: string;
 };
 
 export default function Button({
@@ -24,12 +26,15 @@ export default function Button({
   onClick,
   href,
   minWidth = false,
+  disabled = false,
+  disabledReason,
 }: ButtonProps) {
   const router = useRouter();
 
   const handleClick = () => {
     if (href) {
       router.push(href);
+      // redirect(href);
     } else if (onClick) {
       onClick();
     }
@@ -48,17 +53,17 @@ export default function Button({
       : textColor;
 
   const classNames = clsx(
-    `flex items-center justify-center whitespace-nowrap gap-2 cursor-pointer ${
+    `flex items-center justify-center whitespace-nowrap gap-2 ${
       minWidth ? "w-min" : ""
-    }`,
-    background,
+    } ${disabled ? "bg-background-muted cursor-not-allowed" : "cursor-pointer"}`,
+    !disabled && background,
     textColor,
     priorityClass
   );
 
   return (
-    <button onClick={handleClick} className={classNames}>
-      {Icon && <Icon size={18} />}
+    <button onClick={handleClick} className={classNames} disabled={disabled} title={disabledReason}>
+      {Icon}
       {title}
     </button>
   );

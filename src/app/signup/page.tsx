@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/Button";
+import { register } from "@/lib/auth";
 
 export default function SignUp() {
   const router = useRouter();
@@ -35,19 +36,7 @@ export default function SignUp() {
       else if (password !== repeatPassword)
         throw new Error("PASSWORDS_NOT_MATCHING");
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => null);
-
-        const message = errorData?.error || "Échec de l'inscription";
-
-        throw new Error(message);
-      }
+      await register(username, email, password);
 
       setMessage("");
       router.push("/login?success=1");

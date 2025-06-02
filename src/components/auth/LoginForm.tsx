@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Button from "@/components/Button";
+import Input from "@/components/Input";
 
 export default function LoginForm({
   message,
@@ -31,28 +32,23 @@ export default function LoginForm({
         <label className="text-lg" htmlFor="username">
           Nom d'utilisateur
         </label>
-        <input
-          className="border border-foreground-muted h-12 rounded-lg p-4"
+        <Input
           placeholder="Nom d'utilisateur"
-          type="text"
           name="username"
-          id="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          data={username}
+          setData={setUsername}
         />
       </div>
       <div className="flex flex-col gap-2">
         <label className="text-lg" htmlFor="password">
           Mot de passe
         </label>
-        <input
-          className="border border-foreground-muted h-12 rounded-lg p-4"
+        <Input
           placeholder="Mot de passe"
           type="password"
           name="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          data={password}
+          setData={setPassword}
         />
       </div>
       <p>
