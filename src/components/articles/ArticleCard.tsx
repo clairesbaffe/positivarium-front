@@ -32,11 +32,11 @@ export default function ArticleCard({
       </div>
       <div className="px-4 py-2 flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-bold line-clamp-2">{article.title}</h3>
-          <p className="line-clamp-3">{article.description}</p>
+          <h3 className="font-bold line-clamp-2">{article.title}</h3>
+          <p className="line-clamp-3 text-sm">{article.description}</p>
         </div>
         <div className="flex justify-between">
-          <p className="text-foreground-muted text-sm">
+          <p className="text-foreground-muted text-xs">
             {new Date(article.publishedAt).toLocaleString("fr-FR", {
               day: "2-digit",
               month: "long",
