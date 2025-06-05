@@ -12,19 +12,16 @@ import DeleteArticleButton from "@/components/publisher/articles/DeleteArticleBu
 
 export default async function Article({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ success: string }>;
 }) {
   const id = (await params).id;
-  const success = (await searchParams).success;
 
   const article: Article = await getArticleById(Number(id));
   const comments: Comment[] = await getCommentsByArticleId(Number(id));
 
   return (
-    <div className="md:w-3/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+    <div className="md:w-1/2 mx-4 md:mx-auto my-16 flex flex-col gap-8">
       {article ? (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">

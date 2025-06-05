@@ -18,7 +18,7 @@ export default async function Draft({
   const draft: Article = await getDraftById(Number(id));
 
   return (
-    <div className="md:w-3/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+    <div className="md:w-1/2 mx-4 md:mx-auto my-16 flex flex-col gap-8">
       {draft ? (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
