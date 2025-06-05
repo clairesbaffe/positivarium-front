@@ -39,7 +39,7 @@ export default function CommentsList({
 
   return (
     <section>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row gap-4 justify-between md:items-center">
         <h3 className="font-title text-3xl">Commentaires</h3>
         {user ? (
           <div>
