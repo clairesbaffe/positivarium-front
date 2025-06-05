@@ -199,7 +199,7 @@ export async function sendPublisherRequest(motivation: string) {
       JSON.stringify({ motivation })
     );
 
-    revalidatePath(`/user/publisher_requests`);
+    revalidatePath(`/publisher_requests`);
   } catch (error) {
     throw new Error(String(error));
   }
@@ -222,7 +222,7 @@ export async function cancelPublisherRequestUser(id: number) {
   try {
     await fetchData(`/user/publisher_request/cancel/${id}`, "POST");
 
-    revalidatePath(`/user/publisher_requests`);
+    revalidatePath(`/publisher_requests`);
   } catch (error) {
     throw new Error(String(error));
   }

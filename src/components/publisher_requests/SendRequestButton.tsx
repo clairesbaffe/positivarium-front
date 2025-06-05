@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { sendPublisherRequest } from "@/lib/actions";
+import { useUser } from "@/context/UserContext";
 
 import { toast } from "react-toastify";
 import { Send } from "lucide-react";
@@ -16,8 +17,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Textarea from "@/components/Textarea";
+import ToLoginPageButton from "@/components/ToLoginPageButton";
 
 export default function SendRequestButton() {
+  const user = useUser();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [motivation, setMotivation] = useState("");
@@ -26,6 +30,15 @@ export default function SendRequestButton() {
     message: string;
     type: "error" | "success";
   } | null>(null);
+
+  if (!user) {
+    return (
+      <ToLoginPageButton
+        title="Se connecter pour envoyer une demande"
+        next="/publisher_requests"
+      />
+    );
+  }
 
   const handleClick = async () => {
     try {

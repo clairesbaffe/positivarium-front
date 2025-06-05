@@ -218,7 +218,7 @@ export default function Header() {
             <div>
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
               <Link
-                href={"/user/publisher_requests"}
+                href={"/publisher_requests"}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 Devenir rédacteur
@@ -294,7 +294,7 @@ export default function Header() {
             <div className="flex flex-col gap-3">
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
               <Link href="/journal">Journal</Link>
-              <Link href={"/user/publisher_requests"}>Devenir rédacteur</Link>
+              <Link href={"/publisher_requests"}>Devenir rédacteur</Link>
             </div>
           )}
 

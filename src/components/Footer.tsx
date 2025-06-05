@@ -52,7 +52,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/user/publisher_requests" className="cursor-pointer">
+              <Link href="/publisher_requests" className="cursor-pointer">
                 Devenir rédacteur
               </Link>
             </li>

@@ -29,7 +29,7 @@ export default async function Page({
       <PublisherRequestsList
         currentPage={currentPage}
         totalPages={totalPages}
-        url="/user/publisher_requests"
+        url="/publisher_requests"
         requests={requests}
       />
     </div>

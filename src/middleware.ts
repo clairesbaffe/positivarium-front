@@ -68,7 +68,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (pathname.startsWith("/journal")) {
+  if (pathname.startsWith("/journal") || pathname.startsWith("/publisher_requests")) {
     const user = await getCurrentUser();
     const hasAccess = !user || user?.roles?.includes("ROLE_USER");
     if (!hasAccess) {

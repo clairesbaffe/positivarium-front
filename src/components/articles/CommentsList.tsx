@@ -5,11 +5,11 @@ import { Comment } from "@/lib/definitions";
 import { createComment } from "@/lib/actions";
 import { useUser } from "@/context/UserContext";
 
-import { CircleUserRound } from "lucide-react";
-import CommentCard from "@/components/articles/CommentCard";
+import { toast } from "react-toastify";
 import Button from "@/components/Button";
 import Textarea from "@/components/Textarea";
-import { toast } from "react-toastify";
+import CommentCard from "@/components/articles/CommentCard";
+import ToLoginPageButton from "@/components/ToLoginPageButton";
 
 export default function CommentsList({
   comments,
@@ -22,10 +22,6 @@ export default function CommentsList({
 
   const [isCommenting, setIsCommenting] = useState(false);
   const [comment, setComment] = useState("");
-  const [message, setMessage] = useState<{
-    message: string;
-    type: "error" | "success";
-  } | null>(null);
 
   const handleComment = async (comment: string) => {
     try {
@@ -54,15 +50,10 @@ export default function CommentsList({
             )}
           </div>
         ) : (
-          <div>
-            <Button
-              title={"Se connecter pour commenter"}
-              background={"bg-colored-background"}
-              textColor={"text-foreground"}
-              icon={<CircleUserRound size={18} />}
-              href={`/login?next=/article/${articleId}`}
-            />
-          </div>
+          <ToLoginPageButton
+            title="Se connecter pour commenter"
+            next={`/article/${articleId}`}
+          />
         )}
       </div>
       <div className="my-6 flex flex-col gap-8">
@@ -79,9 +70,6 @@ export default function CommentsList({
               setData={setComment}
               height="lg"
             />
-            {message && message.type === "error" && (
-              <p className="text-red-400">{message.message}</p>
-            )}
             <Button
               title={"Publier"}
               background={"bg-dark-colored-background"}
