@@ -153,28 +153,27 @@ export default function Header() {
               </li>
             )}
           </div>
-          {user ? (
-            <li>
-              <Link href={"/profile"} className="flex gap-1 cursor-pointer">
-                <CircleUserRound />
-                {user.username}
-              </Link>
-            </li>
-          ) : (
-            <li>
-              <Link href={"/login"} className="flex gap-1 cursor-pointer">
-                <CircleUserRound />
-                Connexion
-              </Link>
-            </li>
-          )}
         </ul>
+        <div className="flex gap-4 md:gap-10">
+
+        {user ? (
+            <Link href={"/profile"} className="flex gap-1 cursor-pointer">
+              <CircleUserRound />
+              {user.username}
+            </Link>
+        ) : (
+            <Link href={"/login"} className="flex gap-1 cursor-pointer">
+              <CircleUserRound />
+              Connexion
+            </Link>
+        )}
         <button
           className="cursor-pointer"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <Menu />
         </button>
+        </div>
       </div>
 
       {/* DESKTOP MENU */}
