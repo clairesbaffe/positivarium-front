@@ -17,14 +17,26 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (
-    (pathname.startsWith("/profile") ||
-      pathname.startsWith("/profile/news_preferences")) &&
-    !isAuthenticated
-  ) {
+  if (pathname.startsWith("/profile") && !isAuthenticated) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
+  }
+
+  if (pathname.startsWith("/profile/news_preferences")) {
+    if (!isAuthenticated) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+    const user = await getCurrentUser();
+    const hasAccess = user?.roles?.includes("ROLE_USER");
+    if (!hasAccess) {
+      const url = request.nextUrl.clone();
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = "/__not-found-trigger__";
+      return NextResponse.rewrite(url);
+    }
   }
 
   if (pathname.startsWith("/admin")) {
@@ -37,8 +49,9 @@ export async function middleware(request: NextRequest) {
     const hasAccess = user?.roles?.includes("ROLE_ADMIN");
     if (!hasAccess) {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = "/__not-found-trigger__";
+      return NextResponse.rewrite(url);
     }
   }
 
@@ -52,8 +65,9 @@ export async function middleware(request: NextRequest) {
     const hasAccess = user?.roles?.includes("ROLE_USER");
     if (!hasAccess) {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = "/__not-found-trigger__";
+      return NextResponse.rewrite(url);
     }
   }
 
@@ -68,13 +82,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (pathname.startsWith("/journal") || pathname.startsWith("/publisher_requests")) {
+  if (
+    pathname.startsWith("/journal") ||
+    pathname.startsWith("/publisher_requests")
+  ) {
     const user = await getCurrentUser();
     const hasAccess = !user || user?.roles?.includes("ROLE_USER");
     if (!hasAccess) {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = "/__not-found-trigger__";
+      return NextResponse.rewrite(url);
     }
   }
 
@@ -88,8 +106,9 @@ export async function middleware(request: NextRequest) {
     const hasAccess = user?.roles?.includes("ROLE_PUBLISHER");
     if (!hasAccess) {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = "/__not-found-trigger__";
+      return NextResponse.rewrite(url);
     }
   }
 
