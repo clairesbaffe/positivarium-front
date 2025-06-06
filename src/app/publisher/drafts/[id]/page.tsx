@@ -45,7 +45,7 @@ export default async function Draft({
                 <p className="text-lg">{draft.description}</p>
               </div>
               <div className="flex items-center justify-between font-thin">
-                <div className="text-foreground-muted flex items-center gap-1">
+                <div className="text-foreground-muted flex flex-col md:flex-row md:items-center gap-1">
                   <p>
                     {new Date(draft.createdAt).toLocaleString("fr-FR", {
                       day: "2-digit",
@@ -56,16 +56,19 @@ export default async function Draft({
                     })}
                   </p>
                   {draft.updatedAt !== draft.createdAt && (
-                    <p>
-                      | Modifié le :{" "}
-                      {new Date(draft.updatedAt).toLocaleString("fr-FR", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
+                    <div className="flex items-center gap-1">
+                      <p className="hidden md:flex"> | </p>
+                      <p>
+                        Modifié le :{" "}
+                        {new Date(draft.updatedAt).toLocaleString("fr-FR", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    </div>
                   )}
                 </div>
               </div>

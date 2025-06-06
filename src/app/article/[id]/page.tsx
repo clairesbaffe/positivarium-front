@@ -59,7 +59,7 @@ export default async function Article({
                   >
                     {article.username}
                   </Link>
-                  <div className="text-foreground-muted flex items-center gap-1">
+                  <div className="text-foreground-muted flex flex-col md:flex-row md:items-center gap-1">
                     <p>
                       {new Date(article.publishedAt).toLocaleString("fr-FR", {
                         day: "2-digit",
@@ -70,16 +70,19 @@ export default async function Article({
                       })}
                     </p>
                     {article.updatedAt !== article.publishedAt && (
-                      <p>
-                        | Modifié le :{" "}
-                        {new Date(article.updatedAt).toLocaleString("fr-FR", {
-                          day: "2-digit",
-                          month: "long",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </p>
+                      <div className="flex items-center gap-1">
+                        <p className="hidden md:flex"> | </p>
+                        <p>
+                          Modifié le :{" "}
+                          {new Date(article.updatedAt).toLocaleString("fr-FR", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
+                      </div>
                     )}
                   </div>
                 </div>
