@@ -1,10 +1,11 @@
 import { Category, JournalEntry, Mood } from "@/lib/definitions";
 import { getCategories, getMoods, getTodaysEntry } from "@/lib/data";
 
+import { Heart, Sparkles, CalendarCheck2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CreateEntry from "@/components/journal/CreateEntry";
 import EntriesPage from "@/components/journal/EntriesPage";
-import { Heart, Sparkles, CalendarCheck2 } from "lucide-react";
+import TodaysEntry from "@/components/journal/TodaysEntry";
 
 export default async function JournalConnected({
   currentTab,
@@ -38,11 +39,17 @@ export default async function JournalConnected({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="today">
-            <CreateEntry
-              moods={moods}
-              categories={categories}
-              todaysEntry={todaysEntry}
-            />
+            {todaysEntry ? (
+              <div className="mt-6">
+                <TodaysEntry
+                  todaysEntry={todaysEntry}
+                  moods={moods}
+                  categories={categories}
+                />
+              </div>
+            ) : (
+              <CreateEntry moods={moods} categories={categories} />
+            )}
           </TabsContent>
           <TabsContent value="past">
             <EntriesPage currentPage={currentPage} />

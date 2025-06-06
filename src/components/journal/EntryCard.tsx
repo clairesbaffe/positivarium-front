@@ -10,23 +10,25 @@ export default function EntryCard({
   entry,
   moods,
   categories,
+  displayTitle = true,
 }: {
   entry: JournalEntry;
   moods: Mood[];
   categories: Category[];
+  displayTitle?: boolean;
 }) {
   return (
     <div className="border border-foreground-muted rounded-2xl p-4 flex flex-col gap-12 md:gap-6">
       <div className="flex flex-col md:flex-row gap-6 md:justify-between">
-        <div className="flex flex-col gap-8">
-          <h3 className="text-2xl font-semibold">
+        {displayTitle && (
+          <h3 className="text-xl md:text-2xl font-semibold">
             {new Date(entry.createdAt).toLocaleString("fr-FR", {
               day: "2-digit",
               month: "long",
               year: "numeric",
             })}
           </h3>
-        </div>
+        )}
         <div className="flex gap-4">
           <UpdateEntryButton
             entry={entry}

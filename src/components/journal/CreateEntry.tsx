@@ -2,38 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Category, JournalEntry, Mood } from "@/lib/definitions";
+import { Category, Mood } from "@/lib/definitions";
 import { createEntry } from "@/lib/actions";
 
 import { toast } from "react-toastify";
 import { Save } from "lucide-react";
 import Button from "@/components/Button";
 import Textarea from "@/components/Textarea";
-import TodaysEntry from "@/components/journal/TodaysEntry";
 import MoodSelector from "@/components/MoodSelector";
 import CategorySelector from "@/components/CategorySelector";
 
 export default function CreateEntry({
   moods,
   categories,
-  todaysEntry,
 }: {
   moods: Mood[];
   categories: Category[];
-  todaysEntry: JournalEntry;
 }) {
-  if (todaysEntry) {
-    return (
-      <div className="mt-6">
-        <TodaysEntry
-          todaysEntry={todaysEntry}
-          moods={moods}
-          categories={categories}
-        />
-      </div>
-    );
-  }
-
   const router = useRouter();
 
   const [content, setContent] = useState("");

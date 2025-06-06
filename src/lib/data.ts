@@ -164,25 +164,12 @@ export async function getEntries(currentPage: number) {
 }
 
 export async function getTodaysEntry() {
-  const token = (await cookies()).get("access_token")?.value;
-  if (!token) return { success: false, error: "User is not connected" };
-
-  const user = await getCurrentUser();
-  if (!user.roles.includes("ROLE_USER"))
-    return { success: false, error: "User must be a user" };
-
-  const res = await fetch(`${process.env.API_URL}/journal/today`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  const raw = await res.text();
-  if (!raw) return null;
-
-  return JSON.parse(raw);
+  try {
+    return await fetchData("/journal/today", "GET");
+  } catch (error) {
+    // if body is null, error is thrown by fetchData on json parse
+    return null;
+  }
 }
 
 export async function getDrafts(currentPage: number) {
