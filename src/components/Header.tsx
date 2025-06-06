@@ -24,6 +24,15 @@ export default function Header() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const handleMenuItemClick = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -155,24 +164,23 @@ export default function Header() {
           </div>
         </ul>
         <div className="flex gap-4 md:gap-10">
-
-        {user ? (
+          {user ? (
             <Link href={"/profile"} className="flex gap-1 cursor-pointer">
               <CircleUserRound />
               {user.username}
             </Link>
-        ) : (
+          ) : (
             <Link href={"/login"} className="flex gap-1 cursor-pointer">
               <CircleUserRound />
               Connexion
             </Link>
-        )}
-        <button
-          className="cursor-pointer"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <Menu />
-        </button>
+          )}
+          <button
+            className="cursor-pointer"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <Menu />
+          </button>
         </div>
       </div>
 
@@ -186,12 +194,14 @@ export default function Header() {
             <div>
               <Link
                 href={"/article/liked"}
+                onClick={handleMenuItemClick}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 Articles likés
               </Link>
               <Link
                 href={"/article/commented"}
+                onClick={handleMenuItemClick}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 Articles commentés
@@ -200,12 +210,14 @@ export default function Header() {
                 <div>
                   <Link
                     href={"/article/followed"}
+                    onClick={handleMenuItemClick}
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     Articles des rédacteurs suivis
                   </Link>
                   <Link
                     href={"/user/followed"}
+                    onClick={handleMenuItemClick}
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     Rédacteurs suivis
@@ -219,6 +231,7 @@ export default function Header() {
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
               <Link
                 href={"/publisher_requests"}
+                onClick={handleMenuItemClick}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 Devenir rédacteur
@@ -228,24 +241,28 @@ export default function Header() {
           {user && <hr className="my-2 border-gray-300 dark:border-gray-700" />}
           <Link
             href="#"
+            onClick={handleMenuItemClick}
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             À propos
           </Link>
           <Link
             href="#"
+            onClick={handleMenuItemClick}
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             Nous contacter
           </Link>
           <Link
             href="#"
+            onClick={handleMenuItemClick}
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             Abonnement
           </Link>
           <Link
             href="#"
+            onClick={handleMenuItemClick}
             className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             Mentions légales
@@ -254,7 +271,7 @@ export default function Header() {
             <div>
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
               <p
-                onClick={logout}
+                onClick={handleLogout}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
               >
                 Se déconnecter
@@ -270,61 +287,103 @@ export default function Header() {
           ref={mobileMenuRef}
           className="absolute top-0 right-0 w-2/3 mt-16 bg-white dark:bg-gray-900 z-20 shadow-md py-4 px-5 flex flex-col gap-3 md:hidden"
         >
-          <Link href="/">Accueil</Link>
-          <Link href="/article?cat=general">Actualités générales</Link>
-          <Link href="/article?cat=culture">Culture</Link>
-          <Link href="/article?cat=tech-science">Technologies & Sciences</Link>
-          <Link href="/article?cat=divertissement-lifestyle">
+          <Link href="/" onClick={handleMenuItemClick}>
+            Accueil
+          </Link>
+          <Link href="/article?cat=general" onClick={handleMenuItemClick}>
+            Actualités générales
+          </Link>
+          <Link href="/article?cat=culture" onClick={handleMenuItemClick}>
+            Culture
+          </Link>
+          <Link href="/article?cat=tech-science" onClick={handleMenuItemClick}>
+            Technologies & Sciences
+          </Link>
+          <Link
+            href="/article?cat=divertissement-lifestyle"
+            onClick={handleMenuItemClick}
+          >
             Divertissement & Lifestyle
           </Link>
           <hr className="my-2 border-gray-300 dark:border-gray-700" />
 
-          <Link href="/article/liked">Articles likés</Link>
-          <Link href="/article/liked">Articles commentés</Link>
+          <Link href="/article/liked" onClick={handleMenuItemClick}>
+            Articles likés
+          </Link>
+          <Link href="/article/commented" onClick={handleMenuItemClick}>
+            Articles commentés
+          </Link>
           {user?.roles.includes("ROLE_USER") && (
             <div className="flex flex-col gap-3">
-              <Link href="/article/followed">
+              <Link href="/article/followed" onClick={handleMenuItemClick}>
                 Articles des rédacteurs suivis
               </Link>
-              <Link href="/user/followed">Rédacteurs suivis</Link>
+              <Link href="/user/followed" onClick={handleMenuItemClick}>
+                Rédacteurs suivis
+              </Link>
             </div>
           )}
 
           {(!user || user?.roles.includes("ROLE_USER")) && (
             <div className="flex flex-col gap-3">
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
-              <Link href="/journal">Journal</Link>
-              <Link href={"/publisher_requests"}>Devenir rédacteur</Link>
+              <Link href="/journal" onClick={handleMenuItemClick}>
+                Journal
+              </Link>
+              <Link href="/publisher_requests" onClick={handleMenuItemClick}>
+                Devenir rédacteur
+              </Link>
             </div>
           )}
 
           {user?.roles.includes("ROLE_PUBLISHER") && (
             <div className="flex flex-col gap-3">
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
-              <Link href="/publisher/articles">Mes articles publiés</Link>
-              <Link href="/publisher/drafts">Mes brouillons</Link>
+              <Link href="/publisher/articles" onClick={handleMenuItemClick}>
+                Mes articles publiés
+              </Link>
+              <Link href="/publisher/drafts" onClick={handleMenuItemClick}>
+                Mes brouillons
+              </Link>
             </div>
           )}
 
           {user?.roles.includes("ROLE_ADMIN") && (
             <div className="flex flex-col gap-3">
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
-              <Link href={"/admin/users"}>Liste des utilisateurs</Link>
-              <Link href={"/admin/reports"}>Signalements</Link>
-              <Link href={"/admin/publisher_requests"}>Demandes rédacteur</Link>
+              <Link href="/admin/users" onClick={handleMenuItemClick}>
+                Liste des utilisateurs
+              </Link>
+              <Link href="/admin/reports" onClick={handleMenuItemClick}>
+                Signalements
+              </Link>
+              <Link
+                href="/admin/publisher_requests"
+                onClick={handleMenuItemClick}
+              >
+                Demandes rédacteur
+              </Link>
             </div>
           )}
 
           {user && <hr className="my-2 border-gray-300 dark:border-gray-700" />}
 
-          <Link href="#">À propos</Link>
-          <Link href="#">Nous contacter</Link>
-          <Link href="#">Abonnement</Link>
-          <Link href="#">Mentions légales</Link>
+          <Link href="#" onClick={handleMenuItemClick}>
+            À propos
+          </Link>
+          <Link href="#" onClick={handleMenuItemClick}>
+            Nous contacter
+          </Link>
+          <Link href="#" onClick={handleMenuItemClick}>
+            Abonnement
+          </Link>
+          <Link href="#" onClick={handleMenuItemClick}>
+            Mentions légales
+          </Link>
           {user && (
             <div>
               <hr className="my-2 border-gray-300 dark:border-gray-700" />
-              <p onClick={logout} className="block cursor-pointer">
+              <p onClick={handleLogout} className="block cursor-pointer">
                 Se déconnecter
               </p>
             </div>
