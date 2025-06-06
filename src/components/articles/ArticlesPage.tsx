@@ -31,6 +31,7 @@ export default async function ArticlesPage({
           <ArticlesList
             articles={articles}
             size={currentPage === 1 ? size : "classic"}
+            back={url}
           />
           {totalPages > 1 && (
             <PaginationControls

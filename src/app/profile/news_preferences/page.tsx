@@ -1,13 +1,16 @@
-import GlobalPreferencesTable from "@/components/profile/global_preferences/GlobalPreferencesTable";
 import { getCategories, getMoods, getUserGlobalPreferences } from "@/lib/data";
+
+import BackButton from "@/components/BackButton";
+import GlobalPreferencesTable from "@/components/profile/global_preferences/GlobalPreferencesTable";
 import AddOrUpdateGlobalPreferenceButton from "@/components/profile/global_preferences/AddOrUpdateGlobalPreferenceButton";
 
 export default async function NewsPreferences({
   searchParams,
 }: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; back: string }>;
 }) {
   const currentPage = parseInt((await searchParams).page ?? "1", 10);
+  const back = (await searchParams).back ?? "/profile";
 
   const { preferences, totalPages } = await getUserGlobalPreferences(
     currentPage
@@ -16,15 +19,19 @@ export default async function NewsPreferences({
   const moods = await getMoods();
   const categories = await getCategories();
 
-  return (
-    <div className="flex flex-col my-8 md:w-2/3 md:mx-auto md:my-20 gap-32">
+  return ( 
+    <div className="flex flex-col my-8 md:w-2/3 md:mx-auto md:my-20 gap-4">
+      <BackButton url={back} />
       <section className="flex flex-col gap-8 mx-8 md:m-0">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col md:flex-row gap-4 justify-between">
             <h1 className="font-title text-2xl md:text-4xl">
               Mes préférences de feed
             </h1>
-            <AddOrUpdateGlobalPreferenceButton moods={moods} categories={categories} />
+            <AddOrUpdateGlobalPreferenceButton
+              moods={moods}
+              categories={categories}
+            />
           </div>
           {preferences && preferences.length > 0 ? (
             <div>

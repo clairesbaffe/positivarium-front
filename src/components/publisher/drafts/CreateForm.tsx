@@ -103,7 +103,7 @@ export default function CreateForm({
         const articleId = article ? article.id : res.id;
         setErrorMessage("");
         toast.success("Article mis à jour.");
-        router.push(`/article/${articleId}`);
+        router.push(`/article/${articleId}?back=/publisher/articles`);
       } else {
         if (article) {
           res = await updateDraft(

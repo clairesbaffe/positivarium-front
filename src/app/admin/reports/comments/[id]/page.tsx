@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import MarkAsReadButton from "@/components/admin/reports/MarkAsReadButton";
 import { Badge } from "@/components/ui/badge";
 import DeleteCommentAdminButton from "@/components/admin/reports/DeleteCommentButton";
+import BackButton from "@/components/BackButton";
 
 export default async function CommentReportPage({
   params,
@@ -17,6 +18,7 @@ export default async function CommentReportPage({
 
   return (
     <div className="my-16 md:m-40">
+      <BackButton url="/admin/reports?tab=comments" />
       {report ? (
         <div className="md:w-3/5 mx-4 md:mx-auto flex flex-col gap-8">
           <div className="flex gap-6 items-center">
@@ -33,7 +35,7 @@ export default async function CommentReportPage({
             <section className="md:w-1/3 border border-foreground-muted rounded-lg">
               {/* Could href to comment directly */}
               <Link
-                href={`/article/${report.comment.article.id}`}
+                href={`/article/${report.comment.article.id}?back=/admin/reports/comments/${report.id}`}
                 className="flex flex-col"
               >
                 <img

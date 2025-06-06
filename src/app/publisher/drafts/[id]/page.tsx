@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import SanitizedContent from "@/components/SanitizedContent";
 import DeleteDraftButton from "@/components/publisher/drafts/DeleteDraftButton";
 import PublishDraftButton from "@/components/publisher/drafts/PublishDraftButton";
+import BackButton from "@/components/BackButton";
 
 export default async function Draft({
   params,
@@ -19,6 +20,7 @@ export default async function Draft({
 
   return (
     <div className="md:w-1/2 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+      <BackButton url="/publisher/drafts" />
       {draft ? (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">

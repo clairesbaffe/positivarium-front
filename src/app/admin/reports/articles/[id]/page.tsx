@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import Button from "@/components/Button";
 import MarkAsReadButton from "@/components/admin/reports/MarkAsReadButton";
 import DeleteArticleAdminButton from "@/components/admin/reports/DeleteArticleButton";
+import BackButton from "@/components/BackButton";
 
 export default async function ArticleReportPage({
   params,
@@ -18,6 +19,7 @@ export default async function ArticleReportPage({
 
   return (
     <div className="my-16 md:m-40">
+      <BackButton url="/admin/reports?tab=articles" />
       {report ? (
         <div className="md:w-3/5 mx-4 md:mx-auto flex flex-col gap-8">
           <div className="flex gap-6 items-center">
@@ -31,7 +33,7 @@ export default async function ArticleReportPage({
           <div className="flex flex-col-reverse md:flex-row justify-center gap-8">
             <section className="md:w-1/3 border border-foreground-muted rounded-lg">
               <Link
-                href={`/article/${report.article.id}`}
+                href={`/article/${report.article.id}?back=/admin/reports/articles/${report.id}`}
                 className="flex flex-col"
               >
                 <img

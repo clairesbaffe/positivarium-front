@@ -85,7 +85,7 @@ export default async function JournalConnected({
             background="bg-colored-background"
             textColor="text-foreground"
             icon={<Wrench size={18} />}
-            href="/profile/news_preferences"
+            href="/profile/news_preferences?back=/journal"
           />
         </aside>
       </div>

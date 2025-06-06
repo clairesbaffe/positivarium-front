@@ -6,16 +6,18 @@ import { Heart } from "lucide-react";
 export default function ArticleCard({
   article,
   large = false,
+  back
 }: {
   article: SimpleArticle;
   large?: boolean;
+  back: string
 }) {
   return (
     <Link
       className={`border border-foreground-muted rounded-2xl cursor-pointer ${
         large ? "md:col-span-3" : ""
       }`}
-      href={`/article/${article.id}`}
+      href={`/article/${article.id}?back=${back}`}
     >
       <div
         className={`${

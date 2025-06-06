@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Article } from "@/lib/definitions";
 import { getArticleById } from "@/lib/data";
 
+import BackButton from "@/components/BackButton";
 import SanitizedContent from "@/components/SanitizedContent";
 import CommentsPage from "@/components/articles/CommentsPage";
 import LikeButton from "@/components/articles/LikeButton";
@@ -15,15 +16,17 @@ export default async function Article({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; back: string }>;
 }) {
   const id = (await params).id;
   const currentPage = parseInt((await searchParams).page ?? "1", 10);
+  const back = (await searchParams).back ?? "/";
 
   const article: Article = await getArticleById(Number(id));
 
   return (
     <div className="md:w-1/2 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+      <BackButton url={back} />
       {article ? (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
