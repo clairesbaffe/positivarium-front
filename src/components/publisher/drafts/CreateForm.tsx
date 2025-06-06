@@ -30,7 +30,6 @@ export default function CreateForm({
   const router = useRouter();
 
   const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(
     article?.mainImage || null
   );
@@ -51,8 +50,6 @@ export default function CreateForm({
     const formData = new FormData();
     formData.append("file", file);
 
-    setUploading(true);
-
     try {
       const data = await uploadImage(formData);
       setUploadedImageUrl(data);
@@ -65,14 +62,13 @@ export default function CreateForm({
       } else {
         throw new Error(String(error)); // fallback
       }
-    } finally {
-      setUploading(false);
     }
   };
 
   const handleSave = async () => {
     try {
-      if (title === "" || content === "") throw new Error("INPUTS_MISSING");
+      if (title === "" || content === "" || selectedCategories.length === 0)
+        throw new Error("INPUTS_MISSING");
 
       if (!file && !uploadedImageUrl) {
         throw new Error("INPUTS_MISSING");
@@ -220,7 +216,7 @@ export default function CreateForm({
           />
 
           <div className="flex flex-col gap-2">
-            <label className="text-lg">Catégorie</label>
+            <label className="text-lg">Catégorie <span className="text-red-400">*</span></label>
             <CategorySelector
               categories={categories}
               defaultSelectedCategoryIds={selectedCategories.map(
