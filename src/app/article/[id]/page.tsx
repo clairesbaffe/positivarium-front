@@ -33,7 +33,7 @@ export default async function Article({
                 {article.category.generalCategory}
               </p>
               <div className="flex flex-col gap-2">
-                <div className="flex flex-col md:flex-row gap-4 justify-between">
+                <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between">
                   <h1 className="font-title text-4xl">{article.title}</h1>
                   <div className="flex gap-4">
                     <UpdateArticleButton
