@@ -1,24 +1,26 @@
 import Link from "next/link";
-import type { Article, Comment } from "@/lib/definitions";
-import { getArticleById, getCommentsByArticleId } from "@/lib/data";
+import type { Article } from "@/lib/definitions";
+import { getArticleById } from "@/lib/data";
 
 import SanitizedContent from "@/components/SanitizedContent";
-import CommentsList from "@/components/articles/CommentsList";
-import ReportArticleButton from "@/components/articles/ReportArticleButton";
+import CommentsPage from "@/components/articles/CommentsPage";
 import LikeButton from "@/components/articles/LikeButton";
+import ReportArticleButton from "@/components/articles/ReportArticleButton";
 import DeleteArticleAdminButton from "@/components/admin/reports/DeleteArticleButton";
 import UpdateArticleButton from "@/components/publisher/articles/UpdateArticleButton";
 import DeleteArticleButton from "@/components/publisher/articles/DeleteArticleButton";
 
 export default async function Article({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ page: string }>;
 }) {
   const id = (await params).id;
+  const currentPage = parseInt((await searchParams).page ?? "1", 10);
 
   const article: Article = await getArticleById(Number(id));
-  const comments: Comment[] = await getCommentsByArticleId(Number(id));
 
   return (
     <div className="md:w-1/2 mx-4 md:mx-auto my-16 flex flex-col gap-8">
@@ -99,7 +101,11 @@ export default async function Article({
               author={article.username}
             />
           </section>
-          <CommentsList comments={comments} articleId={article.id} />
+          <CommentsPage
+            articleId={article.id}
+            currentPage={currentPage}
+            url={`/article/${article.id}`}
+          />
         </div>
       ) : (
         <div className="text-center text-gray-500 text-lg py-10 italic">

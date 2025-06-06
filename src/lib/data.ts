@@ -1,8 +1,5 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { getCurrentUser } from "@/lib/auth";
-
 import { fetchData } from "@/lib/actions";
 
 export async function getArticleById(id: number) {
@@ -13,12 +10,18 @@ export async function getArticleById(id: number) {
   }
 }
 
-export async function getCommentsByArticleId(articleId: number) {
+export async function getCommentsByArticleId(
+  articleId: number,
+  currentPage: number
+) {
   try {
-    const data = await fetchData(`/comments/article/${articleId}`, "GET");
-    return data.content;
+    const data = await fetchData(
+      `/comments/article/${articleId}?page=${currentPage - 1}&size=10`,
+      "GET"
+    );
+    return { comments: data.content, totalPages: data.totalPages };
   } catch (error) {
-    return [];
+    return { comments: [], totalPages: null };
   }
 }
 
