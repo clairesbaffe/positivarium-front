@@ -77,18 +77,18 @@ export default function Header() {
               <Link href="/">Accueil</Link>
             </li>
             <li className="flex gap-1 cursor-pointer">
-              <Link href="/article?cat=general">Actualités générales</Link>
+              <Link href="/article/category/general">Actualités générales</Link>
             </li>
             <li className="flex gap-1 cursor-pointer">
-              <Link href="/article?cat=culture">Culture</Link>
+              <Link href="/article/category/culture">Culture</Link>
             </li>
             <li className="flex gap-1 cursor-pointer">
-              <Link href="/article?cat=tech-science">
+              <Link href="/article/category/tech-science">
                 Technologies & Sciences
               </Link>
             </li>
             <li className="flex gap-1 cursor-pointer">
-              <Link href="/article?cat=divertissement-lifestyle">
+              <Link href="/article/category/divertissement-lifestyle">
                 Divertissement & Lifestyle
               </Link>
             </li>
@@ -290,17 +290,17 @@ export default function Header() {
           <Link href="/" onClick={handleMenuItemClick}>
             Accueil
           </Link>
-          <Link href="/article?cat=general" onClick={handleMenuItemClick}>
+          <Link href="/article/category/general" onClick={handleMenuItemClick}>
             Actualités générales
           </Link>
-          <Link href="/article?cat=culture" onClick={handleMenuItemClick}>
+          <Link href="/article/category/culture" onClick={handleMenuItemClick}>
             Culture
           </Link>
-          <Link href="/article?cat=tech-science" onClick={handleMenuItemClick}>
+          <Link href="/article/category/tech-science" onClick={handleMenuItemClick}>
             Technologies & Sciences
           </Link>
           <Link
-            href="/article?cat=divertissement-lifestyle"
+            href="/article/category/divertissement-lifestyle"
             onClick={handleMenuItemClick}
           >
             Divertissement & Lifestyle
