@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 
+const NOT_FOUND_PATH = "/__not-found-trigger__";
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -34,23 +36,21 @@ export async function middleware(request: NextRequest) {
     if (!hasAccess) {
       const url = request.nextUrl.clone();
       // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
-      url.pathname = "/__not-found-trigger__";
+      url.pathname = NOT_FOUND_PATH;
       return NextResponse.rewrite(url);
     }
   }
 
   if (pathname.startsWith("/admin")) {
-    if (!isAuthenticated) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
-    const user = await getCurrentUser();
+    const user = isAuthenticated ? await getCurrentUser() : null;
     const hasAccess = user?.roles?.includes("ROLE_ADMIN");
-    if (!hasAccess) {
+
+    if (!isAuthenticated || !hasAccess) {
       const url = request.nextUrl.clone();
+      // also redirects to 404 for login because this routes are sensible
+      // no information on its existence must be leaked
       // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
-      url.pathname = "/__not-found-trigger__";
+      url.pathname = NOT_FOUND_PATH;
       return NextResponse.rewrite(url);
     }
   }
@@ -66,7 +66,7 @@ export async function middleware(request: NextRequest) {
     if (!hasAccess) {
       const url = request.nextUrl.clone();
       // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
-      url.pathname = "/__not-found-trigger__";
+      url.pathname = NOT_FOUND_PATH;
       return NextResponse.rewrite(url);
     }
   }
@@ -91,7 +91,7 @@ export async function middleware(request: NextRequest) {
     if (!hasAccess) {
       const url = request.nextUrl.clone();
       // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
-      url.pathname = "/__not-found-trigger__";
+      url.pathname = NOT_FOUND_PATH;
       return NextResponse.rewrite(url);
     }
   }
@@ -107,7 +107,7 @@ export async function middleware(request: NextRequest) {
     if (!hasAccess) {
       const url = request.nextUrl.clone();
       // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
-      url.pathname = "/__not-found-trigger__";
+      url.pathname = NOT_FOUND_PATH;
       return NextResponse.rewrite(url);
     }
   }
