@@ -30,10 +30,10 @@ export default function ArticleReportsList({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[300px]">Article</TableHead>
-            <TableHead className="w-[150px]">Rédacteur</TableHead>
-            <TableHead className="w-[500px]">Signalement</TableHead>
-            <TableHead className="w-[100px]">Date</TableHead>
+            <TableHead className="min-w-[150px]">Article</TableHead>
+            <TableHead className="min-w-[150px]">Rédacteur</TableHead>
+            <TableHead className="min-w-[300px]">Signalement</TableHead>
+            <TableHead>Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

@@ -13,6 +13,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import Textarea from "@/components/Textarea";
 import CategorySelector from "@/components/CategorySelector";
@@ -91,16 +97,31 @@ export default function UpdateEntryButton({
               onChange={setSelectedMoods}
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="" className="font-semibold text-lg">
-              Qu'aimeriez-vous voir dans votre feed ?
-            </label>
-            <CategorySelector
-              categories={categories}
-              defaultSelectedCategoryIds={entry.categories.map((cat) => cat.id)}
-              onChange={setSelectedCategories}
-            />
-          </div>
+          <Accordion type="single" className="border rounded px-4 py-2" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <div className="flex items-center gap-2">
+                  <label htmlFor="" className="font-semibold">
+                    Qu'aimeriez-vous voir dans votre fil d'actualités ?
+                  </label>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col gap-4">
+                <div>
+                  <h6 className="font-semibold">Personnalisez votre fil</h6>
+                  <p>
+                    Les catégories que vous sélectionnez ici serviront à adapter
+                    votre fil d'actualités du jour selon vos envies ou votre
+                    humeur.
+                  </p>
+                </div>
+                <CategorySelector
+                  categories={categories}
+                  onChange={setSelectedCategories}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
         <DialogFooter>
           <Button

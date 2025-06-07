@@ -30,10 +30,10 @@ export default function CommentReportsList({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[500px]">Commentaire</TableHead>
-            <TableHead className="w-[150px]">Rédacteur du commentaire</TableHead>
-            <TableHead className="w-[300px]">Article</TableHead>
-            <TableHead className="w-[300px]">Signalement</TableHead>
+            <TableHead className="min-w-[250px]">Commentaire</TableHead>
+            <TableHead className="min-w-[150px]">Rédacteur du commentaire</TableHead>
+            <TableHead className="min-w-[200px]">Article</TableHead>
+            <TableHead className="min-w-[300px]">Signalement</TableHead>
             <TableHead>Date</TableHead>
           </TableRow>
         </TableHeader>

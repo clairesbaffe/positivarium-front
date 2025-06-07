@@ -13,7 +13,7 @@ export async function fetchData(
   try {
     const token = (await cookies()).get("access_token")?.value;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
+    const res = await fetch(`${process.env.API_URL}${endpoint}`, {
       method: method,
       headers: {
         "Content-Type": "application/json",
@@ -199,7 +199,7 @@ export async function sendPublisherRequest(motivation: string) {
       JSON.stringify({ motivation })
     );
 
-    revalidatePath(`/user/publisher_requests`);
+    revalidatePath(`/publisher_requests`);
   } catch (error) {
     throw new Error(String(error));
   }
@@ -222,7 +222,7 @@ export async function cancelPublisherRequestUser(id: number) {
   try {
     await fetchData(`/user/publisher_request/cancel/${id}`, "POST");
 
-    revalidatePath(`/user/publisher_requests`);
+    revalidatePath(`/publisher_requests`);
   } catch (error) {
     throw new Error(String(error));
   }
@@ -285,7 +285,7 @@ export async function uploadImage(formData: FormData) {
   const token = (await cookies()).get("access_token")?.value;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/cloudinary/upload`,
+    `${process.env.API_URL}/cloudinary/upload`,
     {
       method: "POST",
       headers: {

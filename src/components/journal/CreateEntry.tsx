@@ -2,38 +2,29 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Category, JournalEntry, Mood } from "@/lib/definitions";
+import { Category, Mood } from "@/lib/definitions";
 import { createEntry } from "@/lib/actions";
 
 import { toast } from "react-toastify";
 import { Save } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import Button from "@/components/Button";
 import Textarea from "@/components/Textarea";
-import TodaysEntry from "@/components/journal/TodaysEntry";
 import MoodSelector from "@/components/MoodSelector";
 import CategorySelector from "@/components/CategorySelector";
 
 export default function CreateEntry({
   moods,
   categories,
-  todaysEntry,
 }: {
   moods: Mood[];
   categories: Category[];
-  todaysEntry: JournalEntry;
 }) {
-  if (todaysEntry) {
-    return (
-      <div className="mt-6">
-        <TodaysEntry
-          todaysEntry={todaysEntry}
-          moods={moods}
-          categories={categories}
-        />
-      </div>
-    );
-  }
-
   const router = useRouter();
 
   const [content, setContent] = useState("");
@@ -103,15 +94,31 @@ export default function CreateEntry({
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="" className="font-semibold">
-            Qu'aimeriez-vous voir dans votre feed ?
-          </label>
-          <CategorySelector
-            categories={categories}
-            onChange={setSelectedCategories}
-          />
-        </div>
+        <Accordion type="single" className="border rounded p-4 py-2" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>
+              <div className="flex items-center gap-2">
+                <label htmlFor="" className="font-semibold">
+                  Qu'aimeriez-vous voir dans votre fil d'actualités ?
+                </label>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4">
+              <div>
+                <h6 className="font-semibold">Personnalisez votre fil</h6>
+                <p>
+                  Les catégories que vous sélectionnez ici serviront à adapter
+                  votre fil d'actualités du jour selon vos envies ou votre
+                  humeur.
+                </p>
+              </div>
+              <CategorySelector
+                categories={categories}
+                onChange={setSelectedCategories}
+              />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <Button
           title={"Enregistrer"}

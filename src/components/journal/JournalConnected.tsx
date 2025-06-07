@@ -1,10 +1,12 @@
 import { Category, JournalEntry, Mood } from "@/lib/definitions";
 import { getCategories, getMoods, getTodaysEntry } from "@/lib/data";
 
+import { Heart, Sparkles, CalendarCheck2, Wrench } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CreateEntry from "@/components/journal/CreateEntry";
 import EntriesPage from "@/components/journal/EntriesPage";
-import { Heart, Sparkles, CalendarCheck2 } from "lucide-react";
+import TodaysEntry from "@/components/journal/TodaysEntry";
+import Button from "../Button";
 
 export default async function JournalConnected({
   currentTab,
@@ -38,17 +40,23 @@ export default async function JournalConnected({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="today">
-            <CreateEntry
-              moods={moods}
-              categories={categories}
-              todaysEntry={todaysEntry}
-            />
+            {todaysEntry ? (
+              <div className="mt-6">
+                <TodaysEntry
+                  todaysEntry={todaysEntry}
+                  moods={moods}
+                  categories={categories}
+                />
+              </div>
+            ) : (
+              <CreateEntry moods={moods} categories={categories} />
+            )}
           </TabsContent>
           <TabsContent value="past">
             <EntriesPage currentPage={currentPage} />
           </TabsContent>
         </Tabs>
-        <aside>
+        <aside className="flex flex-col gap-6">
           <div className="border border-foreground-muted rounded-2xl p-4 flex flex-col gap-3">
             <h3 className="font-title text-2xl">Bénéfices d'un journal</h3>
             <div className="flex flex-col gap-2">
@@ -72,6 +80,13 @@ export default async function JournalConnected({
               </div>
             </div>
           </div>
+          <Button
+            title="Configurer mes préférences"
+            background="bg-colored-background"
+            textColor="text-foreground"
+            icon={<Wrench size={18} />}
+            href="/profile/news_preferences?back=/journal"
+          />
         </aside>
       </div>
     </section>

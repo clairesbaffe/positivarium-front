@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { sendPublisherRequest } from "@/lib/actions";
+import { useUser } from "@/context/UserContext";
 
 import { toast } from "react-toastify";
-import { Send } from "lucide-react";
+import { Send, TriangleAlert } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,8 +17,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Textarea from "@/components/Textarea";
+import ToLoginPageButton from "@/components/ToLoginPageButton";
 
 export default function SendRequestButton() {
+  const user = useUser();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [motivation, setMotivation] = useState("");
@@ -26,6 +30,15 @@ export default function SendRequestButton() {
     message: string;
     type: "error" | "success";
   } | null>(null);
+
+  if (!user) {
+    return (
+      <ToLoginPageButton
+        title="Se connecter pour envoyer une demande"
+        next="/publisher_requests"
+      />
+    );
+  }
 
   const handleClick = async () => {
     try {
@@ -73,9 +86,20 @@ export default function SendRequestButton() {
           <DialogTitle>
             Demande pour devenir rédacteur du Positivarium
           </DialogTitle>
-          <DialogDescription>
-            Expliquez en quelques lignes pourquoi vous souhaitez rejoindre notre
-            équipe de rédacteurs.
+          <DialogDescription className="flex flex-col gap-4">
+            <span>
+              Expliquez en quelques lignes pourquoi vous souhaitez rejoindre
+              notre équipe de rédacteurs.
+            </span>
+            <div className="flex justify-between items-center gap-4">
+              <TriangleAlert className="shrink-0" />
+              <span>
+                Attention, quand votre demande sera acceptée, vous perdrez
+                l'accès à votre journal personnel. Si vous souhaitez en
+                conserver l'accès, nous vous conseillons de créer un nouveau
+                compte, afin de pouvoir publier vos propres articles.
+              </span>
+            </div>
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

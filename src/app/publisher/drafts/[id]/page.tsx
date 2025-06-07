@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import SanitizedContent from "@/components/SanitizedContent";
 import DeleteDraftButton from "@/components/publisher/drafts/DeleteDraftButton";
 import PublishDraftButton from "@/components/publisher/drafts/PublishDraftButton";
+import BackButton from "@/components/BackButton";
 
 export default async function Draft({
   params,
@@ -18,7 +19,8 @@ export default async function Draft({
   const draft: Article = await getDraftById(Number(id));
 
   return (
-    <div className="md:w-3/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+    <div className="md:w-1/2 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+      <BackButton url="/publisher/drafts" />
       {draft ? (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
@@ -28,7 +30,7 @@ export default async function Draft({
                 {draft.category.generalCategory}
               </p>
               <div className="flex flex-col gap-2">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
                   <h1 className="font-title text-4xl">{draft.title}</h1>
                   <div className="flex flex-wrap md:flex-nowrap gap-4">
                     <PublishDraftButton draftId={draft.id} />
@@ -45,7 +47,7 @@ export default async function Draft({
                 <p className="text-lg">{draft.description}</p>
               </div>
               <div className="flex items-center justify-between font-thin">
-                <div className="text-foreground-muted flex items-center gap-1">
+                <div className="text-foreground-muted flex flex-col md:flex-row md:items-center gap-1">
                   <p>
                     {new Date(draft.createdAt).toLocaleString("fr-FR", {
                       day: "2-digit",
@@ -56,16 +58,19 @@ export default async function Draft({
                     })}
                   </p>
                   {draft.updatedAt !== draft.createdAt && (
-                    <p>
-                      | Modifié le :{" "}
-                      {new Date(draft.updatedAt).toLocaleString("fr-FR", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
+                    <div className="flex items-center gap-1">
+                      <p className="hidden md:flex"> | </p>
+                      <p>
+                        Modifié le :{" "}
+                        {new Date(draft.updatedAt).toLocaleString("fr-FR", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    </div>
                   )}
                 </div>
               </div>

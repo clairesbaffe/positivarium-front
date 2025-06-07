@@ -1,11 +1,12 @@
 import Link from "next/link";
-import type { Article, Comment } from "@/lib/definitions";
-import { getArticleById, getCommentsByArticleId } from "@/lib/data";
+import type { Article } from "@/lib/definitions";
+import { getArticleById } from "@/lib/data";
 
+import BackButton from "@/components/BackButton";
 import SanitizedContent from "@/components/SanitizedContent";
-import CommentsList from "@/components/articles/CommentsList";
-import ReportArticleButton from "@/components/articles/ReportArticleButton";
+import CommentsPage from "@/components/articles/CommentsPage";
 import LikeButton from "@/components/articles/LikeButton";
+import ReportArticleButton from "@/components/articles/ReportArticleButton";
 import DeleteArticleAdminButton from "@/components/admin/reports/DeleteArticleButton";
 import UpdateArticleButton from "@/components/publisher/articles/UpdateArticleButton";
 import DeleteArticleButton from "@/components/publisher/articles/DeleteArticleButton";
@@ -15,16 +16,17 @@ export default async function Article({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ success: string }>;
+  searchParams: Promise<{ page: string; back: string }>;
 }) {
   const id = (await params).id;
-  const success = (await searchParams).success;
+  const currentPage = parseInt((await searchParams).page ?? "1", 10);
+  const back = (await searchParams).back ?? "/";
 
   const article: Article = await getArticleById(Number(id));
-  const comments: Comment[] = await getCommentsByArticleId(Number(id));
 
   return (
-    <div className="md:w-3/5 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+    <div className="md:w-1/2 mx-4 md:mx-auto my-16 flex flex-col gap-8">
+      <BackButton url={back} />
       {article ? (
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
@@ -34,7 +36,7 @@ export default async function Article({
                 {article.category.generalCategory}
               </p>
               <div className="flex flex-col gap-2">
-                <div className="flex flex-col md:flex-row gap-4 justify-between">
+                <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between">
                   <h1 className="font-title text-4xl">{article.title}</h1>
                   <div className="flex gap-4">
                     <UpdateArticleButton
@@ -62,7 +64,7 @@ export default async function Article({
                   >
                     {article.username}
                   </Link>
-                  <div className="text-foreground-muted flex items-center gap-1">
+                  <div className="text-foreground-muted flex flex-col md:flex-row md:items-center gap-1">
                     <p>
                       {new Date(article.publishedAt).toLocaleString("fr-FR", {
                         day: "2-digit",
@@ -73,16 +75,19 @@ export default async function Article({
                       })}
                     </p>
                     {article.updatedAt !== article.publishedAt && (
-                      <p>
-                        | Modifié le :{" "}
-                        {new Date(article.updatedAt).toLocaleString("fr-FR", {
-                          day: "2-digit",
-                          month: "long",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </p>
+                      <div className="flex items-center gap-1">
+                        <p className="hidden md:flex"> | </p>
+                        <p>
+                          Modifié le :{" "}
+                          {new Date(article.updatedAt).toLocaleString("fr-FR", {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -99,7 +104,11 @@ export default async function Article({
               author={article.username}
             />
           </section>
-          <CommentsList comments={comments} articleId={article.id} />
+          <CommentsPage
+            articleId={article.id}
+            currentPage={currentPage}
+            url={`/article/${article.id}`}
+          />
         </div>
       ) : (
         <div className="text-center text-gray-500 text-lg py-10 italic">

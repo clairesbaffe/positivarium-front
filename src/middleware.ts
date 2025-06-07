@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 
+const NOT_FOUND_PATH = "/__not-found-trigger__";
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -17,28 +19,39 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (
-    (pathname.startsWith("/profile") ||
-      pathname.startsWith("/profile/news_preferences")) &&
-    !isAuthenticated
-  ) {
+  if (pathname.startsWith("/profile") && !isAuthenticated) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
-  if (pathname.startsWith("/admin")) {
+  if (pathname.startsWith("/profile/news_preferences")) {
     if (!isAuthenticated) {
       const url = request.nextUrl.clone();
       url.pathname = "/login";
       return NextResponse.redirect(url);
     }
     const user = await getCurrentUser();
-    const hasAccess = user?.roles?.includes("ROLE_ADMIN");
+    const hasAccess = user?.roles?.includes("ROLE_USER");
     if (!hasAccess) {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = NOT_FOUND_PATH;
+      return NextResponse.rewrite(url);
+    }
+  }
+
+  if (pathname.startsWith("/admin")) {
+    const user = isAuthenticated ? await getCurrentUser() : null;
+    const hasAccess = user?.roles?.includes("ROLE_ADMIN");
+
+    if (!isAuthenticated || !hasAccess) {
+      const url = request.nextUrl.clone();
+      // also redirects to 404 for login because this routes are sensible
+      // no information on its existence must be leaked
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = NOT_FOUND_PATH;
+      return NextResponse.rewrite(url);
     }
   }
 
@@ -52,8 +65,9 @@ export async function middleware(request: NextRequest) {
     const hasAccess = user?.roles?.includes("ROLE_USER");
     if (!hasAccess) {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = NOT_FOUND_PATH;
+      return NextResponse.rewrite(url);
     }
   }
 
@@ -68,13 +82,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (pathname.startsWith("/journal")) {
+  if (
+    pathname.startsWith("/journal") ||
+    pathname.startsWith("/publisher_requests")
+  ) {
     const user = await getCurrentUser();
     const hasAccess = !user || user?.roles?.includes("ROLE_USER");
     if (!hasAccess) {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = NOT_FOUND_PATH;
+      return NextResponse.rewrite(url);
     }
   }
 
@@ -88,8 +106,9 @@ export async function middleware(request: NextRequest) {
     const hasAccess = user?.roles?.includes("ROLE_PUBLISHER");
     if (!hasAccess) {
       const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+      // triggers Next.js 404 default page since /__not-found-trigger__ does not exist
+      url.pathname = NOT_FOUND_PATH;
+      return NextResponse.rewrite(url);
     }
   }
 

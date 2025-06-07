@@ -39,7 +39,7 @@ export default async function Home({
               background={"bg-colored-background"}
               textColor={"text-foreground"}
               icon={<NotebookPen size={18} />}
-              href={"/"}
+              href={"/journal"}
             />
           </div>
         </div>
@@ -59,13 +59,6 @@ export default async function Home({
               Des nouvelles inspirantes venues des quatre coins du monde
             </p>
           </div>
-          <Button
-            title={"Voir toutes les catégories"}
-            background={"bg-colored-background"}
-            textColor={"text-foreground"}
-            icon={<Layers2 size={18} />}
-            href={"/"}
-          />
         </div>
         <ArticlesPage endpoint="/articles/" url="/" currentPage={currentPage} />
       </section>
@@ -108,7 +101,7 @@ export default async function Home({
               background={"bg-dark-colored-background"}
               textColor={"text-foreground-inverted"}
               icon={<SquarePen size={18} />}
-              href={"/"}
+              href={"/journal"}
             />
           </div>
         </div>
@@ -149,7 +142,7 @@ export default async function Home({
               background={"bg-colored-background"}
               textColor={"text-foreground dark:text-foreground-inverted"}
               icon={<UserRoundPen size={18} />}
-              href={"/"}
+              href={"/publisher_requests"}
             />
           </div>
         </div>

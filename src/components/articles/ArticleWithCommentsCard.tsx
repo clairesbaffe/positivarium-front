@@ -9,7 +9,7 @@ export default function ArticleWithCommentsCard({
   return (
     <Link
       className={`grid md:grid-cols-3 border border-foreground-muted rounded-2xl cursor-pointer`}
-      href={`/article/${comment.article.id}`}
+      href={`/article/${comment.article.id}?back=/article/commented`}
     >
       <div
         className={`rounded-t-2xl md:rounded-t-none md:rounded-l-2xl overflow-hidden relative`}

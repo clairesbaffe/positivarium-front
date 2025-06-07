@@ -16,7 +16,7 @@ export default async function Page({
   const totalPages = res.totalPages;
 
   return (
-    <div className="flex flex-col my-16 md:w-2/3 md:mx-auto gap-8 mx-8">
+    <div className="flex flex-col my-16 md:w-2/3 md:mx-auto gap-8 mx-4">
       <div className="flex flex-col md:flex-row gap-4 justify-between">
         <h1 className="font-title text-2xl md:text-4xl">Devenir rédacteur</h1>
         <SendRequestButton />
@@ -29,7 +29,7 @@ export default async function Page({
       <PublisherRequestsList
         currentPage={currentPage}
         totalPages={totalPages}
-        url="/user/publisher_requests"
+        url="/publisher_requests"
         requests={requests}
       />
     </div>

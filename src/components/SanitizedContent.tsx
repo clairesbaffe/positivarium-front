@@ -10,7 +10,7 @@ export default async function SanitizedContent({
   const cleanHtml = sanitizeArticleHtml(htmlContent);
 
   return (
-    <div className="prose dark:prose-invert">
+    <div className="prose dark:prose-invert max-w-none">
       <div dangerouslySetInnerHTML={{ __html: cleanHtml }}></div>
     </div>
   );

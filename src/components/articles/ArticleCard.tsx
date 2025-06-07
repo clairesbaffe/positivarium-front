@@ -1,20 +1,23 @@
-import { SimpleArticle } from "@/lib/definitions";
-import { Heart } from "lucide-react";
 import Link from "next/link";
+import { SimpleArticle } from "@/lib/definitions";
+
+import { Heart } from "lucide-react";
 
 export default function ArticleCard({
   article,
   large = false,
+  back
 }: {
   article: SimpleArticle;
   large?: boolean;
+  back: string
 }) {
   return (
     <Link
       className={`border border-foreground-muted rounded-2xl cursor-pointer ${
         large ? "md:col-span-3" : ""
       }`}
-      href={`/article/${article.id}`}
+      href={`/article/${article.id}?back=${back}`}
     >
       <div
         className={`${
@@ -32,23 +35,26 @@ export default function ArticleCard({
       </div>
       <div className="px-4 py-2 flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <h3 className="text-lg font-bold line-clamp-2">{article.title}</h3>
-          <p className="line-clamp-3">{article.description}</p>
+          <h3 className="font-bold line-clamp-2">{article.title}</h3>
+          <p className="line-clamp-3 text-sm">{article.description}</p>
         </div>
-        <div className="flex justify-between">
-          <p className="text-foreground-muted text-sm">
-            {new Date(article.publishedAt).toLocaleString("fr-FR", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </p>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm">{article.username}</p>
+          <div className="flex justify-between">
+            <p className="text-foreground-muted text-xs">
+              {new Date(article.publishedAt).toLocaleString("fr-FR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </p>
 
-          <p className="flex items-center gap-1">
-            <Heart strokeWidth={2} className="size-4" /> {article.likesCount}
-          </p>
+            <p className="flex items-center gap-1">
+              <Heart strokeWidth={2} className="size-4" /> {article.likesCount}
+            </p>
+          </div>
         </div>
       </div>
     </Link>
