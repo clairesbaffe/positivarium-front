@@ -2,7 +2,7 @@ import { PublisherRequest } from "@/lib/definitions";
 import { getActivePublisherResquests } from "@/lib/data";
 import PublisherRequestsList from "@/components/publisher_requests/PublisherRequestsList";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Page({
   searchParams,
@@ -19,6 +19,13 @@ export default async function Page({
     <div className="flex flex-col my-16 md:w-2/3 md:mx-auto gap-8 mx-8">
       <div className="flex flex-col md:flex-row gap-4 justify-between">
         <h1 className="font-title text-2xl md:text-4xl">Demandes rédacteur</h1>
+      </div>
+      <div>
+        <p>
+          Les utilisateurs peuvent proposer de devenir rédacteur en soumettant
+          une motivation. Vous pouvez approuver ou refuser chaque demande.
+        </p>
+        <p>À vous de choisir qui rejoindra l'équipe éditoriale !</p>
       </div>
       <PublisherRequestsList
         currentPage={currentPage}
