@@ -6,9 +6,3 @@ describe('sum module', () => {
     expect(sum(1, 2)).toBe(3);
   });
 });
-
-describe('sum module, failing', () => {
-  test('adds 1 + 4 to equal 3', () => {
-    expect(sum(1, 4)).toBe(3);
-  });
-});
