@@ -19,7 +19,7 @@ jobs:
           npm test
 
       - name: Link to Vercel project
-        run: npx vercel link --project ${{ secrets.VERCEL_PROJECT_ID }} --org ${{ secrets.VERCEL_ORG_ID }} --token ${{ secrets.VERCEL_TOKEN }} --yes
+        run: npx vercel link --project ${{ secrets.VERCEL_PROJECT_ID }} --token ${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Deploy to Vercel Preview
         if: success() && github.ref != 'refs/heads/main'
