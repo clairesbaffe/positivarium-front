@@ -20,10 +20,10 @@ jobs:
 
       - name: Deploy to Vercel Preview
         if: success() && github.ref != 'refs/heads/main'
-        run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --yes
+        run: npx vercel --project ${{ secrets.VERCEL_PROJECT_ID }} --org ${{ secrets.VERCEL_ORG_ID }} --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Deploy to Vercel Production
         if: success() && github.ref == 'refs/heads/main'
-        run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        run: npx vercel --project ${{ secrets.VERCEL_PROJECT_ID }} --org ${{ secrets.VERCEL_ORG_ID }} --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - run: echo "This job's status is ${{ job.status }}."
