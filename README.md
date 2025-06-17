@@ -21,7 +21,7 @@ This is the front-end application, built with [**Next.js**](https://nextjs.org),
 - Tailwind CSS
 - React Markdown Editor Lite
 - Icons via Lucide React
-- Server communication via RESTful API (see positivarium-back repository)
+- Server communication via RESTful API (see [positivarium-back](https://github.com/clairesbaffe/positivarium-api) repository)
 - Authentication with cookies (JWT stored securely)
 
 ## Getting Started
@@ -81,9 +81,9 @@ The application is deployed on Vercel.
 
 ## Notes
 
-- The front-end communicates with a custom REST API (see back-end repo for details)
+- The front-end communicates with a custom REST API (see [back-end repo](https://github.com/clairesbaffe/positivarium-api) for details)
 - Only minimal unit testing is implemented as a proof of concept
-- Some features are still in progress or planned (see roadmap in project documentation)
+- Some features are still in progress or planned
 
 ## License
 
