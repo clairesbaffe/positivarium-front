@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Le Positivarium - front-end
+
+**Le Positivarium** is a French-speaking positive-only news web application designed to highlight uplifting stories, scientific progress, and inspiring initiatives. It was developed as part of a Bachelor’s degree project in Web & Application Development.
+
+This is the front-end application, built with [**Next.js**](https://nextjs.org), [**TypeScript**](https://www.typescriptlang.org/), and [**Tailwind CSS**](https://tailwindcss.com/).
+
+## Features
+
+- Read positive news only, with dynamic filtering by categories
+- Private journal to write daily thoughts and gratitudes
+- News feed personnalisation based on journal entries
+- Role-based system : reader, publisher, admin, banned
+- Admin interface for moderation and role management
+- Notification system for key user events (role updates, moderation, etc)
+- Responsive UI (desktop and mobile optimised)
+
+## Tech Stack
+
+- Next.js with App Router
+- TypeScript
+- Tailwind CSS
+- React Markdown Editor Lite
+- Icons via Lucide React
+- Server communication via RESTful API (see positivarium-back repository)
+- Authentication with cookies (JWT stored securely)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
+
+### Environment setup
+
+Create a `.env` file at the root of the project:
+
+```env
+API_URL=http://your-api-url.com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Run the application
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+docker-compose up --build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This will start the application in development mode using Docker.
 
-## Learn More
+Application will be available at http://localhost:3000.
 
-To learn more about Next.js, take a look at the following resources:
+## Testing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Unit tests are written using Jest.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run tests using command :
 
-## Deploy on Vercel
+```bash
+npm test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Coverage reports are automatically generated and accessible in `/coverage` folder.
+- Tests cover a core shared component used widely across the app
+- Test results are integrated in CI/CD workflow
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## CI/CD Pipeline
+
+This front-end is deployed via Vercel, but automatic deployments are disabled.
+Instead, a custom CI/CD workflow using GitHub Actions handles the pipeline :
+
+- On every push :
+  - Run unit tests via GitHub Actions
+  - If tests pass, the app is deployed to Vercel manually via workflow to production if push was on main or preview on any other branch
+  - If tests fail, deployment is blocked to ensure app integrity
+
+This ensures high-quality code is deployed and prevens breaking changes in production.
+
+## Live Demo
+
+The application is deployed on Vercel.
+🔗 https://positivarium.vercel.app/
+
+## Notes
+
+- The front-end communicates with a custom REST API (see back-end repo for details)
+- Only minimal unit testing is implemented as a proof of concept
+- Some features are still in progress or planned (see roadmap in project documentation)
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+You are free to use, copy, modify, and distribute the code. However, contributions to this repository must follow its guidelines and remain respectful of the original work.
