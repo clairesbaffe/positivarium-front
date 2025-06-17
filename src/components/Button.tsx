@@ -1,8 +1,8 @@
 "use client";
-import { LucideIcon } from "lucide-react";
-import clsx from "clsx";
+
+import React from "react";
 import { useRouter } from "next/navigation";
-// import { redirect } from "next/navigation";
+import clsx from "clsx";
 
 type ButtonProps = {
   title: string;
@@ -55,14 +55,21 @@ export default function Button({
   const classNames = clsx(
     `flex items-center justify-center whitespace-nowrap gap-2 ${
       minWidth ? "w-min" : ""
-    } ${disabled ? "bg-background-muted cursor-not-allowed" : "cursor-pointer"}`,
+    } ${
+      disabled ? "bg-background-muted cursor-not-allowed" : "cursor-pointer"
+    }`,
     !disabled && background,
     textColor,
     priorityClass
   );
 
   return (
-    <button onClick={handleClick} className={classNames} disabled={disabled} title={disabledReason}>
+    <button
+      onClick={handleClick}
+      className={classNames}
+      disabled={disabled}
+      title={disabledReason}
+    >
       {Icon}
       {title}
     </button>
