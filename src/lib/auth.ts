@@ -53,14 +53,13 @@ export async function login(username: string, password: string) {
 
 export async function register(
   username: string,
-  email: string,
   password: string
 ) {
   try {
     await fetchData(
       `/register`,
       "POST",
-      JSON.stringify({ username, email, password })
+      JSON.stringify({ username, password })
     );
   } catch (error) {
     throw new Error(String(error));
@@ -79,14 +78,13 @@ export async function logout() {
 
 export async function updateProfileInfo(
   username: string,
-  email: string,
   description: string
 ) {
   try {
     const data = await fetchData(
       `/profile/`,
       "PATCH",
-      JSON.stringify({ username, email, description })
+      JSON.stringify({ username, description })
     );
 
     await saveAccessTokenInCookies(data.token);

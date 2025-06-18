@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Input from "@/components/Input";
 
-export default function UpdatePasswordButton({ user }: { user: UserDetails }) {
+export default function UpdatePasswordButton() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [previousPassword, setPreviousPassword] = useState("");

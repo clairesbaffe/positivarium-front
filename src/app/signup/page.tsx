@@ -2,16 +2,16 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { register } from "@/lib/auth";
+
 import Link from "next/link";
 import Button from "@/components/Button";
-import { register } from "@/lib/auth";
 
 export default function SignUp() {
   const router = useRouter();
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -20,14 +20,7 @@ export default function SignUp() {
 
   const handleSignup = async () => {
     try {
-      // check validity of form inputs, expecially for email format
-      if (formRef.current && !formRef.current.checkValidity()) {
-        formRef.current.reportValidity();
-        return;
-      }
-
       if (
-        email === "" ||
         username === "" ||
         password === "" ||
         repeatPassword === ""
@@ -36,7 +29,7 @@ export default function SignUp() {
       else if (password !== repeatPassword)
         throw new Error("PASSWORDS_NOT_MATCHING");
 
-      await register(username, email, password);
+      await register(username, password);
 
       setMessage("");
       router.push("/login?success=1");
@@ -66,20 +59,6 @@ export default function SignUp() {
         }}
         className="w-full flex flex-col gap-4"
       >
-        <div className="flex flex-col gap-2">
-          <label className="text-lg" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="border border-foreground-muted h-12 rounded-lg p-4"
-            placeholder="Email"
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
         <div className="flex flex-col gap-2">
           <label className="text-lg" htmlFor="username">
             Nom d'utilisateur

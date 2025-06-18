@@ -284,16 +284,13 @@ export async function deleteEntry(id: number) {
 export async function uploadImage(formData: FormData) {
   const token = (await cookies()).get("access_token")?.value;
 
-  const res = await fetch(
-    `${process.env.API_URL}/cloudinary/upload`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    }
-  );
+  const res = await fetch(`${process.env.API_URL}/cloudinary/upload`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
 
   if (!res.ok) {
     const errText = await res.text().catch(() => "");
@@ -436,6 +433,15 @@ export async function deleteGlobalPreference(id: number) {
     await fetchData(`/global_preferences/${id}`, "DELETE");
 
     revalidatePath(`/profile/news_preferences`);
+  } catch (error) {
+    throw new Error(String(error));
+  }
+}
+
+export async function deleteAccount(password: string) {
+  try {
+    await fetchData(`/profile/`, "DELETE", JSON.stringify({ password }));
+    (await cookies()).delete("access_token");
   } catch (error) {
     throw new Error(String(error));
   }

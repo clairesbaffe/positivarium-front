@@ -6,7 +6,7 @@ export default function Input({
   placeholder,
   maxLength,
 }: {
-  type?: "text" | "password" | "email";
+  type?: "text" | "password";
   name: string;
   data: string;
   setData: (value: string) => void;
