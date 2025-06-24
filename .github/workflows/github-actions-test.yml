@@ -1,6 +1,9 @@
 name: GitHub Actions Test
 run-name: ${{ github.actor }} is testing Positivarium front-end application via GitHub Actions.
-on: [push]
+on:
+  push:
+    branches:
+      - main
 jobs:
   GitHub-Actions-Test:
     runs-on: ubuntu-latest
@@ -20,10 +23,6 @@ jobs:
 
       - name: Link to Vercel project
         run: npx vercel link --project ${{ secrets.VERCEL_PROJECT_ID }} --token ${{ secrets.VERCEL_TOKEN }} --yes
-
-      - name: Deploy to Vercel Preview
-        if: success() && github.ref != 'refs/heads/main'
-        run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --yes
 
       - name: Deploy to Vercel Production
         if: success() && github.ref == 'refs/heads/main'
