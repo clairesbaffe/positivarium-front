@@ -14,7 +14,9 @@
   --foreground-muted: #949494;
 
   --background-danger: #e97070;
+  --foreground-danger: #721c24;
   --background-success: #70e9a0;
+  --foreground-success: #155724;
 
   /* Mood colors */
   --mood-joy: #fcd34d;
@@ -41,7 +43,9 @@
     --foreground-muted: #a1a1a1;
 
     --background-danger: #8b3a3a;
+    --foreground-danger: #ffd6d6;
     --background-success: #3a8b63;
+    --foreground-success: #d6ffe7;
 
     /* Mood colors */
     --mood-joy: #facc15;
@@ -68,7 +72,9 @@
   --color-foreground-muted: var(--foreground-muted);
 
   --color-background-danger: var(--background-danger);
+  --color-foreground-danger: var(--foreground-danger);
   --color-background-success: var(--background-success);
+  --color-foreground-success: var(--foreground-success);
 
   --color-mood-joy: var(--mood-joy);
   --color-mood-sadness: var(--mood-sadness);

@@ -148,3 +148,13 @@ export function sanitizeArticleHtml(html: string): string {
     },
   });
 }
+
+export function isPasswordComplex(pw: string): boolean {
+  return (
+    pw.length >= 10 &&
+    /[A-Z]/.test(pw) &&
+    /[a-z]/.test(pw) &&
+    /\d/.test(pw) &&
+    /[!@#$%^&*(),.?":{}|<>]/.test(pw)
+  );
+}

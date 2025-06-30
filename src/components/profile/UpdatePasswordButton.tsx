@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { updatePassword } from "@/lib/auth";
+import { isPasswordComplex } from "@/lib/utils";
 
 import { toast } from "react-toastify";
 import {
@@ -14,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/Input";
+import PasswordChecker from "../auth/PasswordChecker";
 
 export default function UpdatePasswordButton() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -35,7 +37,9 @@ export default function UpdatePasswordButton() {
         repeatNewPassword === ""
       ) {
         throw new Error("INPUTS_MISSING");
-      } else if (newPassword !== repeatNewPassword) {
+      } else if (!isPasswordComplex(newPassword))
+        throw new Error("PASSWORD_NOT_COMPLEX_ENOUGH");
+      else if (newPassword !== repeatNewPassword) {
         throw new Error("PASSWORDS_NOT_MATCHING");
       }
 
@@ -52,9 +56,35 @@ export default function UpdatePasswordButton() {
             message: "Veuillez compléter tous les champs.",
             type: "error",
           });
+        } else if (error.message.includes("PASSWORD_NOT_COMPLEX_ENOUGH")) {
+          setMessage({
+            message: "Le mot de passe n'est pas assez complexe.",
+            type: "error",
+          });
         } else if (error.message.includes("PASSWORDS_NOT_MATCHING")) {
           setMessage({
             message: "Le nouveau mot de passe ne correspond pas.",
+            type: "error",
+          });
+        } else if (error.message.includes("Username is already taken")) {
+          setMessage({
+            message: "Ce username est déjà pris, veuillez en choisir un autre.",
+            type: "error",
+          });
+        } else if (error.message.includes("Not long enough")) {
+          setMessage({
+            message: "Votre mot de passe est trop court.",
+            type: "error",
+          });
+        } else if (error.message.includes("Contains common password")) {
+          setMessage({
+            message: "Votre mot de passe est trop commun.",
+            type: "error",
+          });
+        } else if (error.message.includes("Not complex enough")) {
+          setMessage({
+            message:
+              "Votre mot de passe ne contient pas les caractères requis.",
             type: "error",
           });
         } else {
@@ -96,6 +126,7 @@ export default function UpdatePasswordButton() {
               data={newPassword}
               setData={setNewPassword}
             />
+            <PasswordChecker password={newPassword} />
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="repeatNewPassword">
