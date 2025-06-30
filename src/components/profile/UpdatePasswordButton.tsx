@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { UserDetails } from "@/lib/definitions";
 import { updatePassword } from "@/lib/auth";
 
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -28,7 +26,6 @@ export default function UpdatePasswordButton() {
     message: string;
     type: "error" | "success";
   } | null>(null);
-
 
   const handleUpdate = async () => {
     try {

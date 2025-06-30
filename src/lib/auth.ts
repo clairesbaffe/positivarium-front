@@ -43,7 +43,7 @@ export async function login(username: string, password: string) {
     const data = await fetchData(
       `/login`,
       "POST",
-      JSON.stringify({ username, password })
+      JSON.stringify({ username, password }),
     );
     await saveAccessTokenInCookies(data.token);
   } catch (error) {
@@ -51,15 +51,12 @@ export async function login(username: string, password: string) {
   }
 }
 
-export async function register(
-  username: string,
-  password: string
-) {
+export async function register(username: string, password: string) {
   try {
     await fetchData(
       `/register`,
       "POST",
-      JSON.stringify({ username, password })
+      JSON.stringify({ username, password }),
     );
   } catch (error) {
     throw new Error(String(error));
@@ -76,15 +73,12 @@ export async function logout() {
   }
 }
 
-export async function updateProfileInfo(
-  username: string,
-  description: string
-) {
+export async function updateProfileInfo(username: string, description: string) {
   try {
     const data = await fetchData(
       `/profile/`,
       "PATCH",
-      JSON.stringify({ username, description })
+      JSON.stringify({ username, description }),
     );
 
     await saveAccessTokenInCookies(data.token);
@@ -100,7 +94,7 @@ export async function updatePassword(oldPassword: string, newPassword: string) {
     await fetchData(
       `/profile/password`,
       "PATCH",
-      JSON.stringify({ oldPassword, newPassword })
+      JSON.stringify({ oldPassword, newPassword }),
     );
   } catch (error) {
     throw new Error(String(error));

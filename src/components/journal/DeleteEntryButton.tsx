@@ -21,6 +21,7 @@ export default function DeleteEntryButton({ entry }: { entry: JournalEntry }) {
       await deleteEntry(entry.id);
       toast.success("L'entrée a été supprimée.");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

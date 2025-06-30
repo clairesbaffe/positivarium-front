@@ -18,7 +18,7 @@ export default async function ArticlesWithCommentsPage({
   const data = await getArticles(
     `${endpoint}${endpoint.includes("?") ? "&" : "?"}page=${
       currentPage - 1
-    }&size=${size === "large" ? (currentPage - 1 === 0 ? 10 : 12) : 12}`
+    }&size=${size === "large" ? (currentPage - 1 === 0 ? 10 : 12) : 12}`,
   );
 
   const articles = data.articles;

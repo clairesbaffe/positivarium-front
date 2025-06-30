@@ -60,7 +60,7 @@ export default function Button({
     }`,
     !disabled && background,
     textColor,
-    priorityClass
+    priorityClass,
   );
 
   return (

@@ -6,13 +6,7 @@ import {
 } from "@/lib/actions";
 import { useUser } from "@/context/UserContext";
 
-import { Ellipsis } from "lucide-react";
 import { toast } from "react-toastify";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,12 +24,13 @@ export default function PublisherRequestActions({ id }: { id: number }) {
   const user = useUser();
 
   const handleAdminClick = async (
-    status: "UNDER_REVIEW" | "APPROVED" | "REJECTED"
+    status: "UNDER_REVIEW" | "APPROVED" | "REJECTED",
   ) => {
     try {
       await updatePublisherRequestStatusAdmin(id, status);
       toast.success("La demande a été mise à jour.");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };
@@ -45,6 +40,7 @@ export default function PublisherRequestActions({ id }: { id: number }) {
       await cancelPublisherRequestUser(id);
       toast.success("La demande a été annulée.");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

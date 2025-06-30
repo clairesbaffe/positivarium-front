@@ -34,7 +34,7 @@ export const roleData = (role: string) => {
 };
 
 export const publisherRequestStatus = (
-  status: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED" | "CANCELLED"
+  status: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED" | "CANCELLED",
 ) => {
   switch (status) {
     case "PENDING":
@@ -79,7 +79,7 @@ export const moodColor = (
     | "Surprise"
     | "Dégoût"
     | "Confiance"
-    | "Anticipation"
+    | "Anticipation",
 ): { bg: string; text: string } => {
   switch (type) {
     case "Joie":

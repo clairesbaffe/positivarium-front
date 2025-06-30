@@ -8,7 +8,7 @@ import { Category, Mood } from "@/lib/definitions";
 export async function fetchData(
   endpoint: string,
   method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE",
-  body?: string
+  body?: string,
 ) {
   try {
     const token = (await cookies()).get("access_token")?.value;
@@ -67,7 +67,7 @@ export async function createComment(content: string, articleId: number) {
     await fetchData(
       `/comments/${articleId}`,
       "POST",
-      JSON.stringify({ content })
+      JSON.stringify({ content }),
     );
 
     revalidatePath(`/article/${articleId}`);
@@ -91,7 +91,7 @@ export async function reportComment(reason: string, commentId: number) {
     await fetchData(
       `/reports/comments/${commentId}`,
       "POST",
-      JSON.stringify({ reason, isReviewed: false })
+      JSON.stringify({ reason, isReviewed: false }),
     );
   } catch (error) {
     throw new Error(String(error));
@@ -103,7 +103,7 @@ export async function reportArticle(reason: string, articleId: number) {
     await fetchData(
       `/reports/articles/${articleId}`,
       "POST",
-      JSON.stringify({ reason, isReviewed: false })
+      JSON.stringify({ reason, isReviewed: false }),
     );
   } catch (error) {
     throw new Error(String(error));
@@ -162,7 +162,7 @@ export async function grantAdmin(username: string) {
 
 export async function markReportAsRead(
   id: number,
-  type: "article" | "comment"
+  type: "article" | "comment",
 ) {
   try {
     await fetchData(`/admin/reports/${type}s/${id}`, "POST");
@@ -196,7 +196,7 @@ export async function sendPublisherRequest(motivation: string) {
     await fetchData(
       `/user/publisher_request`,
       "POST",
-      JSON.stringify({ motivation })
+      JSON.stringify({ motivation }),
     );
 
     revalidatePath(`/publisher_requests`);
@@ -207,7 +207,7 @@ export async function sendPublisherRequest(motivation: string) {
 
 export async function updatePublisherRequestStatusAdmin(
   id: number,
-  status: "UNDER_REVIEW" | "APPROVED" | "REJECTED"
+  status: "UNDER_REVIEW" | "APPROVED" | "REJECTED",
 ) {
   try {
     await fetchData(`/admin/publisher_requests/${id}?status=${status}`, "POST");
@@ -231,7 +231,7 @@ export async function cancelPublisherRequestUser(id: number) {
 export async function createEntry(
   description: string,
   moods: Mood[],
-  categories: Category[]
+  categories: Category[],
 ) {
   try {
     const moodIds: number[] = moods.map((mood) => mood.id);
@@ -240,7 +240,7 @@ export async function createEntry(
     await fetchData(
       `/journal/`,
       "POST",
-      JSON.stringify({ description, moodIds, categoryIds })
+      JSON.stringify({ description, moodIds, categoryIds }),
     );
 
     revalidatePath(`/journal`);
@@ -253,7 +253,7 @@ export async function updateEntry(
   id: number,
   description: string,
   moods: Mood[],
-  categories: Category[]
+  categories: Category[],
 ) {
   try {
     const moodIds: number[] = moods.map((mood) => mood.id);
@@ -262,7 +262,7 @@ export async function updateEntry(
     await fetchData(
       `/journal/${id}`,
       "PATCH",
-      JSON.stringify({ description, moodIds, categoryIds })
+      JSON.stringify({ description, moodIds, categoryIds }),
     );
 
     revalidatePath(`/journal`);
@@ -311,7 +311,7 @@ export async function createDraft(
   description: string,
   content: string,
   mainImage: string,
-  categoryId: number
+  categoryId: number,
 ) {
   try {
     const data = await fetchData(
@@ -323,7 +323,7 @@ export async function createDraft(
         content,
         mainImage,
         category: { id: categoryId },
-      })
+      }),
     );
     return { id: data.id };
   } catch (error) {
@@ -337,7 +337,7 @@ export async function updateDraft(
   description: string,
   content: string,
   mainImage: string,
-  categoryId: number
+  categoryId: number,
 ) {
   try {
     await fetchData(
@@ -349,7 +349,7 @@ export async function updateDraft(
         content,
         mainImage,
         category: { id: categoryId },
-      })
+      }),
     );
     return { id: null };
   } catch (error) {
@@ -379,7 +379,7 @@ export async function updateArticle(
   description: string,
   content: string,
   mainImage: string,
-  categoryId: number
+  categoryId: number,
 ) {
   try {
     await fetchData(
@@ -391,7 +391,7 @@ export async function updateArticle(
         content,
         mainImage,
         category: { id: categoryId },
-      })
+      }),
     );
     return { success: true, id: null };
   } catch (error) {
@@ -410,7 +410,7 @@ export async function deleteArticlePublisher(id: number) {
 export async function addOrUpdateGlobalPreference(
   mood: Mood,
   categories: Category[],
-  id?: number
+  id?: number,
 ) {
   try {
     const moodId: number = mood.id;
@@ -419,7 +419,7 @@ export async function addOrUpdateGlobalPreference(
     await fetchData(
       `/global_preferences/${id ? id : ""}`,
       "POST",
-      JSON.stringify({ moodId, categoryIds })
+      JSON.stringify({ moodId, categoryIds }),
     );
 
     revalidatePath(`/profile/news_preferences`);

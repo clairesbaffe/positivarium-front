@@ -1,5 +1,5 @@
 import ArticleWithCommentsCard from "./ArticleWithCommentsCard";
-import { CommentWithArticle, SimpleArticle } from "@/lib/definitions";
+import { CommentWithArticle } from "@/lib/definitions";
 
 export default function ArticlesList({
   articles,

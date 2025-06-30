@@ -20,11 +20,7 @@ export default function SignUp() {
 
   const handleSignup = async () => {
     try {
-      if (
-        username === "" ||
-        password === "" ||
-        repeatPassword === ""
-      )
+      if (username === "" || password === "" || repeatPassword === "")
         throw new Error("INPUTS_MISSING");
       else if (password !== repeatPassword)
         throw new Error("PASSWORDS_NOT_MATCHING");

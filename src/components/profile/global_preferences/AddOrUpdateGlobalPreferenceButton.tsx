@@ -30,10 +30,10 @@ export default function AddOrUpdateGlobalPreferenceButton({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [selectedMoods, setSelectedMoods] = useState<Mood[]>(
-    preference ? [preference.mood] : []
+    preference ? [preference.mood] : [],
   );
   const [selectedCategories, setSelectedCategories] = useState<Category[]>(
-    preference?.categories || []
+    preference?.categories || [],
   );
 
   const [message, setMessage] = useState<{
@@ -50,7 +50,7 @@ export default function AddOrUpdateGlobalPreferenceButton({
       await addOrUpdateGlobalPreference(
         selectedMoods[0],
         selectedCategories,
-        preference?.id
+        preference?.id,
       );
 
       setMessage({ message: "", type: "success" });
@@ -122,7 +122,7 @@ export default function AddOrUpdateGlobalPreferenceButton({
                 categories={categories}
                 onChange={setSelectedCategories}
                 defaultSelectedCategoryIds={selectedCategories.map(
-                  (cat) => cat.id
+                  (cat) => cat.id,
                 )}
               />
             </div>

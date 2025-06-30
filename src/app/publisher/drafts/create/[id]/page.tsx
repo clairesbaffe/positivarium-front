@@ -10,7 +10,7 @@ export default async function UpdateDraft({
   const id = (await params).id;
 
   const draft: Article = await getDraftById(Number(id));
-  
+
   const categories = await getCategories();
 
   return (

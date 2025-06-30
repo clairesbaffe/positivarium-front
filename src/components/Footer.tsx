@@ -13,12 +13,18 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/article/category/general" className="underline-offset-2 hover:underline">
+              <Link
+                href="/article/category/general"
+                className="underline-offset-2 hover:underline"
+              >
                 Actualités générales
               </Link>
             </li>
             <li>
-              <Link href="/article/category/culture" className="underline-offset-2 hover:underline">
+              <Link
+                href="/article/category/culture"
+                className="underline-offset-2 hover:underline"
+              >
                 Culture
               </Link>
             </li>
@@ -45,22 +51,34 @@ export default function Footer() {
           <p className="font-title text-2xl">Espace membre</p>
           <ul className="flex flex-col gap-1">
             <li>
-              <Link href="/login" className="underline-offset-2 hover:underline">
+              <Link
+                href="/login"
+                className="underline-offset-2 hover:underline"
+              >
                 Connexion
               </Link>
             </li>
             <li>
-              <Link href="/signup" className="underline-offset-2 hover:underline">
+              <Link
+                href="/signup"
+                className="underline-offset-2 hover:underline"
+              >
                 Inscription
               </Link>
             </li>
             <li>
-              <Link href="/publisher_requests" className="underline-offset-2 hover:underline">
+              <Link
+                href="/publisher_requests"
+                className="underline-offset-2 hover:underline"
+              >
                 Devenir rédacteur
               </Link>
             </li>
             <li>
-              <Link href="/journal" className="underline-offset-2 hover:underline">
+              <Link
+                href="/journal"
+                className="underline-offset-2 hover:underline"
+              >
                 Journal
               </Link>
             </li>
@@ -68,7 +86,9 @@ export default function Footer() {
         </div>
       </nav>
       <div className="flex flex-col gap-3 items-center">
-        <Link href="/privacy" className="underline-offset-2 hover:underline">Politique de confidentialité</Link>
+        <Link href="/privacy" className="underline-offset-2 hover:underline">
+          Politique de confidentialité
+        </Link>
         <p>© Le Positivarium - 2025 | Tous droits réservés</p>
       </div>
     </footer>

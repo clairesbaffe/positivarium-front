@@ -13,10 +13,13 @@ export default function FollowButton({ publisher }: { publisher: User }) {
 
   const handleClick = async () => {
     try {
-      publisher.isFollowed
-        ? await unfollow(publisher.id)
-        : await follow(publisher.id);
+      if (publisher.isFollowed) {
+        await unfollow(publisher.id);
+      } else {
+        await follow(publisher.id);
+      }
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

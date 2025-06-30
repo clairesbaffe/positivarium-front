@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { reportArticle } from "@/lib/actions";
 import { useUser } from "@/context/UserContext";
 
@@ -25,8 +24,6 @@ export default function ReportArticleButton({
   articleId: number;
   author: string;
 }) {
-  const router = useRouter();
-
   const user = useUser();
   const isOwn = author === user?.username;
 
@@ -37,11 +34,12 @@ export default function ReportArticleButton({
     try {
       await reportArticle(reportReason, articleId);
       toast.success(
-        "Votre signalement a été enregistré. Il sera traité sous peu par nos administrateurs."
+        "Votre signalement a été enregistré. Il sera traité sous peu par nos administrateurs.",
       );
       setIsDialogOpen(false);
       setReportReason("");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

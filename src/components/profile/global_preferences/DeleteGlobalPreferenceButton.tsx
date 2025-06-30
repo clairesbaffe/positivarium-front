@@ -24,6 +24,7 @@ export default function DeleteGlobalPreferenceButton({
       await deleteGlobalPreference(preferenceId);
       toast.success("La préférence a été supprimée.");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

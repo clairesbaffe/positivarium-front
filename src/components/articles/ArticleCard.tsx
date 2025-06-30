@@ -6,11 +6,11 @@ import { Heart } from "lucide-react";
 export default function ArticleCard({
   article,
   large = false,
-  back
+  back,
 }: {
   article: SimpleArticle;
   large?: boolean;
-  back: string
+  back: string;
 }) {
   return (
     <Link

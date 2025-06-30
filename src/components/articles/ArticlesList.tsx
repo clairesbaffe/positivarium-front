@@ -21,7 +21,7 @@ export default function ArticlesList({
           )
         ) : (
           <ArticleCard key={article.id} article={article} back={back} />
-        )
+        ),
       )}
     </ul>
   );

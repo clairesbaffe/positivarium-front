@@ -12,14 +12,13 @@ export default async function NewsPreferences({
   const currentPage = parseInt((await searchParams).page ?? "1", 10);
   const back = (await searchParams).back ?? "/profile";
 
-  const { preferences, totalPages } = await getUserGlobalPreferences(
-    currentPage
-  );
+  const { preferences, totalPages } =
+    await getUserGlobalPreferences(currentPage);
 
   const moods = await getMoods();
   const categories = await getCategories();
 
-  return ( 
+  return (
     <div className="flex flex-col my-8 md:w-2/3 md:mx-auto md:my-20 gap-4">
       <BackButton url={back} />
       <section className="flex flex-col gap-8 mx-8 md:m-0">
