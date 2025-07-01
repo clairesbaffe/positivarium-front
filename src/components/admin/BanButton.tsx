@@ -37,16 +37,18 @@ export default function BanButton({ user }: { user: UserDetails }) {
         throw new Error("INPUTS_MISSING");
       }
 
-      user.roles.includes("ROLE_BAN")
-        ? await unban(user.username)
-        : await ban(user.username);
+      if (user.roles.includes("ROLE_BAN")) {
+        await unban(user.username);
+      } else {
+        await ban(user.username);
+      }
 
       // send notification with reason
 
       toast.success(
         user.roles.includes("ROLE_BAN")
           ? "L'utilisateur n'est plus banni"
-          : "L'utilisateur est maintenant banni"
+          : "L'utilisateur est maintenant banni",
       );
       setMessage({ message: "", type: "success" });
       setReason("");

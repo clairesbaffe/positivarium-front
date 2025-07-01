@@ -6,7 +6,6 @@ import { publisherRequestStatus } from "@/lib/utils";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -15,7 +14,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -78,7 +76,9 @@ export default function PublisherRequestsList({
                   </TableCell>
                 )}
                 <TableCell>
-                  <p className="line-clamp-6 whitespace-pre-line">{request.motivation}</p>
+                  <p className="line-clamp-6 whitespace-pre-line">
+                    {request.motivation}
+                  </p>
                 </TableCell>
                 <TableCell>
                   {new Date(request.createdAt).toLocaleString("fr-FR")}
@@ -134,7 +134,7 @@ export default function PublisherRequestsList({
                                 year: "numeric",
                                 hour: "2-digit",
                                 minute: "2-digit",
-                              }
+                              },
                             )}
                           </p>
                         )}
@@ -148,7 +148,9 @@ export default function PublisherRequestsList({
                           </Link>
                         </p>
                       )}
-                      <p className="whitespace-pre-line">{request.motivation}</p>
+                      <p className="whitespace-pre-line">
+                        {request.motivation}
+                      </p>
 
                       <DialogFooter>
                         <Button

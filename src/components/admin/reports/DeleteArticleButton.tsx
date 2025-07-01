@@ -5,7 +5,6 @@ import { useUser } from "@/context/UserContext";
 import { deleteArticleAdmin } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 
-import { toast } from "react-toastify";
 import { Trash } from "lucide-react";
 import {
   Dialog,

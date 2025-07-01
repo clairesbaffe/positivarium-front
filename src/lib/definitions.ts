@@ -8,7 +8,6 @@ export type User = {
 export type UserDetails = {
   id: number;
   username: string;
-  email: string;
   description: string;
   roles: string[];
 };

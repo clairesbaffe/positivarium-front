@@ -10,7 +10,7 @@ export default function ImageUploadForm({
   required?: boolean;
 }) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(
-    defaultPreview || null
+    defaultPreview || null,
   );
 
   return (
@@ -28,7 +28,7 @@ export default function ImageUploadForm({
             const selectedFile = e.target.files?.[0] || null;
             setFile(selectedFile);
             setPreviewUrl(
-              selectedFile ? URL.createObjectURL(selectedFile) : null
+              selectedFile ? URL.createObjectURL(selectedFile) : null,
             );
           }}
         />

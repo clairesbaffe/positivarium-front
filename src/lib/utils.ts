@@ -34,7 +34,7 @@ export const roleData = (role: string) => {
 };
 
 export const publisherRequestStatus = (
-  status: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED" | "CANCELLED"
+  status: "PENDING" | "UNDER_REVIEW" | "APPROVED" | "REJECTED" | "CANCELLED",
 ) => {
   switch (status) {
     case "PENDING":
@@ -79,7 +79,7 @@ export const moodColor = (
     | "Surprise"
     | "Dégoût"
     | "Confiance"
-    | "Anticipation"
+    | "Anticipation",
 ): { bg: string; text: string } => {
   switch (type) {
     case "Joie":
@@ -147,4 +147,14 @@ export function sanitizeArticleHtml(html: string): string {
       a: sanitizeHtml.simpleTransform("a", { rel: "noopener noreferrer" }),
     },
   });
+}
+
+export function isPasswordComplex(pw: string): boolean {
+  return (
+    pw.length >= 10 &&
+    /[A-Z]/.test(pw) &&
+    /[a-z]/.test(pw) &&
+    /\d/.test(pw) &&
+    /[!@#$%^&*(),.?":{}|<>]/.test(pw)
+  );
 }

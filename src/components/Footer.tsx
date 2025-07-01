@@ -8,29 +8,38 @@ export default function Footer() {
           <p className="font-title text-2xl">Navigation rapide</p>
           <ul className="flex flex-col gap-1">
             <li>
-              <Link href="/" className="cursor-pointer">
+              <Link href="/" className="underline-offset-2 hover:underline">
                 Accueil
               </Link>
             </li>
             <li>
-              <Link href="/article/category/general" className="cursor-pointer">
+              <Link
+                href="/article/category/general"
+                className="underline-offset-2 hover:underline"
+              >
                 Actualités générales
               </Link>
             </li>
             <li>
-              <Link href="/article/category/culture" className="cursor-pointer">
+              <Link
+                href="/article/category/culture"
+                className="underline-offset-2 hover:underline"
+              >
                 Culture
               </Link>
             </li>
             <li>
-              <Link href="/article/category/tech-science" className="cursor-pointer">
+              <Link
+                href="/article/category/tech-science"
+                className="underline-offset-2 hover:underline"
+              >
                 Technologies & Sciences
               </Link>
             </li>
             <li>
               <Link
                 href="/article/category/divertissement-lifestyle"
-                className="cursor-pointer"
+                className="underline-offset-2 hover:underline"
               >
                 Divertissement & Lifestyle
               </Link>
@@ -42,29 +51,46 @@ export default function Footer() {
           <p className="font-title text-2xl">Espace membre</p>
           <ul className="flex flex-col gap-1">
             <li>
-              <Link href="/login" className="cursor-pointer">
+              <Link
+                href="/login"
+                className="underline-offset-2 hover:underline"
+              >
                 Connexion
               </Link>
             </li>
             <li>
-              <Link href="/signup" className="cursor-pointer">
+              <Link
+                href="/signup"
+                className="underline-offset-2 hover:underline"
+              >
                 Inscription
               </Link>
             </li>
             <li>
-              <Link href="/publisher_requests" className="cursor-pointer">
+              <Link
+                href="/publisher_requests"
+                className="underline-offset-2 hover:underline"
+              >
                 Devenir rédacteur
               </Link>
             </li>
             <li>
-              <Link href="/journal" className="cursor-pointer">
+              <Link
+                href="/journal"
+                className="underline-offset-2 hover:underline"
+              >
                 Journal
               </Link>
             </li>
           </ul>
         </div>
       </nav>
-      <p>© Le Positivarium - 2025 | Tous droits réservés</p>
+      <div className="flex flex-col gap-3 items-center">
+        <Link href="/privacy" className="underline-offset-2 hover:underline">
+          Politique de confidentialité
+        </Link>
+        <p>© Le Positivarium - 2025 | Tous droits réservés</p>
+      </div>
     </footer>
   );
 }

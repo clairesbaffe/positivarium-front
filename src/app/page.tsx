@@ -1,11 +1,5 @@
 import Button from "@/components/Button";
-import {
-  BookOpen,
-  Layers2,
-  NotebookPen,
-  SquarePen,
-  UserRoundPen,
-} from "lucide-react";
+import { BookOpen, NotebookPen, SquarePen, UserRoundPen } from "lucide-react";
 import ArticlesPage from "@/components/articles/ArticlesPage";
 
 export default async function Home({

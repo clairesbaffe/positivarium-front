@@ -5,7 +5,6 @@ import { Category, GlobalPreference, Mood } from "@/lib/definitions";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,

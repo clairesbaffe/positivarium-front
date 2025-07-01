@@ -21,8 +21,7 @@ export default function MarkdownEditor({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  function handleEditorChange({ html, text }: { html: string; text: string }) {
-    console.log(text);
+  function handleEditorChange({ text }: { text: string }) {
     setMdContent(text);
   }
 

@@ -46,6 +46,7 @@ export default function CommentCard({
     try {
       await deleteComment(articleId, comment.id);
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };
@@ -54,11 +55,12 @@ export default function CommentCard({
     try {
       await reportComment(reportReason, comment.id);
       toast.success(
-        "Votre signalement a été enregistré. Il sera traité sous peu par nos administrateurs."
+        "Votre signalement a été enregistré. Il sera traité sous peu par nos administrateurs.",
       );
       setIsDialogOpen(false);
       setReportReason("");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

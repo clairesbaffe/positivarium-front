@@ -2,12 +2,12 @@ import ArticlesPage from "@/components/articles/ArticlesPage";
 
 export default async function CategoryArticles({
   params,
-  searchParams
+  searchParams,
 }: {
   params: Promise<{
     cat: "general" | "culture" | "tech-science" | "divertissement-lifestyle";
   }>;
-  searchParams: Promise<{ page: string; }>;
+  searchParams: Promise<{ page: string }>;
 }) {
   const cat = (await params).cat;
   const currentPage = parseInt((await searchParams).page ?? "1", 10);
@@ -36,18 +36,18 @@ export default async function CategoryArticles({
       break;
   }
 
-    return (
-      <div className="flex flex-col my-8 md:m-24 gap-32">
-        <section className="flex flex-col gap-8 mx-8 md:m-0">
-          <h1 className="font-title text-2xl md:text-4xl">{title}</h1>
-          <ArticlesPage
-            endpoint={`/articles/categories${
-              categories.length > 0 ? `?categoryIds=${categories.join(",")}` : ""
-            }`}
-            url={`/article/category/${cat}`}
-            currentPage={currentPage}
-          />
-        </section>
-      </div>
-    );
+  return (
+    <div className="flex flex-col my-8 md:m-24 gap-32">
+      <section className="flex flex-col gap-8 mx-8 md:m-0">
+        <h1 className="font-title text-2xl md:text-4xl">{title}</h1>
+        <ArticlesPage
+          endpoint={`/articles/categories${
+            categories.length > 0 ? `?categoryIds=${categories.join(",")}` : ""
+          }`}
+          url={`/article/category/${cat}`}
+          currentPage={currentPage}
+        />
+      </section>
+    </div>
+  );
 }

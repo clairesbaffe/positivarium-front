@@ -6,7 +6,6 @@ import { CommentReport } from "@/lib/definitions";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -31,7 +30,9 @@ export default function CommentReportsList({
         <TableHeader>
           <TableRow>
             <TableHead className="min-w-[250px]">Commentaire</TableHead>
-            <TableHead className="min-w-[150px]">Rédacteur du commentaire</TableHead>
+            <TableHead className="min-w-[150px]">
+              Rédacteur du commentaire
+            </TableHead>
             <TableHead className="min-w-[200px]">Article</TableHead>
             <TableHead className="min-w-[300px]">Signalement</TableHead>
             <TableHead>Date</TableHead>
@@ -49,9 +50,7 @@ export default function CommentReportsList({
                   <div className="line-clamp-1">{report.comment.content}</div>
                 </TableCell>
                 <TableCell className="whitespace-normal h-[2rem]">
-                  <div className="line-clamp-1">
-                    {report.comment.username}
-                  </div>
+                  <div className="line-clamp-1">{report.comment.username}</div>
                 </TableCell>
                 <TableCell className="whitespace-normal h-[2rem]">
                   <div className="line-clamp-1">

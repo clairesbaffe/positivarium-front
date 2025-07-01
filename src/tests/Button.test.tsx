@@ -23,7 +23,7 @@ describe("Button component", () => {
         background="bg-blue-500"
         textColor="text-white"
         icon={<CheckIcon data-testid="icon" />}
-      />
+      />,
     );
 
     // Find button by its title
@@ -57,7 +57,7 @@ describe("Button component", () => {
         textColor="text-white"
         icon={null}
         onClick={onClick}
-      />
+      />,
     );
 
     // Simulates a click on button
@@ -81,7 +81,7 @@ describe("Button component", () => {
         textColor="text-white"
         icon={null}
         href="/page"
-      />
+      />,
     );
 
     fireEvent.click(screen.getByRole("button"));
@@ -101,7 +101,7 @@ describe("Button component", () => {
         onClick={onClick}
         disabled
         disabledReason="Disabled for testing"
-      />
+      />,
     );
 
     // Find button by ARIA role (Accessible Rich Internet Applications)
@@ -146,17 +146,17 @@ describe("Button component", () => {
           icon={null}
           priority="low"
         />
-      </>
+      </>,
     );
 
     const buttons = screen.getAllByRole("button");
 
     // Check if each button has expected classes
     expect(buttons[0]).toHaveClass(
-      "bg-opacity-100 py-2.5 px-4 h-min rounded-md font-semibold text-foreground-inverted"
+      "bg-opacity-100 py-2.5 px-4 h-min rounded-md font-semibold text-foreground-inverted",
     ); // high priority, text color does not change
     expect(buttons[1]).toHaveClass(
-      "bg-transparent border border-2 py-2 px-4 h-min rounded-md font-semibold text-foreground w-min"
+      "bg-transparent border border-2 py-2 px-4 h-min rounded-md font-semibold text-foreground w-min",
     ); // medium priority with minWidth, text color changes to text-foreground
     expect(buttons[2]).toHaveClass("bg-transparent text-foreground"); // low priority, text color changes to text-foreground
   });

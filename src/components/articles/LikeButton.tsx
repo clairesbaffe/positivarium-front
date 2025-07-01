@@ -13,8 +13,13 @@ export default function LikeButton({
 }) {
   const handleClick = async () => {
     try {
-      userLiked ? await unlike(articleId) : await like(articleId);
+      if (userLiked) {
+        await unlike(articleId);
+      } else {
+        await like(articleId);
+      }
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

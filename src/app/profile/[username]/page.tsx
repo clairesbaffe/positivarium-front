@@ -17,7 +17,8 @@ export default async function UserPage({
   const currentPage = (await searchParams).page || 1;
 
   const connectedUser: UserDetails = await getCurrentUser();
-  if (connectedUser && connectedUser.roles.includes("ROLE_ADMIN")) redirect(`/admin/users/${username}`);
+  if (connectedUser && connectedUser.roles.includes("ROLE_ADMIN"))
+    redirect(`/admin/users/${username}`);
 
   const user: User = await getPublisher(username);
 

@@ -296,7 +296,10 @@ export default function Header() {
           <Link href="/article/category/culture" onClick={handleMenuItemClick}>
             Culture
           </Link>
-          <Link href="/article/category/tech-science" onClick={handleMenuItemClick}>
+          <Link
+            href="/article/category/tech-science"
+            onClick={handleMenuItemClick}
+          >
             Technologies & Sciences
           </Link>
           <Link

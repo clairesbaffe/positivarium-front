@@ -7,7 +7,6 @@ import { Save, SquarePen } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -38,7 +37,7 @@ export default function UpdateEntryButton({
   const [description, setDescription] = useState(entry.description);
   const [selectedMoods, setSelectedMoods] = useState<Mood[]>(entry.moods);
   const [selectedCategories, setSelectedCategories] = useState<Category[]>(
-    entry.categories
+    entry.categories,
   );
 
   const handleUpdate = async () => {
@@ -47,11 +46,12 @@ export default function UpdateEntryButton({
         entry.id,
         description,
         selectedMoods,
-        selectedCategories
+        selectedCategories,
       );
       toast.success("Entrée mise à jour avec succès");
       setIsDialogOpen(false);
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };
@@ -97,7 +97,11 @@ export default function UpdateEntryButton({
               onChange={setSelectedMoods}
             />
           </div>
-          <Accordion type="single" className="border rounded px-4 py-2" collapsible>
+          <Accordion
+            type="single"
+            className="border rounded px-4 py-2"
+            collapsible
+          >
             <AccordionItem value="item-1">
               <AccordionTrigger>
                 <div className="flex items-center gap-2">

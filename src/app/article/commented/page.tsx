@@ -1,6 +1,6 @@
 import ArticlesWithCommentsPage from "@/components/articles/ArticlesWithCommentsPage";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function CommentedArticlesPage({
   searchParams,

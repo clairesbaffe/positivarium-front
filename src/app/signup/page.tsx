@@ -2,16 +2,19 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Button from "@/components/Button";
 import { register } from "@/lib/auth";
+import { isPasswordComplex } from "@/lib/utils";
+
+import Link from "next/link";
+import { toast } from "react-toastify";
+import Button from "@/components/Button";
+import PasswordChecker from "@/components/auth/PasswordChecker";
 
 export default function SignUp() {
   const router = useRouter();
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -20,33 +23,41 @@ export default function SignUp() {
 
   const handleSignup = async () => {
     try {
-      // check validity of form inputs, expecially for email format
-      if (formRef.current && !formRef.current.checkValidity()) {
-        formRef.current.reportValidity();
-        return;
-      }
-
-      if (
-        email === "" ||
-        username === "" ||
-        password === "" ||
-        repeatPassword === ""
-      )
+      if (username === "" || password === "" || repeatPassword === "")
         throw new Error("INPUTS_MISSING");
+      else if (!isPasswordComplex(password))
+        throw new Error("PASSWORD_NOT_COMPLEX_ENOUGH");
       else if (password !== repeatPassword)
         throw new Error("PASSWORDS_NOT_MATCHING");
 
-      await register(username, email, password);
+      await register(username, password);
 
       setMessage("");
-      router.push("/login?success=1");
+      toast.success(
+        "Votre inscription a été prise en compte, vous pouvez maintenant vous connecter.",
+      );
+      router.push("/login");
     } catch (error) {
       console.error("Erreur d'inscription :", error);
       if (error instanceof Error) {
         if (error.message.includes("INPUTS_MISSING")) {
           setMessage("Veuillez compléter tous les champs.");
+        } else if (error.message.includes("PASSWORD_NOT_COMPLEX_ENOUGH")) {
+          setMessage("Le mot de passe n'est pas assez complexe.");
         } else if (error.message.includes("PASSWORDS_NOT_MATCHING")) {
           setMessage("Les mots de passe ne correspondent pas.");
+        } else if (error.message.includes("Username is already taken")) {
+          setMessage(
+            "Ce username est déjà pris, veuillez en choisir un autre.",
+          );
+        } else if (error.message.includes("Not long enough")) {
+          setMessage("Votre mot de passe est trop court.");
+        } else if (error.message.includes("Contains common password")) {
+          setMessage("Votre mot de passe est trop commun.");
+        } else if (error.message.includes("Not complex enough")) {
+          setMessage(
+            "Votre mot de passe ne contient pas les caractères requis.",
+          );
         } else {
           setMessage("Une erreur est survenue.");
         }
@@ -66,20 +77,6 @@ export default function SignUp() {
         }}
         className="w-full flex flex-col gap-4"
       >
-        <div className="flex flex-col gap-2">
-          <label className="text-lg" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="border border-foreground-muted h-12 rounded-lg p-4"
-            placeholder="Email"
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
         <div className="flex flex-col gap-2">
           <label className="text-lg" htmlFor="username">
             Nom d'utilisateur
@@ -107,6 +104,7 @@ export default function SignUp() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <PasswordChecker password={password} />
         </div>
         <div className="flex flex-col gap-2">
           <label className="text-lg" htmlFor="repeat-password">

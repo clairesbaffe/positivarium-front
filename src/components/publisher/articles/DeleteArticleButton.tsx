@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { deleteArticlePublisher, deleteDraft } from "@/lib/actions";
+import { deleteArticlePublisher } from "@/lib/actions";
 
 import { toast } from "react-toastify";
 import { Trash2 } from "lucide-react";
@@ -36,6 +36,7 @@ export default function DeleteArticleButton({
       toast.success("L'article a été supprimé.");
       router.push("/publisher/articles");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/components/Button";
 import { markReportAsRead } from "@/lib/actions";
 import { toast } from "react-toastify";
 import {
@@ -27,6 +26,7 @@ export default function MarkAsReadButton({
       await markReportAsRead(reportId, reportType);
       toast.success("Ce signalement a été marqué comme lu.");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

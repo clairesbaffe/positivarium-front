@@ -25,6 +25,7 @@ export default function GrantAdminButton({ user }: { user: UserDetails }) {
       await grantAdmin(user.username);
       toast.success("L'utilisateur est maintenant administrateur.");
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };

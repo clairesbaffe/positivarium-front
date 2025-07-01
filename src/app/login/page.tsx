@@ -5,10 +5,6 @@ export default async function Login({
 }: {
   searchParams: Promise<{ success: string; next: string }>;
 }) {
-  const message =
-    (await searchParams).success === "1"
-      ? "Inscription réussie ! Vous pouvez maintenant vous connecter."
-      : "";
   const next = (await searchParams).next;
 
   return (

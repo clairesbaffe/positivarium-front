@@ -13,16 +13,19 @@ export default function CategorySelector({
   multiple?: boolean;
 }) {
   const [selectedIds, setSelectedIds] = useState<number[]>(
-    defaultSelectedCategoryIds || []
+    defaultSelectedCategoryIds || [],
   );
 
   const grouped = categories.reduce<
     Record<Category["generalCategory"], Category[]>
-  >((acc, cat) => {
-    acc[cat.generalCategory] ||= [];
-    acc[cat.generalCategory].push(cat);
-    return acc;
-  }, {} as Record<Category["generalCategory"], Category[]>);
+  >(
+    (acc, cat) => {
+      acc[cat.generalCategory] ||= [];
+      acc[cat.generalCategory].push(cat);
+      return acc;
+    },
+    {} as Record<Category["generalCategory"], Category[]>,
+  );
 
   const toggleCategory = (cat: Category) => {
     let newSelected: number[];

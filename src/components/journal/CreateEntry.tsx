@@ -33,10 +33,11 @@ export default function CreateEntry({
 
   const handleClick = async () => {
     try {
-      const res = await createEntry(content, selectedMoods, selectedCategories);
+      await createEntry(content, selectedMoods, selectedCategories);
       toast.success("Entrée ajoutée avec succès");
       router.push(`/journal`);
     } catch (error) {
+      console.error("Failed to fetch :", error);
       toast.error("Une erreur est survenue.");
     }
   };
@@ -94,7 +95,11 @@ export default function CreateEntry({
           />
         </div>
 
-        <Accordion type="single" className="border rounded p-4 py-2" collapsible>
+        <Accordion
+          type="single"
+          className="border rounded p-4 py-2"
+          collapsible
+        >
           <AccordionItem value="item-1">
             <AccordionTrigger>
               <div className="flex items-center gap-2">

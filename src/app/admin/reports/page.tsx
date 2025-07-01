@@ -18,11 +18,11 @@ export default async function Page({
   const currentTab = (await searchParams).tab ?? "articles";
   const currentPageArticles = parseInt(
     (await searchParams).pageArticles ?? "1",
-    10
+    10,
   );
   const currentPageComments = parseInt(
     (await searchParams).pageComments ?? "1",
-    10
+    10,
   );
 
   const articleReportsData = await getArticleReports(currentPageArticles);

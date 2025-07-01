@@ -6,7 +6,6 @@ import { ArticleReport } from "@/lib/definitions";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,

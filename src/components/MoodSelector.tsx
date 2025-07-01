@@ -14,11 +14,14 @@ export default function MoodSelector({
 }) {
   const [selectedIds, setSelectedIds] = useState<number[]>(selectedMoodIds);
 
-  const grouped = moods.reduce<Record<Mood["type"], Mood[]>>((acc, mood) => {
-    acc[mood.type] ||= [];
-    acc[mood.type].push(mood);
-    return acc;
-  }, {} as Record<Mood["type"], Mood[]>);
+  const grouped = moods.reduce<Record<Mood["type"], Mood[]>>(
+    (acc, mood) => {
+      acc[mood.type] ||= [];
+      acc[mood.type].push(mood);
+      return acc;
+    },
+    {} as Record<Mood["type"], Mood[]>,
+  );
 
   const toggleMood = (mood: Mood) => {
     let newSelected: number[];

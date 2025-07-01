@@ -31,7 +31,7 @@ export default function CreateForm({
 
   const [file, setFile] = useState<File | null>(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(
-    article?.mainImage || null
+    article?.mainImage || null,
   );
 
   const [title, setTitle] = useState(article?.title || "");
@@ -39,7 +39,7 @@ export default function CreateForm({
   const [content, setContent] = useState(article?.content || "");
 
   const [selectedCategories, setSelectedCategories] = useState<Category[]>(
-    article ? [article?.category] : []
+    article ? [article?.category] : [],
   );
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -97,7 +97,7 @@ export default function CreateForm({
           description,
           content,
           imageUrl,
-          selectedCategories[0].id
+          selectedCategories[0].id,
         );
 
         const articleId = article ? article.id : res.id;
@@ -112,7 +112,7 @@ export default function CreateForm({
             description,
             content,
             imageUrl,
-            selectedCategories[0].id
+            selectedCategories[0].id,
           );
         } else {
           res = await createDraft(
@@ -120,7 +120,7 @@ export default function CreateForm({
             description,
             content,
             imageUrl,
-            selectedCategories[0].id
+            selectedCategories[0].id,
           );
         }
 
@@ -136,11 +136,11 @@ export default function CreateForm({
           setErrorMessage("Veuillez compléter tous les champs requis.");
         } else if (error.message.includes("IMAGE_MISSING")) {
           setErrorMessage(
-            "Une erreur est survenue lors de l'enregistrement de l'image. Veuillez réessayer."
+            "Une erreur est survenue lors de l'enregistrement de l'image. Veuillez réessayer.",
           );
         } else if (error.message.includes("PAYLOAD_TOO_LARGE")) {
           setErrorMessage(
-            "L'image ne peut pas dépasser 1MB. Veuillez essayer avec une autre image."
+            "L'image ne peut pas dépasser 1MB. Veuillez essayer avec une autre image.",
           );
         } else if (error.message.includes("NOT_CONNECTED")) {
           setErrorMessage("Vous devez être connecté pour faire cette action.");
@@ -216,11 +216,13 @@ export default function CreateForm({
           />
 
           <div className="flex flex-col gap-2">
-            <label className="text-lg">Catégorie <span className="text-red-400">*</span></label>
+            <label className="text-lg">
+              Catégorie <span className="text-red-400">*</span>
+            </label>
             <CategorySelector
               categories={categories}
               defaultSelectedCategoryIds={selectedCategories.map(
-                (cat) => cat.id
+                (cat) => cat.id,
               )}
               onChange={setSelectedCategories}
               multiple={false}

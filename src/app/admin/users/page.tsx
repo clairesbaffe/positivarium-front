@@ -1,6 +1,6 @@
 import UsersPage from "@/components/admin/UsersPage";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function Page({
   searchParams,

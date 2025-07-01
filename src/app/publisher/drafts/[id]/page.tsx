@@ -4,10 +4,10 @@ import { getDraftById } from "@/lib/data";
 
 import { SquarePen } from "lucide-react";
 import Button from "@/components/Button";
+import BackButton from "@/components/BackButton";
 import SanitizedContent from "@/components/SanitizedContent";
 import DeleteDraftButton from "@/components/publisher/drafts/DeleteDraftButton";
 import PublishDraftButton from "@/components/publisher/drafts/PublishDraftButton";
-import BackButton from "@/components/BackButton";
 
 export default async function Draft({
   params,
@@ -25,25 +25,26 @@ export default async function Draft({
         <div className="flex flex-col gap-12">
           <section className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
-              <p className="font-thin">
-                <Link href={"/"}>{draft.category.name}</Link> ·{" "}
-                {draft.category.generalCategory}
-              </p>
-              <div className="flex flex-col gap-2">
-                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                  <h1 className="font-title text-4xl">{draft.title}</h1>
-                  <div className="flex flex-wrap md:flex-nowrap gap-4">
-                    <PublishDraftButton draftId={draft.id} />
-                    <Button
-                      title="Modifier"
-                      background="bg-dark-colored-background"
-                      textColor="text-foreground-inverted"
-                      icon={<SquarePen size={18} />}
-                      href={`/publisher/drafts/create/${draft.id}`}
-                    />
-                    <DeleteDraftButton draftId={draft.id} />
-                  </div>
+              <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                <p className="font-thin">
+                  <Link href={"/"}>{draft.category.name}</Link> ·{" "}
+                  {draft.category.generalCategory}
+                </p>
+                <div className="flex flex-wrap md:flex-nowrap gap-4">
+                  <PublishDraftButton draftId={draft.id} />
+                  <Button
+                    title="Modifier"
+                    background="bg-dark-colored-background"
+                    textColor="text-foreground-inverted"
+                    icon={<SquarePen size={18} />}
+                    href={`/publisher/drafts/create/${draft.id}`}
+                  />
+                  <DeleteDraftButton draftId={draft.id} />
                 </div>
+              </div>
+
+              <div className="flex flex-col gap-2 mt-2">
+                <h1 className="font-title text-4xl">{draft.title}</h1>
                 <p className="text-lg">{draft.description}</p>
               </div>
               <div className="flex items-center justify-between font-thin">

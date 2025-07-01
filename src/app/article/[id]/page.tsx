@@ -58,12 +58,16 @@ export default async function Article({
               </div>
               <div className="flex items-center justify-between font-thin">
                 <div>
-                  <Link
-                    href={`/profile/${article.username}`}
-                    className="text-lg underline underline-offset-2"
-                  >
-                    {article.username}
-                  </Link>
+                  {article.username === "Auteur inconnu" ? (
+                    <p className="text-lg">{article.username}</p>
+                  ) : (
+                    <Link
+                      href={`/profile/${article.username}`}
+                      className="text-lg underline underline-offset-2"
+                    >
+                      {article.username}
+                    </Link>
+                  )}
                   <div className="text-foreground-muted flex flex-col md:flex-row md:items-center gap-1">
                     <p>
                       {new Date(article.publishedAt).toLocaleString("fr-FR", {

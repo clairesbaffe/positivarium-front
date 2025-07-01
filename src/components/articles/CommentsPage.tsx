@@ -14,7 +14,7 @@ export default async function CommentsPage({
 }) {
   const { comments, totalPages } = await getCommentsByArticleId(
     Number(articleId),
-    currentPage
+    currentPage,
   );
 
   return (

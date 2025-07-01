@@ -2,10 +2,11 @@ import { UserDetails } from "@/lib/definitions";
 import { getCurrentUser } from "@/lib/auth";
 import { roleData } from "@/lib/utils";
 
+import Button from "@/components/Button";
 import ArticlesPage from "@/components/articles/ArticlesPage";
 import UpdateInfoButton from "@/components/profile/UpdateInfoButton";
 import UpdatePasswordButton from "@/components/profile/UpdatePasswordButton";
-import Button from "@/components/Button";
+import DeleteAccountButton from "@/components/profile/DeleteAccountButton";
 
 // if not connected, user is automatically redirected to login by middleware
 export default async function MyProfile({
@@ -48,10 +49,10 @@ export default async function MyProfile({
               />
             )}
             <UpdateInfoButton user={user} />
-            <UpdatePasswordButton user={user} />
+            <UpdatePasswordButton />
+            <DeleteAccountButton />
           </div>
         </div>
-        <p className="text-lg font-semibold">{user.email}</p>
         {user.description && <p className="text-lg">{user.description}</p>}
       </section>
       <section>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { UserDetails } from "@/lib/definitions";
-import { updateProfileInfo } from "@/lib/auth";
+import { useRouter } from "next/navigation";
+import { deleteAccount } from "@/lib/actions";
 
 import { toast } from "react-toastify";
 import {
@@ -17,10 +17,11 @@ import {
 import { Button } from "@/components/ui/button";
 import Input from "@/components/Input";
 
-export default function UpdateInfoButton({ user }: { user: UserDetails }) {
+export default function DeleteAccountButton() {
+  const router = useRouter();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [username, setUsername] = useState(user.username);
-  const [description, setDescription] = useState(user.description || ""); // fallback to "" because description can be null
+  const [password, setPassword] = useState("");
 
   const [message, setMessage] = useState<{
     message: string;
@@ -29,21 +30,25 @@ export default function UpdateInfoButton({ user }: { user: UserDetails }) {
 
   const handleUpdate = async () => {
     try {
-      if (username === "") {
+      if (password === "") {
         throw new Error("INPUTS_MISSING");
       }
-
-      await updateProfileInfo(username, description);
-
+      await deleteAccount(password);
       setMessage({ message: "", type: "success" });
       setIsDialogOpen(false);
-      toast.success("Informations mises à jour.");
+      toast.success("Votre compte a été supprimé.");
+      router.push("/");
     } catch (error) {
       console.error("Erreur de mise à jour :", error);
       if (error instanceof Error) {
         if (error.message.includes("INPUTS_MISSING")) {
           setMessage({
             message: "Veuillez compléter tous les champs requis.",
+            type: "error",
+          });
+        } else if (error.message.includes("401")) {
+          setMessage({
+            message: "Le mot de passe ne correspond pas.",
             type: "error",
           });
         } else {
@@ -58,45 +63,51 @@ export default function UpdateInfoButton({ user }: { user: UserDetails }) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger
-        className={`flex items-center justify-center whitespace-nowrap gap-2 cursor-pointer bg-opacity-100 py-2.5 px-4 h-min rounded-md font-semibold bg-colored-background text-foreground`}
+        className={`flex items-center justify-center whitespace-nowrap gap-2 cursor-pointer bg-opacity-100 py-2.5 px-4 h-min rounded-md font-semibold bg-background-danger text-foreground`}
         onClick={() => setIsDialogOpen(true)}
       >
-        Modifier mon profil
+        Supprimer mon compte
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Modifier les informations de votre profil</DialogTitle>
+          <DialogTitle>Supprimer mon compte</DialogTitle>
         </DialogHeader>
         <DialogDescription className="text-md">
-          <span className="text-red-400">*</span> Obligatoire
+          Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est
+          irréversible.
         </DialogDescription>
         <div className="py-4 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="username">
-              Username <span className="text-red-400">*</span>
+            <label htmlFor="password">
+              Entrez votre mot de passe pour confirmer
             </label>
-            <Input name="username" data={username} setData={setUsername} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="description">Description</label>
             <Input
-              name="description"
-              data={description}
-              setData={setDescription}
+              name="password"
+              type="password"
+              data={password}
+              setData={setPassword}
             />
           </div>
         </div>
         {message && message.type === "error" && (
           <p className="text-red-400">{message.message}</p>
         )}
-        <DialogFooter>
+        <DialogFooter className="flex flex-col md:flex-row">
+          <Button
+            type="submit"
+            variant="default"
+            className="cursor-pointer"
+            onClick={() => handleUpdate()}
+          >
+            Supprimer définitivement
+          </Button>
           <Button
             type="submit"
             variant="outline"
             className="cursor-pointer"
-            onClick={() => handleUpdate()}
+            onClick={() => setIsDialogOpen(false)}
           >
-            Mettre à jour
+            Annuler
           </Button>
         </DialogFooter>
       </DialogContent>
